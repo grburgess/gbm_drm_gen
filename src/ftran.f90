@@ -1,3 +1,8 @@
+! This code is an adaptation of the code written by Colleen Wilson-Hodge, Geoff Pendalton
+! and others using the gbmrsp_release_v2p0 routines. It has been modified for speed and 
+! readability. TRFIND is a modified version of R.J. Renka's original source
+! ( and redistributed with an ACM liscense). 
+
 SUBROUTINE TRFIND (NST,P,N,X,Y,Z,LIST,LPTR,LEND, B1,B2,B3,I1,I2,I3)
   INTEGER NST, N, LIST(*), LPTR(*), LEND(*)
   REAL    P(3), X(*), Y(*), Z(*)
