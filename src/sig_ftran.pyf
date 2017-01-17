@@ -1,0 +1,117 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module ftran ! in 
+    interface  ! in :ftran
+        subroutine trfind(nst,p,n,x,y,z,list,lptr,lend,b1,b2,b3,i1,i2,i3) ! in :ftran:ftran.f90
+            integer :: nst
+            real dimension(3) :: p
+            integer :: n
+            real dimension(*) :: x
+            real dimension(*) :: y
+            real dimension(*) :: z
+            integer dimension(*) :: list
+            integer dimension(*) :: lptr
+            integer dimension(*) :: lend
+            real intent(out) :: b1
+            real intent(out) :: b2
+            real intent(out) :: b3
+            integer intent(out) :: i1
+            integer intent(out) :: i2
+            integer intent(out) :: i3
+        end subroutine trfind
+        function jrand(n,ix,iy,iz) ! in :ftran:ftran.f90
+            integer :: n
+            integer :: ix
+            integer :: iy
+            integer :: iz
+            integer :: jrand
+        end function jrand
+        function lstptr(lpl,nb,list,lptr) ! in :ftran:ftran.f90
+            integer :: lpl
+            integer :: nb
+            integer dimension(*) :: list
+            integer dimension(*) :: lptr
+            integer :: lstptr
+        end function lstptr
+        function store(x) ! in :ftran:ftran.f90
+            real :: x
+            real :: y
+            real :: store
+            common /stcom/ y
+        end function store
+        subroutine geocords(theta_geo,phi_geo,theta_source,phi_source,gx,gy,gz,sl) ! in :ftran:ftran.f90
+            real intent(in) :: theta_geo
+            real intent(in) :: phi_geo
+            real intent(in) :: theta_source
+            real intent(in) :: phi_source
+            real dimension(3),intent(out) :: gx
+            real dimension(3),intent(out) :: gy
+            real dimension(3),intent(out) :: gz
+            real dimension(3),intent(out) :: sl
+        end subroutine geocords
+        subroutine geo_to_space(theta_u,phi_u,gx,gy,gz,dirx,diry,dirz,az,el) ! in :ftran:ftran.f90
+            real intent(in) :: theta_u
+            real intent(in) :: phi_u
+            real dimension(3),intent(in) :: gx
+            real dimension(3),intent(in) :: gy
+            real dimension(3),intent(in) :: gz
+            real intent(out) :: dirx
+            real intent(out) :: diry
+            real intent(out) :: dirz
+            real intent(out) :: az
+            real intent(out) :: el
+        end subroutine geo_to_space
+        subroutine calc_sphere_dist(ra1,dec1,ra2,dec2,dist) ! in :ftran:ftran.f90
+            real intent(in) :: ra1
+            real intent(in) :: dec1
+            real intent(in) :: ra2
+            real intent(in) :: dec2
+            real intent(out) :: dist
+        end subroutine calc_sphere_dist
+        subroutine sum_at_scat(direct_diff_matrix,at_scat_data_lo,at_scat_data_hi,l_fract,ienerg,nobins_out,out_matrix) ! in :ftran:ftran.f90
+            real dimension(ienerg,nobins_out),intent(in) :: direct_diff_matrix
+            real dimension(ienerg,ienerg),intent(in),depend(ienerg,ienerg) :: at_scat_data_lo
+            real dimension(ienerg,ienerg),intent(in),depend(ienerg,ienerg) :: at_scat_data_hi
+            real :: l_fract
+            integer, optional,intent(in),check(shape(direct_diff_matrix,0)==ienerg),depend(direct_diff_matrix) :: ienerg=shape(direct_diff_matrix,0)
+            integer, optional,intent(in),check(shape(direct_diff_matrix,1)==nobins_out),depend(direct_diff_matrix) :: nobins_out=shape(direct_diff_matrix,1)
+            real dimension(ienerg,nobins_out),intent(out),depend(ienerg,nobins_out) :: out_matrix
+        end subroutine sum_at_scat
+        subroutine highres_ephoton_interpolator(ebin_edge_in,nobins_in,ein,nvbins,matrix,edif_edge_lo,edif_edge_hi,nhbins,new_epx_lo,new_epx_hi,diff_matrix) ! in :ftran:ftran.f90
+            real dimension(nobins_in),intent(in) :: ebin_edge_in
+            integer, optional,intent(in),check(len(ebin_edge_in)>=nobins_in),depend(ebin_edge_in) :: nobins_in=len(ebin_edge_in)
+            real dimension(nvbins + 1),intent(in) :: ein
+            integer, optional,intent(in),check((len(ein)-1)>=nvbins),depend(ein) :: nvbins=(len(ein)-1)
+            real dimension(70,64),intent(in) :: matrix
+            real dimension(70,64),intent(in) :: edif_edge_lo
+            real dimension(70,64),intent(in) :: edif_edge_hi
+            integer intent(in) :: nhbins
+            real dimension(nobins_in,64),intent(out),depend(nobins_in) :: new_epx_lo
+            real dimension(nobins_in,64),intent(out),depend(nobins_in) :: new_epx_hi
+            real dimension(nobins_in,64),intent(out),depend(nobins_in) :: diff_matrix
+        end subroutine highres_ephoton_interpolator
+        subroutine atscat_highres_ephoton_interpolator(ebin_edge_in,nobins_in,e_in,nvbins,matrix,nobins_out,new_matrix) ! in :ftran:ftran.f90
+            real dimension(nobins_in + 1),intent(in) :: ebin_edge_in
+            integer, optional,intent(in),check((len(ebin_edge_in)-1)>=nobins_in),depend(ebin_edge_in) :: nobins_in=(len(ebin_edge_in)-1)
+            real dimension(nvbins + 1),intent(in) :: e_in
+            integer, optional,intent(in),check((len(e_in)-1)>=nvbins),depend(e_in) :: nvbins=(len(e_in)-1)
+            real dimension(70,nobins_out),intent(in) :: matrix
+            integer, optional,intent(in),check(shape(matrix,1)==nobins_out),depend(matrix) :: nobins_out=shape(matrix,1)
+            real dimension(nobins_in,nobins_out),intent(out),depend(nobins_in,nobins_out) :: new_matrix
+        end subroutine atscat_highres_ephoton_interpolator
+        subroutine echan_integrator(nobins_in,diff_matrix,edif_edge_lo,edif_edge_hi,nhbins,ebin_edge_out,nobins_out,binned_matrix) ! in :ftran:ftran.f90
+            integer, optional,intent(in),check(shape(diff_matrix,0)==nobins_in),depend(diff_matrix) :: nobins_in=shape(diff_matrix,0)
+            real dimension(nobins_in,64),intent(in) :: diff_matrix
+            real dimension(nobins_in,64),intent(in),depend(nobins_in) :: edif_edge_lo
+            real dimension(nobins_in,64),intent(in),depend(nobins_in) :: edif_edge_hi
+            integer intent(in) :: nhbins
+            real dimension(nobins_out + 1),intent(in) :: ebin_edge_out
+            integer, optional,intent(in),check((len(ebin_edge_out)-1)>=nobins_out),depend(ebin_edge_out) :: nobins_out=(len(ebin_edge_out)-1)
+            real dimension(nobins_in,nobins_out),intent(out),depend(nobins_in,nobins_out) :: binned_matrix
+        end subroutine echan_integrator
+    end interface 
+end python module ftran
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/
