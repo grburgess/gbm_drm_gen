@@ -2,12 +2,13 @@ import astropy.io.fits as fits
 from glob import glob
 import numpy as np
 import os
+from gbm_drm_gen.config.gbm_drm_gen_config import gbm_drm_gen_config
 
 lu = dict(n0='NAI_00', n1='NAI_01', n2='NAI_02', n3='NAI_03', n4='NAI_04', n5='NAI_05', n6='NAI_06', n7='NAI_07',
           n8='NAI_08', n9='NAI_09', na='NAI_10', nb='NAI_11', b0='BGO_00', b1='BGO_01')
 
 
-class DetDataBase(object):
+class DetDatabase(object):
     def __init__(self, detector):
 
         """
@@ -40,7 +41,8 @@ class DetDataBase(object):
 
     def _det_atscat_data(self):
 
-        path = os.environ['BALROG_DB'] + '/test_atscatfile_preeinterp_db002.fits'
+        #path = os.environ['BALROG_DB'] + '/test_atscatfile_preeinterp_db002.fits'
+        path = gbm_drm_gen_config['gbm drm database location'] + '/test_atscatfile_preeinterp_db002.fits'
 
         if self.detector[0] == "n":
             det_number = 0
@@ -76,7 +78,7 @@ class DetDataBase(object):
 
     def _get_tri_info(self):
 
-        path = os.environ['BALROG_DB'] + '/InitialGBMDRM_triangleinfo_db001.fits'
+        path =  gbm_drm_gen_config['gbm drm database location'] + '/InitialGBMDRM_triangleinfo_db001.fits'
 
         trifile = fits.open(path)
 
@@ -97,7 +99,7 @@ class DetDataBase(object):
 
     def _read_db(self):
 
-        path = os.environ['BALROG_DB'] + '/GBMDRMdb002/' + lu[self.detector] + '/'
+        path =  gbm_drm_gen_config['gbm drm database location'] + '/GBMDRMdb002/' + lu[self.detector] + '/'
 
         self.all_leafs = glob(path + 'glg_leaf_%s_z*' % self.detector)
 
