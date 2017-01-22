@@ -29,6 +29,8 @@ class DRMGenTTE(DRMGen):
 
         self._time = time
 
+        self._matrix_type = mat_type
+
         with fits.open(tte_file) as f:
 
             det_name = f['PRIMARY'].header['DETNAM']

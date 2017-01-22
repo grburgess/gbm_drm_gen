@@ -277,12 +277,12 @@ class DRMGen(object):
 
         n_tmp_phot_bin = 2 * self._nobins_in + self._nobins_in % 2
         tmp_phot_bin = np.zeros(n_tmp_phot_bin, dtype=np.float32)
-        tmp_phot_bin[::2] = self.in_edge[:-1]
+        tmp_phot_bin[::2] = self._in_edge[:-1]
         tmp_phot_bin[1::2] = 10**(
-            (np.log10(self.in_edge[:-1]) + np.log10(self.in_edge[1:])) / 2.)
+            (np.log10(self._in_edge[:-1]) + np.log10(self._in_edge[1:])) / 2.)
 
         #### Atmospheric scattering
-        if self.mat_type == 1 or self.mat_type == 2:
+        if self._matrix_type == 1 or self._matrix_type == 2:
             theta_geo = 90. - geo_el
             phi_geo = geo_az
             theta_source = 90 - rlat
@@ -335,10 +335,10 @@ class DRMGen(object):
                                                new_epx_hi, self._database.ichan,
                                                self._out_edge)
 
-        if self.mat_type == 1:
+        if self._matrix_type == 1:
             binned_matrix = atscat_diff_matrix
 
-        if self.mat_type == 2:
+        if self._matrix_type == 2:
             binned_matrix[:-1, :] += atscat_diff_matrix
 
         # Integrate photon edge with trapazoid

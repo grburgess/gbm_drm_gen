@@ -10,7 +10,7 @@ class BALROG_DRM(InstrumentResponse):
 
         self._drm_generator = drm_generator
 
-        self._drm_generator.set_loaction(ra,dec)
+        self._drm_generator.set_location(ra,dec)
 
         super(BALROG_DRM, self).__init__(self._drm_generator.matrix,
                                          self._drm_generator.ebounds,
@@ -18,11 +18,14 @@ class BALROG_DRM(InstrumentResponse):
 
     def set_location(self, ra, dec):
 
-        self._drm_generator.set_loaction(ra, dec)
+        self._drm_generator.set_location(ra, dec)
 
-        super(BALROG_DRM, self).__init__(self._drm_generator.matrix,
-                                         self._drm_generator.ebounds,
-                                         self._drm_generator.monte_carlo_energies)
+        self._matrix = self._drm_generator.matrix
 
 
 
+    def set_time(self, time):
+
+        self._drm_generator.set_time(time)
+
+        self._matrix = self._drm_generator.matrix
