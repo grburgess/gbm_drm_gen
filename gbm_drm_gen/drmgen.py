@@ -18,7 +18,6 @@ class DRMGen(object):
                  det_number,
                  ebin_edge_in,
                  mat_type=0,
-                 time=0,
                  ebin_edge_out=None):
         """
         A generic GBM DRM generator. This can be inherited for specific purposes.
@@ -44,8 +43,7 @@ class DRMGen(object):
 
         # Attach inputs to object
 
-        self.mat_type = mat_type
-        self.in_edge = ebin_edge_in
+        self._matrix_type = mat_type
 
         self._nobins_in = len(ebin_edge_in) - 1
 
@@ -152,6 +150,17 @@ class DRMGen(object):
 
         # go ahead and transpose it for spectal fitting, etc.
         #self._drm_transpose = self._drm.T
+
+    def set_time(self,time):
+
+
+        self._time = time
+
+        self._sc_quaternions_updater()
+
+    def _sc_quaternions_updater(self):
+
+        raise NotImplementedError('implemented in subclass')
 
 
     def _compute_spacecraft_coordinates(self):

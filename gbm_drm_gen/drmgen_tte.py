@@ -23,19 +23,21 @@ class DRMGenTTE(DRMGen):
     :param poshist: read a poshist file
     """
 
-    def __init__(self, tte_file, trigdat=None, mat_type=0, time=0., cspecfile=None, poshist=None, occult=False):
+    def __init__(self, tte_file, time=0., cspecfile=None, trigdat=None, poshist=None, mat_type=0, occult=False):
 
         self._occult = occult
+
+        self._time = time
 
         with fits.open(tte_file) as f:
 
             det_name = f['PRIMARY'].header['DETNAM']
 
-        det_number = det_name_lookup[det_name]
+        self._det_number = det_name_lookup[det_name]
 
-        if det_number >= 12:
+        if self._det_number >= 12:
             # BGO
-            in_edge = np.array([100.000, 105.579, 111.470, 117.689, 124.255, 131.188,
+            self._in_edge = np.array([100.000, 105.579, 111.470, 117.689, 124.255, 131.188,
                                 138.507, 146.235, 154.394, 163.008, 172.103, 181.705,
                                 191.843, 202.546, 213.847, 225.778, 238.375, 251.675,
                                 265.716, 280.541, 296.194, 312.719, 330.167, 348.588,
@@ -62,7 +64,7 @@ class DRMGenTTE(DRMGen):
 
 
         else:
-            in_edge = np.array([5.00000, 5.34000, 5.70312, 6.09094, 6.50513, 6.94748,
+            self._in_edge = np.array([5.00000, 5.34000, 5.70312, 6.09094, 6.50513, 6.94748,
                                 7.41991, 7.92447, 8.46333, 9.03884, 9.65349, 10.3099,
                                 11.0110, 11.7598, 12.5594, 13.4135, 14.3256, 15.2997,
                                 16.3401, 17.4513, 18.6380, 19.9054, 21.2589, 22.7045,
@@ -93,46 +95,96 @@ class DRMGenTTE(DRMGen):
             out_edge[:-1] = f['EBOUNDS'].data['E_MIN']
             out_edge[-1] = f['EBOUNDS'].data['E_MAX'][-1]
 
-            if poshist is None:
+        self._out_edge = out_edge
 
-                # Space craft stuff from TRIGDAT
-                with fits.open(trigdat) as f:
-                    trigtime = f['EVNTRATE'].header['TRIGTIME']
-                    tstart = f['EVNTRATE'].data['TIME'] - trigtime
-                    tstop = f['EVNTRATE'].data['ENDTIME'] - trigtime
-                    condition = np.logical_and(tstart <= time, time <= tstop)
+        if poshist is None:
 
-                    quaternions = f['EVNTRATE'].data['SCATTITD'][condition][0]
-                    sc_pos = f['EVNTRATE'].data['EIC'][condition][0]
+            self._use_poshist = False
+
+            # Space craft stuff from TRIGDAT
+            with fits.open(trigdat) as f:
+                self._trigtime = f['EVNTRATE'].header['TRIGTIME']
 
 
-            elif trigdat is None:
+                self._tstart = f['EVNTRATE'].data['TIME'] - self._trigtime
+                self._tstop = f['EVNTRATE'].data['ENDTIME'] - self._trigtime
 
-                with fits.open(poshist) as f:
-                    condition = np.argmin(abs(f['GLAST POS HIST'].data['SCLK_UTC'] - time))
-                    quaternions = np.array([f['GLAST POS HIST'].data['QSJ_1'][condition],
-                                      f['GLAST POS HIST'].data['QSJ_2'][condition],
-                                      f['GLAST POS HIST'].data['QSJ_3'][condition],
-                                      f['GLAST POS HIST'].data['QSJ_4'][condition]])
 
-                    sc_pos = np.array([f['GLAST POS HIST'].data['POS_X'][condition],
-                                       f['GLAST POS HIST'].data['POS_Y'][condition],
-                                       f['GLAST POS HIST'].data['POS_Z'][condition]])
-
-            else:
-
-                raise RuntimeError("No trigdat or posthist file used!")
-
-            super(DRMGenTTE, self).__init__(quaternions=quaternions,
-                                            sc_pos=sc_pos,
-                                            det_number=det_number,
-                                            ebin_edge_in=in_edge,
-                                            mat_type=0,
-                                            time=time-trigtime,
-                                            ebin_edge_out=out_edge)
+                self._all_quats= f['EVNTRATE'].data['SCATTITD']
+                self._all_sc_pos = f['EVNTRATE'].data['EIC']
 
 
 
 
-        ################
-        lu = ['n0', 'n1', 'n2', 'n3', 'n4', 'n5', 'n6', 'n7', 'n8', 'n9', 'na', 'nb', 'b0', 'b1']
+
+
+        elif trigdat is None:
+
+            self._use_poshist= True
+
+            with fits.open(poshist) as f:
+
+               self._poshist_time = f['GLAST POS HIST'].data['SCLK_UTC']
+
+
+
+               self._q1 = f['GLAST POS HIST'].data['QSJ_1']
+               self._q2 = f['GLAST POS HIST'].data['QSJ_2']
+               self._q3 = f['GLAST POS HIST'].data['QSJ_3']
+               self._q4 = f['GLAST POS HIST'].data['QSJ_4']
+
+               self._pos_X = f['GLAST POS HIST'].data['POS_X']
+               self._pos_Y = f['GLAST POS HIST'].data['POS_Y']
+               self._pos_Z = f['GLAST POS HIST'].data['POS_Z']
+
+
+        else:
+
+            raise RuntimeError("No trigdat or posthist file used!")
+
+
+
+        self._sc_quaternions_updater()
+
+
+
+
+
+
+    def _sc_quaternions_updater(self):
+
+        if self._use_poshist:
+
+            condition = np.argmin(self._poshist_time - self._time)
+
+            quaternions = np.array([self._q1[condition],
+                                    self._q2[condition],
+                                    self._q3[condition],
+                                    self._q4[condition]])
+
+            sc_pos = np.array([self._pos_X[condition],
+                               self._pos_Y[condition],
+                               self._pos_Z[condition]])
+
+        else:
+
+            condition = np.logical_and(self._tstart <= self._time, self._time <= self._tstop)
+
+            quaternions =self._all_quats[condition][0]
+            sc_pos = self._all_sc_pos[condition][0]
+
+        super(DRMGenTTE, self).__init__(quaternions=quaternions,
+                                        sc_pos=sc_pos,
+                                        det_number=self._det_number,
+                                        ebin_edge_in=self._in_edge,
+                                        mat_type=self._matrix_type,
+                                        ebin_edge_out=self._out_edge)
+
+
+
+
+
+
+
+
+
