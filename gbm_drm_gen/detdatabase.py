@@ -1,7 +1,7 @@
 import astropy.io.fits as fits
 from glob import glob
 import numpy as np
-import os
+
 from gbm_drm_gen.config.gbm_drm_gen_config import gbm_drm_gen_config
 
 lu = dict(n0='NAI_00', n1='NAI_01', n2='NAI_02', n3='NAI_03', n4='NAI_04', n5='NAI_05', n6='NAI_06', n7='NAI_07',

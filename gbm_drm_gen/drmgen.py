@@ -1,5 +1,5 @@
 from threeML.plugins.OGIP.response import InstrumentResponse
-import astropy.io.fits as fits
+
 
 import numpy as np
 

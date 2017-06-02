@@ -1,43 +1,36 @@
-__author__ = "grburgess"
 import numpy as np
-import astropy.io.fits as fits
 
-from gbm_drm_gen.drmgen import DRMGen
-
-det_name_lookup = {'NAI_00': 0, 'NAI_01': 1, 'NAI_02': 2, 'NAI_03': 3, 'NAI_04': 4, 'NAI_05': 5, 'NAI_06': 6,
-                   'NAI_07': 7, 'NAI_09': 9, 'NAI_10': 10, 'NAI_11': 11, 'BGO_00': 12, 'BGO_01': 13}
+from .drmgen import DRMGen
 
 
-class DRMGenTTE(DRMGen):
-    """
-    A TTE/CSPEC specific drmgen already incorporating the standard input edges. Output edges are obtained
-    from the input cspec file. Spacecraft position is read from the TTE file. For further details see the 
-    generic reader (DRMGen).
-
-    :param trigdat: the path to a trigdat file
-    :param det: the number (0-13) of the detector to be used
-    :param mat_type: 0=direct 1=scattered 2=direct+scattered
-    :param time: time relative to trigger to pull spacecraft position or MET if using a poshist file
-    :param cspecfile: the cspecfile to pull energy output edges from
-    :param poshist: read a poshist file
-    """
-
-    def __init__(self, tte_file, time=0., cspecfile=None, trigdat=None, poshist=None, mat_type=0, occult=False):
-
-        self._occult = occult
-
-        self._time = time
+class DRMGenTrig(DRMGen):
+    def __init__(self, quaternions, sc_pos, det, mat_type=0, tstart=0, tstop=0., time=0., occult=False):
+        """
+        Inherited drmgen from the TTE version. Builds 8-channel RSPs for trigdat data using 140 input edges
+        :param trigdat: a TrigReader object with the background and source selection already exists
+        :param det: a number corresponding to the GBM detector to be used
+        :param mat_type: the type of matrix to produce: 0=direct 1=scattered 2=direct+scattered
+        :param time: the time of the spacecraft position to use
+        :param occult: (bool) occult points blocked by the Earth
+        """
 
         self._matrix_type = mat_type
 
-        with fits.open(tte_file) as f:
+        self._tstart = tstart
+        self._tstop = tstop
 
-            det_name = f['PRIMARY'].header['DETNAM']
+        self._det_number = det
 
-        self._det_number = det_name_lookup[det_name]
+        self._time = time
 
-        if self._det_number > 11:
-            # BGO
+        maxen = 140
+
+        self._occult = occult
+        # Setup the input side energy edges
+        if det > 11:
+
+            print 'i should be a BGO'
+
             self._in_edge = np.array([100.000, 105.579, 111.470, 117.689, 124.255, 131.188,
                                       138.507, 146.235, 154.394, 163.008, 172.103, 181.705,
                                       191.843, 202.546, 213.847, 225.778, 238.375, 251.675,
@@ -63,8 +56,11 @@ class DRMGenTTE(DRMGen):
                                       129539., 136766., 144397., 152453., 160959., 169939.,
                                       179421., 189431., 200000.], dtype=np.float32)
 
-
+            # self.in_edge  = np.logspace(np.log10(100.),np.log10(200000.),maxen,dtype=np.float32)
+            self._out_edge = np.array([150., 400.0, 850.0, 1500.0, 3000.0, 5500.0, 10000.0, 20000.0, 50000.0],
+                                      dtype=np.float32)
         else:
+
             self._in_edge = np.array([5.00000, 5.34000, 5.70312, 6.09094, 6.50513, 6.94748,
                                       7.41991, 7.92447, 8.46333, 9.03884, 9.65349, 10.3099,
                                       11.0110, 11.7598, 12.5594, 13.4135, 14.3256, 15.2997,
@@ -90,82 +86,39 @@ class DRMGenTTE(DRMGen):
                                       29539.2, 31547.8, 33693.1, 35984.3, 38431.2, 41044.6,
                                       43835.6, 46816.4, 50000.0], dtype=np.float32)
 
-        # Create the out edge energies
-        with fits.open(cspecfile) as f:
-            out_edge = np.zeros(129, dtype=np.float32)
-            out_edge[:-1] = f['EBOUNDS'].data['E_MIN']
-            out_edge[-1] = f['EBOUNDS'].data['E_MAX'][-1]
+            self._out_edge = np.array([3.4, 10.0, 22.0, 44.0, 95.0, 300.0, 500.0, 800.0, 2000.], dtype=np.float32)
 
-        self._out_edge = out_edge
-
-        if poshist is None:
-
-            self._use_poshist = False
-
-            # Space craft stuff from TRIGDAT
-            with fits.open(trigdat) as f:
-                self._trigtime = f['EVNTRATE'].header['TRIGTIME']
-
-                self._tstart = f['EVNTRATE'].data['TIME'] - self._trigtime
-                self._tstop = f['EVNTRATE'].data['ENDTIME'] - self._trigtime
-
-                self._all_quats = f['EVNTRATE'].data['SCATTITD']
-                self._all_sc_pos = f['EVNTRATE'].data['EIC']
+        # Create the evaluation energies for the matrix folding
+        # self._CreatePhotonEvalEnergies()
 
 
-
-
-
-
-        elif trigdat is None:
-
-            self._use_poshist = True
-
-            with fits.open(poshist) as f:
-
-                self._poshist_time = f['GLAST POS HIST'].data['SCLK_UTC']
-
-                self._q1 = f['GLAST POS HIST'].data['QSJ_1']
-                self._q2 = f['GLAST POS HIST'].data['QSJ_2']
-                self._q3 = f['GLAST POS HIST'].data['QSJ_3']
-                self._q4 = f['GLAST POS HIST'].data['QSJ_4']
-
-                self._pos_X = f['GLAST POS HIST'].data['POS_X']
-                self._pos_Y = f['GLAST POS HIST'].data['POS_Y']
-                self._pos_Z = f['GLAST POS HIST'].data['POS_Z']
-
-
-        else:
-
-            raise RuntimeError("No trigdat or posthist file used!")
+        self._all_quats = quaternions
+        self._all_sc_pos = sc_pos
 
         self._sc_quaternions_updater()
 
+        #
+        # super(DRMGenTrig, self).__init__(quaternions=quaternions,
+        #                                 sc_pos=sc_pos,
+        #                                 det_number=det,
+        #                                 ebin_edge_in=self._in_edge,
+        #                                 mat_type=mat_type,
+        #                                 ebin_edge_out=self._out_edge)
+
     def _sc_quaternions_updater(self):
 
-        if self._use_poshist:
+        condition = np.logical_and(self._tstart <= self._time, self._time <= self._tstop)
 
-            condition = np.argmin(self._poshist_time - self._time)
+        quaternions = self._all_quats[condition][0]
+        sc_pos = self._all_sc_pos[condition][0]
 
-            quaternions = np.array([self._q1[condition],
-                                    self._q2[condition],
-                                    self._q3[condition],
-                                    self._q4[condition]])
+        super(DRMGenTrig, self).__init__(quaternions=quaternions,
+                                         sc_pos=sc_pos,
+                                         det_number=self._det_number,
+                                         ebin_edge_in=self._in_edge,
+                                         mat_type=self._matrix_type,
+                                         ebin_edge_out=self._out_edge)
 
-            sc_pos = np.array([self._pos_X[condition],
-                               self._pos_Y[condition],
-                               self._pos_Z[condition]])
 
-        else:
-
-            condition = np.logical_and(self._tstart <= self._time, self._time <= self._tstop)
-
-            quaternions = self._all_quats[condition][0]
-            sc_pos = self._all_sc_pos[condition][0]
-
-        super(DRMGenTTE, self).__init__(quaternions=quaternions,
-                                        sc_pos=sc_pos,
-                                        det_number=self._det_number,
-                                        ebin_edge_in=self._in_edge,
-                                        mat_type=self._matrix_type,
-                                        ebin_edge_out=self._out_edge)
+################
+lu = ['n0', 'n1', 'n2', 'n3', 'n4', 'n5', 'n6', 'n7', 'n8', 'n9', 'na', 'nb', 'b0', 'b1']
