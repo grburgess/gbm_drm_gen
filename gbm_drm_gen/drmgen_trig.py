@@ -29,8 +29,6 @@ class DRMGenTrig(DRMGen):
         # Setup the input side energy edges
         if det > 11:
 
-            print 'i should be a BGO'
-
             self._in_edge = np.array([100.000, 105.579, 111.470, 117.689, 124.255, 131.188,
                                       138.507, 146.235, 154.394, 163.008, 172.103, 181.705,
                                       191.843, 202.546, 213.847, 225.778, 238.375, 251.675,
