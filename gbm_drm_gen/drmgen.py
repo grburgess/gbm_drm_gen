@@ -7,7 +7,7 @@ import numpy as np
 import ftran
 import at_scat
 
-from gbm_drm_gen.balrog_drm import rsp_database
+from gbm_drm_gen.basersp import rsp_database
 from gbm_drm_gen._geometry import ang2cart, is_occulted
 
 

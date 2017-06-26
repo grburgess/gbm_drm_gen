@@ -64,11 +64,13 @@ class DetDatabase(object):
 
     def _load_variables(self):
 
-        if self._detector_group.name[0] == "n":
+
+        
+        if self._detector_group.name[1] == "n":
 
             det_number = 0
 
-        elif self.detector_group.name[0] == "b":
+        elif self._detector_group.name[1] == "b":
 
             det_number = 1
 
