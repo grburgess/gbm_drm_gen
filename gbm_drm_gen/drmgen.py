@@ -7,8 +7,16 @@ import numpy as np
 import ftran
 import at_scat
 
-from gbm_drm_gen.detdatabase import DetDatabase
+from gbm_drm_gen.balrog_drm import rsp_database
 from gbm_drm_gen._geometry import ang2cart, is_occulted
+
+
+
+lu = [
+    'n0', "n1", 'n2', 'n3', 'n4', 'n5', 'n6', 'n7', 'n8', 'n9', 'na', 'nb',
+    'b0', 'b1'
+]
+
 
 
 class DRMGen(object):
@@ -54,7 +62,7 @@ class DRMGen(object):
 
         self._det_number = det_number
 
-        self._database = DetDatabase(lu[det_number])
+        self._database = rsp_database[lu[det_number]]
         self._ein = np.zeros(self._nobins_in, dtype=np.float32)
         energ_lo = self._database.energ_lo
         energ_hi = self._database.energ_hi
@@ -420,7 +428,3 @@ class DRMGen(object):
 
 
 
-lu = [
-    'n0', "n1", 'n2', 'n3', 'n4', 'n5', 'n6', 'n7', 'n8', 'n9', 'na', 'nb',
-    'b0', 'b1'
-]
