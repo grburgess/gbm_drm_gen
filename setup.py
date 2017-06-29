@@ -19,6 +19,8 @@ ext2 = Extension(name='at_scat',
 extensions = [ext1]
 extensions_cython = [ext2]
 
+
+
 setup(
 
     ext_modules=cythonize(extensions_cython), requires=['numpy']
@@ -29,7 +31,7 @@ setup(
 
     name="gbm_drm_gen",
 
-    packages=['gbm_drm_gen','gbm_drm_gen/config'],
+    packages=['gbm_drm_gen'],
     version='v0.1',
     description='GBM DRM generator',
     author='J. Michael Burgess',
