@@ -46,9 +46,9 @@ setup(
         'h5py'
         'threeML',
     ],
-    dependency_links = [
-     "git+git://github.com/giacomov/3ML.git/#egg=threeML",
-    ],
+    # dependency_links = [
+    #  "git+git://github.com/giacomov/3ML.git/#egg=threeML",
+    # ],
 
     ext_modules=extensions
 
