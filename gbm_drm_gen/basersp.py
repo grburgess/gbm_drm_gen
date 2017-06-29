@@ -3,7 +3,7 @@ from glob import glob
 import numpy as np
 
 import collections
-
+import re
 
 #from gbm_drm_gen.config.gbm_drm_gen_config import gbm_drm_gen_config
 
@@ -29,15 +29,13 @@ import h5py
 
 
 def get_path_of_data_file(data_file):
-    file_path = pkg_resources.resource_filename("gbm_drm_gen", 'data/%s' %
-                                                data_file)
+    file_path = pkg_resources.resource_filename("gbm_drm_gen",
+                                                'data/%s' % data_file)
 
     return file_path
 
 
 path_to_balrog_db = get_path_of_data_file('balrog_db.h5')
-
-#from gbm_drm_gen.config.gbm_drm_gen_config import gbm_drm_gen_config
 
 
 class DetDatabase(object):
@@ -57,28 +55,28 @@ class DetDatabase(object):
         :param az:
         :return:
         """
-        z = str(z)
-        az = str(az)
+        #z = str(z)
+        #az = str(az)
 
-        return self._detector_group["z%s_az%s" % (z.zfill(6), az.zfill(6))].value
+        return self._rsps['%d_%d' % (az, z)]
+
+        #return self._detector_group["z%s_az%s" %
+        #                            (z.zfill(6), az.zfill(6))]  #.value
 
     def _load_variables(self):
 
+        self._rsps = collections.OrderedDict()
 
-        
-        if self._detector_group.name[1] == "n":
+        for key, value in self._detector_group.iteritems():
 
-            det_number = 0
+            if key[0] == 'z':
 
-        elif self._detector_group.name[1] == "b":
+                match = re.match('^z0*(\d+)_az0*(\d+)$', key)
+                z, az = map(str,match.groups())
+                
+                self._rsps['%s_%s' % (az, z)] = value.value
 
-            det_number = 1
-
-        else:
-            print "Detector name is incorrect!"
-            return
-
-        self.at_scat_data = self._detector_group['at_scat_data']#[det_number].T
+        self.at_scat_data = self._detector_group['at_scat_data'].value
         self.e_in = self._detector_group['e_in'].value
         self.lat_edge = self._detector_group['lat_edge'].value
         self.theta_edge = self._detector_group['theta_edge'].value
@@ -109,21 +107,13 @@ class DetDatabase(object):
         self.energ_hi = self._detector_group['energ_hi'].value
 
 
-
 _h5_database = h5py.File(path_to_balrog_db, 'r')
 
-_all_dets = (
-    'n0', 'n1', 'n2', 'n3', 'n4', 'n5', 'n6', 'n7', 'n8', 'n9', 'na', 'nb',
-    'b0', 'b1'
-)
-
+_all_dets = ('n0', 'n1', 'n2', 'n3', 'n4', 'n5', 'n6', 'n7', 'n8', 'n9', 'na',
+             'nb', 'b0', 'b1')
 
 rsp_database = collections.OrderedDict()
-        
 
 for det in _all_dets:
 
     rsp_database[det] = DetDatabase(_h5_database[det])
-
-
-    
