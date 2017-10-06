@@ -115,6 +115,6 @@ class BALROGLike(DispersionSpectrumLike):
         :return: 
         """
 
-        return cls(spectrum_like.name, spectrum_like._observed_spectrum,balrog_drm,
+        return cls(spectrum_like.name, spectrum_like._observed_spectrum,drm_generator,
                    spectrum_like._background_spectrum, time, free_position,
                    spectrum_like._verbose)

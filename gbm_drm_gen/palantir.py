@@ -81,6 +81,8 @@ class Palantir(object):
 
         self._balrog_map = BALROGHealpixMap(result, nside=nside)
 
+        self._nside = nside
+
         self._map = self._balrog_map.map
 
         self._trigdat = trigdat
