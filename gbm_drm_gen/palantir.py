@@ -138,7 +138,7 @@ class Palantir(object):
 
         # project the map to a rectangular matrix xsize x ysize
         PHI, THETA = np.meshgrid(phi, theta)
-        grid_pix = hp.ang2pix(self._nside, THETA, PHI)
+        grid_pix = hp.pixelfunc.ang2pix(self._nside, THETA, PHI)
 
         grid_map = self._map[grid_pix]
 
@@ -149,7 +149,7 @@ class Palantir(object):
 
         # rasterized makes the map bitmap while the labels remain vectorial
         # flip longitude to the astro convention
-        image = ax.pcolormesh(longitude,#[::-1],
+        image = ax.pcolormesh(longitude[::-1],
                               latitude,
                               grid_map,
                               vmin=vmin,
@@ -277,8 +277,7 @@ class Palantir(object):
 
     def _get_detector_map(self, det,fov):
 
-        #det_map = np.arange(hp.nside2npix(self._nside), dtype=float)
-        #det_map[:] = 0.
+
 
         cir = self._gbm.detectors[det].get_fov(fov)
         ra = cir[0]

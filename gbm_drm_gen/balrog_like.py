@@ -39,7 +39,8 @@ class BALROGLike(DispersionSpectrumLike):
 
             balrog_drm =  BALROG_DRM(drm_generator,0.,0.)
 
-            observation._response = balrog_drm
+            observation._rsp = balrog_drm
+
 
 
         super(BALROGLike, self).__init__(name, observation, background,
