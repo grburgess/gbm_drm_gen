@@ -9,6 +9,9 @@ import astropy.units as u
 import collections
 
 
+from balrog_healpix_map import BALROGHealpixMap
+
+
 class ThetaFormatterShiftPi(GeoAxes.ThetaFormatter):
     """Shifts labelling by pi
     Shifts labelling from -180,180 to 0-360"""
@@ -75,24 +78,10 @@ class Palantir(object):
         :param trigdat: optional trigdat files
         :param time: time of observation
         """
-        self._nside = nside
 
-        if not check_power_of_two(self._nside):
-            raise RuntimeError("nside must be a power of 2.")
+        self._balrog_map = BALROGHealpixMap(result, nside=nside)
 
-        self._map = np.arange(hp.nside2npix(nside), dtype=float)
-        self._map[:] = 0.
-
-        ra = result.samples[0, :]
-        dec = result.samples[1, :]
-
-        self._result = result
-
-        for r, d in zip(ra, dec):
-            self._map[sky_to_pix(r, d, nside)] += 1
-
-        # self._map /= float(len(result.samples))
-        self._map /= float(self._map.sum())
+        self._map = self._balrog_map.map
 
         self._trigdat = trigdat
 
@@ -308,6 +297,17 @@ class Palantir(object):
 
         return ub * u.Unit('erg/(cm2 s)')
 
+
+
+    @property
+    def healpix_map(self):
+
+        return self._map
+
+    @property
+    def balrog_map(self):
+
+        return self._balrog_map
 
 
 
