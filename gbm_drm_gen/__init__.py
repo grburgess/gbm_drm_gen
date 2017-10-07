@@ -1,10 +1,7 @@
 from drmgen import DRMGen
 from drmgen_tte import DRMGenTTE
-from balrog_drm import BALROG_DRM
-from balrog_like import BALROGLike
-from palantir import Palantir
-from balrog_healpix_map import BALROGHealpixMap
-
+from gbm_drm_gen.io.balrog_like import BALROGLike
+from gbm_drm_gen.io.palantir import Palantir
 
 __all__ = ['DRMGen', 'DRMGenTTE','BALROG_DRM','BALROGLike','BALROGHealpixMap','Palantir']
 

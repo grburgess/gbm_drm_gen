@@ -1,5 +1,5 @@
 from threeML import download_GBM_trigger_data
-from drmgen_tte import DRMGenTTE
+from gbm_drm_gen.drmgen_tte import DRMGenTTE
 
 
 
