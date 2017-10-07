@@ -10,7 +10,7 @@ import collections
 
 
 from balrog_healpix_map import BALROGHealpixMap
-from gbm_drm_gen.utils.general_utils import ThetaFormatterShiftPi
+from gbm_drm_gen.utils.general_utils import ThetaFormatterShiftPi, theta_shifter
 
 
 
@@ -105,7 +105,7 @@ class Palantir(object):
 
         # rasterized makes the map bitmap while the labels remain vectorial
         # flip longitude to the astro convention
-        image = ax.pcolormesh(longitude,
+        image = ax.pcolormesh(longitude[::-1],
                               latitude,
                               grid_map,
                               vmin=vmin,
@@ -138,6 +138,10 @@ class Palantir(object):
             x = np.radians(ra)
             y = np.radians(dec)
 
+            theta_shifter(x)
+
+
+
             idx = y.argsort()
 
             ax.plot(x[idx], y[idx], '.', markersize=4)
@@ -155,10 +159,13 @@ class Palantir(object):
 
             ra[idx] -= 360.
 
+            x = np.radians(ra)
+            y = np.radians(earth_points.dec)
 
+            theta_shifter(x)
 
-            ax.plot(np.radians(ra),
-                    earth_points.dec.radian,
+            ax.plot(x,
+                    y,
                     '.',
                     color='k',
                     alpha=.5,

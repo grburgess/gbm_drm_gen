@@ -1,4 +1,5 @@
 import numpy as np
+import healpy as hp
 from matplotlib.projections.geo import GeoAxes
 
 class ThetaFormatterShiftPi(GeoAxes.ThetaFormatter):
@@ -15,8 +16,10 @@ class ThetaFormatterShiftPi(GeoAxes.ThetaFormatter):
     def __call__(self, x, pos=None):
         if self.extrapi:
             x += np.pi
-        # if x != 0:
-        #     x *= -1
+
+        #theta_shifter(x)
+        if x != 0:
+            x *= -1
         if x < 0:
             x += 2 * np.pi
 
@@ -45,3 +48,15 @@ def sky_to_pix(ra, dec, nside):
     phi = np.deg2rad(ra)
     ipix = hp.ang2pix(nside, theta, phi)
     return ipix
+
+
+def theta_shifter(x):
+
+
+
+    x[x!=0] *= -1
+    #x[x<0] += 2*np.pi
+
+
+
+

@@ -31,7 +31,9 @@ setup(
 
     name="gbm_drm_gen",
 
-    packages=['gbm_drm_gen'],
+    packages=['gbm_drm_gen',
+              'gbm_drm_gen/utils',
+              'gbm_drm_gen/io'],
     version='v0.1',
     description='GBM DRM generator',
     author='J. Michael Burgess',
