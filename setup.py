@@ -43,7 +43,7 @@ setup(
         'numpy',
         'astropy',
         'scipy',
-        'h5py'
+        'h5py',
         'threeML',
     ],
     # dependency_links = [
