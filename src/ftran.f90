@@ -506,7 +506,7 @@ subroutine echan_integrator (nobins_in, diff_matrix, edif_edge_lo, edif_edge_hi,
   
   real pi, mu, mu2
   
-  pi = acos(-1.0)
+  pi = 3.1415926535897931
   
   
   

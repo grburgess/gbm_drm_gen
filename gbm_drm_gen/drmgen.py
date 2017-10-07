@@ -1,16 +1,11 @@
-from threeML.plugins.OGIP.response import InstrumentResponse
-
+import at_scat
+import ftran
 
 import numpy as np
-
-
-import ftran
-import at_scat
+from threeML.plugins.OGIP.response import InstrumentResponse
 
 from gbm_drm_gen.basersp import rsp_database
-from gbm_drm_gen._geometry import ang2cart, is_occulted
-
-
+from gbm_drm_gen.utils.geometry import ang2cart, is_occulted
 
 lu = [
     'n0', "n1", 'n2', 'n3', 'n4', 'n5', 'n6', 'n7', 'n8', 'n9', 'na', 'nb',

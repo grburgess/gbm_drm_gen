@@ -1,3 +1,4 @@
+
 from threeML.plugins.OGIP.response import InstrumentResponse
 
 
@@ -6,6 +7,12 @@ from threeML.plugins.OGIP.response import InstrumentResponse
 class BALROG_DRM(InstrumentResponse):
 
     def __init__(self, drm_generator, ra, dec):
+        """
+        
+        :param drm_generator: BALROG DRM generator
+        :param ra: RA of the source
+        :param dec: DEC of the source
+        """
 
 
         self._drm_generator = drm_generator
@@ -17,6 +24,12 @@ class BALROG_DRM(InstrumentResponse):
                                          self._drm_generator.monte_carlo_energies)
 
     def set_location(self, ra, dec):
+        """
+        Set the source location
+        :param ra: 
+        :param dec: 
+        :return: 
+        """
 
         self._drm_generator.set_location(ra, dec)
 
@@ -25,7 +38,15 @@ class BALROG_DRM(InstrumentResponse):
 
 
     def set_time(self, time):
+        """
+        set the time of the source
+        :param time: 
+        :return: 
+        """
 
         self._drm_generator.set_time(time)
 
         self._matrix = self._drm_generator.matrix
+
+
+
