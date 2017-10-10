@@ -21,6 +21,22 @@ extensions_cython = [ext2]
 
 
 
+# Create list of data files
+def find_data_files(directory):
+
+    paths = []
+
+    for (path, directories, filenames) in os.walk(directory):
+
+        for filename in filenames:
+
+            paths.append(os.path.join('..', path, filename))
+
+    return paths
+
+extra_files = find_data_files('gbm_drm_gen/data')
+
+
 setup(
 
     ext_modules=cythonize(extensions_cython), requires=['numpy']
@@ -38,7 +54,7 @@ setup(
     description='GBM DRM generator',
     author='J. Michael Burgess',
     author_email='jmichaelburgess@gmail.com',
-    package_data={'gbm_drm_gen': ['data/*'], },
+    package_data={'': extra_files, },
     include_package_data=True,
 
     requires=[
