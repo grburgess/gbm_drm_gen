@@ -24,7 +24,7 @@ _det_kwargs = {'colorbar': True,
 
 
 class Palantir(object):
-    def __init__(self, result, nside=64, trigdat=None, time=0.):
+    def __init__(self, result, nside=64, trigdat=None, poshist = None, time=0.):
 
 
         """
@@ -51,6 +51,16 @@ class Palantir(object):
 
             self._gbm = gbmgeometry.GBM(self._position_interpolator.quaternion(time),
                                         self._position_interpolator.sc_pos(time) * u.km)
+
+        elif poshist is not None:
+
+            self._position_interpolator = gbmgeometry.PositionInterpolator(poshist=poshist)
+
+            self._gbm = gbmgeometry.GBM(self._position_interpolator.quaternion(time),
+                                        self._position_interpolator.sc_pos(time) * u.km)
+
+
+
 
         else:
 

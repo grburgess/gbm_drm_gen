@@ -5,7 +5,7 @@ import astropy.io.fits as fits
 from gbm_drm_gen.drmgen import DRMGen
 
 det_name_lookup = {'NAI_00': 0, 'NAI_01': 1, 'NAI_02': 2, 'NAI_03': 3, 'NAI_04': 4, 'NAI_05': 5, 'NAI_06': 6,
-                   'NAI_07': 7, 'NAI_09': 9, 'NAI_10': 10, 'NAI_11': 11, 'BGO_00': 12, 'BGO_01': 13}
+                   'NAI_07': 7, 'NAI_08': 8,'NAI_09': 9, 'NAI_10': 10, 'NAI_11': 11, 'BGO_00': 12, 'BGO_01': 13}
 
 
 class DRMGenTTE(DRMGen):
