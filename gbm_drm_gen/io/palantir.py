@@ -11,7 +11,7 @@ import collections
 
 from balrog_healpix_map import BALROGHealpixMap
 from gbm_drm_gen.utils.general_utils import ThetaFormatterShiftPi, theta_shifter
-
+from gbm_drm_gen.utils.contour_finder import ContourFinder
 
 
 
@@ -67,12 +67,14 @@ class Palantir(object):
             self._position_interpolator = None
 
         self._extra_maps = collections.OrderedDict()
+        self._extra_cmap = collections.OrderedDict()
 
 
-    def add_healpix_map(self,healpix_map,name):
+    def add_healpix_map(self,healpix_map,name,cmap):
 
 
         self._extra_maps[name] = healpix_map
+        self._extra_cmap[name] = cmap
 
 
     def skymap(self, *dets, **kwargs):
@@ -186,27 +188,64 @@ class Palantir(object):
 
         for name, extra_map in self._extra_maps.iteritems():
 
-            contour_worker = ContourFinder(extra_map,self._nside)
+
+
+            # nside = hp.npix2nside(len(extra_map))
+            #
+            #
+            #
+            # grid_pix = hp.pixelfunc.ang2pix(nside, THETA, PHI)
+            #
+            # grid_map = extra_map[grid_pix]
+            #
+            # idx = grid_map>0.
+            #
+            # vmin = min(grid_map[idx])
+            # vmax = extra_map.max()
+            #
+            #
+            #
+            # # rasterized makes the map bitmap while the labels remain vectorial
+            # # flip longitude to the astro convention
+            # image = ax.pcolormesh(longitude[idx][::-1],
+            #                       latitude[idx],
+            #                       grid_map[idx],
+            #                       vmin=vmin,
+            #                       vmax=vmax,
+            #                       rasterized=True,
+            #                       cmap=self._extra_cmap[name],alpha=.6)
+            #
 
 
 
 
-            for level in [.68,.95]:
+            contour_worker = ContourFinder(extra_map, hp.npix2nside(len(extra_map)))
+
+
+
+
+            for level in [.68]:
 
                 contour_idx = contour_worker.find_contour(containment_level=level)
 
                 ra, dec = contour_worker.get_sky_coordinates(contour_idx)
 
-                x = np.radians(ra - 180)
+                idx = ra > 180.
+
+                ra[idx] -= 360.
+
+                x = np.radians(ra)
                 y = np.radians(dec)
 
                 idx = y.argsort()
 
-                ax.plot(x[idx], y[idx], '.', markersize=3)
+                theta_shifter(x)
+
+                ax.plot(x[idx], y[idx], '.', markersize=3,alpha=.5)
 
 
 
-            #plt.contour(longitude[::-1], latitude, region, colors='jet', levels=levels)
+            # plt.contour(longitude[::-1], latitude, region, colors='jet', levels=levels)
 
 
 
