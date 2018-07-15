@@ -2,7 +2,7 @@ import at_scat
 import ftran
 
 import numpy as np
-from threeML.plugins.OGIP.response import InstrumentResponse
+from threeML.utils.OGIP.response import InstrumentResponse
 
 from gbm_drm_gen.basersp import rsp_database
 from gbm_drm_gen.utils.geometry import ang2cart, is_occulted
