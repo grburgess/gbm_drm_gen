@@ -1,9 +1,11 @@
 import numpy as np
 from general_utils import check_power_of_two, pix_to_sky
+import healpy as hp
+
 
 
 class ContourFinder(object):
-    def __init__(self, healpix_map, nside=128):
+    def __init__(self, healpix_map, nside=512):
         """
         modeled from giacomov
 
@@ -19,11 +21,14 @@ class ContourFinder(object):
 
         # Use power=-2 so the sum is still 1
 
-        self._map = hp.pixelfunc.ud_grade(healpix_map, nside_out=self._nside, power=-2)
+
+        self._map = healpix_map#hp.read_map(healpix_map)
+
+        # self._map = hp.pixelfunc.ud_grade(healpix_map, nside_out=self._nside, power=-2)
 
         # Check that the total probability is still equal to the input map
 
-        assert abs(np.sum(healpix_map) - np.sum(self._map)) < 1e-3, "Total probability after resize has not been kept!"
+        #assert abs(np.sum(healpix_map) - np.sum(self._map)) < 1e-3, "Total probability after resize has not been kept!"
 
     @property
     def map(self):

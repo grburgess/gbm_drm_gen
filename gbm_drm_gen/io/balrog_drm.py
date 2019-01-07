@@ -1,5 +1,5 @@
 
-from threeML.plugins.OGIP.response import InstrumentResponse
+from threeML.utils.OGIP.response import InstrumentResponse
 
 
 

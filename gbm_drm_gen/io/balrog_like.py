@@ -30,12 +30,18 @@ class BALROGLike(DispersionSpectrumLike):
 
         if drm_generator is None:
 
+            # If a generator is not supplied
+            # then make sure that there is a
+            # balrog response
+
             assert isinstance(observation.response, BALROG_DRM), 'The response associated with the observation is not a BALROG'
 
 
         else:
 
             # here we will reset the response
+            # this is violating the fact that
+            # the response is provate
 
             balrog_drm =  BALROG_DRM(drm_generator,0.,0.)
 
@@ -47,6 +53,7 @@ class BALROGLike(DispersionSpectrumLike):
                                          verbose)
 
         # only on the start up
+
         self._rsp.set_time(time)
 
     def set_model(self, likelihoodModel):
@@ -55,7 +62,7 @@ class BALROGLike(DispersionSpectrumLike):
 
 
         :param likelihoodModel:
-        :return:
+        :return: None
         """
 
         # set the standard likelihood model
@@ -63,42 +70,42 @@ class BALROGLike(DispersionSpectrumLike):
         super(BALROGLike, self).set_model(likelihoodModel)
 
         # now free the position
+        # if it is needed
 
         if self._free_position:
 
             if self._verbose:
-                print('Freeing the position and setting priors')
+                print('Freeing the position of %s and setting priors' % self.name)
 
             for key in self._like_model.point_sources.keys():
                 self._like_model.point_sources[key].position.ra.free = True
                 self._like_model.point_sources[key].position.dec.free = True
 
-                self._like_model.point_sources[
-                    key].position.ra.prior = Uniform_prior(
-                    lower_bound=0., upper_bound=360)
-                self._like_model.point_sources[
-                    key].position.dec.prior = Cosine_Prior(
-                    lower_bound=-90., upper_bound=90)
+        self._like_model.point_sources[
+            key].position.ra.prior = Uniform_prior(
+            lower_bound=0., upper_bound=360)
+        self._like_model.point_sources[
+            key].position.dec.prior = Cosine_Prior(
+            lower_bound=-90., upper_bound=90)
 
-                ra = self._like_model.point_sources[key].position.ra.value
-                dec = self._like_model.point_sources[key].position.dec.value
+        ra = self._like_model.point_sources[key].position.ra.value
+        dec = self._like_model.point_sources[key].position.dec.value
 
-            self._rsp.set_location(ra, dec)
+        self._rsp.set_location(ra, dec)
 
     def get_model(self):
 
         # Here we update the GBM drm parameters which creates and new DRM for that location
         # we should only be dealing with one source for GBM
 
-        # if not self._is_rsp_set:
-
-        for key in self._like_model.point_sources.keys():
-            ra = self._like_model.point_sources[key].position.ra.value
-            dec = self._like_model.point_sources[key].position.dec.value
-
         # update the location
 
         if self._free_position:
+
+            for key in self._like_model.point_sources.keys():
+                ra = self._like_model.point_sources[key].position.ra.value
+                dec = self._like_model.point_sources[key].position.dec.value
+
             self._rsp.set_location(ra, dec)
 
         return super(BALROGLike, self).get_model()
@@ -111,7 +118,7 @@ class BALROGLike(DispersionSpectrumLike):
         
         :param spectrum_like: the existing spectrumlike
         :param time: the time to generate the RSPs at
-        :param balrog_drm: optional BALROG DRM generator
+        :param drm_generator: optional BALROG DRM generator
         :param free_position: if the position should be free
         :return: 
         """
