@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2590555.svg)](https://doi.org/10.5281/zenodo.2590555)
+
 # GBM Response Generator
 
 A fast, python based response generator for the Fermi-GBM. A 3ML plugin is also provided that allows for one to locate GRBs with any of the GBM spectral data. 
