@@ -11,7 +11,7 @@ ext1 = Extension(name='ftran',
                  sources=['src/sig_ftran.pyf', 'src/ftran.f90'],
                  libraries=['m'],
                  # extra_f77_compile_args=["-fimplicit-none", "-ffree-line-length-none","-O3","-Ofast"],
-                 extra_f90_compile_args=["-fimplicit-none", "-ffree-line-length-none", " -O3", "-Ofast"])
+                 extra_f90_compile_args=["-fimplicit-none", "-ffree-line-length-none", "-Ofast"])
 ext2 = Extension(name='at_scat',
                  sources=['src/at_scat.pyx'],
                  include_dirs=[numpy.get_include()])
@@ -57,7 +57,7 @@ setup(
     package_data={'': extra_files, },
     include_package_data=True,
 
-    requires=[
+    install_requires=[
         'numpy',
         'astropy',
         'scipy',
