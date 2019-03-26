@@ -286,6 +286,8 @@ class DRMGen(object):
 
         #### Atmospheric scattering
         if self._matrix_type == 1 or self._matrix_type == 2:
+
+            # these change each time the source position is changed
             theta_geo = 90. - geo_el
             phi_geo = geo_az
             theta_source = 90 - rlat

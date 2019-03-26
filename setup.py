@@ -24,10 +24,6 @@ extensions = [ext1]
 extensions_cython = [ext2]
 
 
-setup(
-
-    ext_modules=cythonize(extensions_cython), requires=['numpy']
-)
 
 
 
@@ -151,3 +147,7 @@ setup(
         'upload': UploadCommand,},
     )
 
+setup(
+
+    ext_modules=cythonize(extensions_cython), requires=['numpy']
+)
