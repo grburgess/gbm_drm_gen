@@ -50,7 +50,7 @@ class DetDatabase(object):
         elif self.detector[0] == "b":
             det_number = 1
         else:
-            print "Detector name is incorrect!"
+            print("Detector name is incorrect!")
             return
 
         # det_number = int(self.detector[-1])
