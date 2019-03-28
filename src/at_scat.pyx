@@ -48,7 +48,7 @@ cpdef np.ndarray[DTYPE_t, ndim=2] get_at_scat(np.ndarray[DTYPE_t, ndim=1] gx, np
     itr = 0
     for i in xrange(num_theta):
         for j in xrange(num_phi):
-            for k in xrange(1):
+            for k in xrange(2):
 
 
 
