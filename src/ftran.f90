@@ -357,7 +357,7 @@ subroutine calc_sphere_dist(ra1,dec1,ra2,dec2,dist)
 end subroutine calc_sphere_dist
 
 
-subroutine sum_at_scat(direct_diff_matrix,     at_scat_data_lo,at_scat_data_hi,l_fract,     ienerg,nobins_out,out_matrix)
+subroutine sum_at_scat(direct_diff_matrix, at_scat_data_lo, at_scat_data_hi, l_fract, ienerg, nobins_out, out_matrix)
   
   
   
@@ -375,18 +375,12 @@ subroutine sum_at_scat(direct_diff_matrix,     at_scat_data_lo,at_scat_data_hi,l
   integer i,j,k
   
   real,dimension(ienerg,nobins_out), intent(out) :: out_matrix
-  
-  
-  
-  
-  
-  
-  
+    
   
   do i=1,ienerg
      do j=1,nobins_out
         do k=1,ienerg
-           out_matrix(i,j) =(at_scat_data_lo(i,k)*              l_fract+at_scat_data_hi(i,k)*         (1.0-l_fract))*direct_diff_matrix(k,j)
+           out_matrix(i,j) = out_matrix(i,j) + (at_scat_data_lo(i,k)*l_fract + at_scat_data_hi(i,k)*(1.0-l_fract))*direct_diff_matrix(k,j)
            
         enddo
      enddo
