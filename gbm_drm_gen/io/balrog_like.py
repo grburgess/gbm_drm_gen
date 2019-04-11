@@ -102,10 +102,9 @@ class BALROGLike(DispersionSpectrumLike):
 
         if self._free_position:
 
-            for key in self._like_model.point_sources.keys():
-                ra = self._like_model.point_sources[key].position.ra.value
-                dec = self._like_model.point_sources[key].position.dec.value
-
+            # assumes that the is only one point source which is how it should be!
+            ra, dec = self._like_model.get_point_source_position(0)
+ 
             self._rsp.set_location(ra, dec)
 
         return super(BALROGLike, self).get_model()
