@@ -38,7 +38,7 @@ VERSION = None
 
 REQUIRED = [
     'numpy',
-    'matplotlib<3.1',
+    'matplotlib<3.0',
     'spherical_geometry',
     'astropy<3.0',
     'scipy',
