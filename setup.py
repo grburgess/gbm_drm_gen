@@ -38,7 +38,7 @@ VERSION = None
 
 REQUIRED = [
     'numpy',
-    'astropy',
+    'astropy<3.0',
     'scipy',
     'h5py',
 #    'threeML',
