@@ -1,4 +1,8 @@
 language: python
+
+before_install:
+  - sudo apt-get install -y gfortran
+
 python:
   # We don't actually use the Travis Python, but this keeps it organized.
   - "2.7"
