@@ -1,7 +1,6 @@
 from gbm_drm_gen import *
-from threeML.utils.OGIP.response import OGIPResponse
 from gbm_drm_gen.io.package_utils import get_path_of_data_dir
-import astropy.io.fits as fits
+
 
 import os
 
