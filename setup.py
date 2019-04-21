@@ -38,6 +38,8 @@ VERSION = None
 
 REQUIRED = [
     'numpy',
+    'matplotlib<3.1',
+    'spherical_geometry',
     'astropy<3.0',
     'scipy',
     'h5py',
