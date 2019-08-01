@@ -2,6 +2,22 @@ from threeML.plugins.DispersionSpectrumLike import DispersionSpectrumLike
 from astromodels.functions.priors import Uniform_prior, Cosine_Prior
 from balrog_drm import BALROG_DRM
 
+
+import numpy as np
+
+
+def ra_calc(x,y):
+    return np.rad2deg(np.arctan2(y,x))
+
+
+def dec_calc(z):
+    return -(np.rad2deg(np.arccos(z)) - 90.  )
+
+
+
+
+
+
 class BALROGLike(DispersionSpectrumLike):
     def __init__(self,
                  name,
@@ -78,15 +94,16 @@ class BALROGLike(DispersionSpectrumLike):
                 print('Freeing the position of %s and setting priors' % self.name)
 
             for key in self._like_model.point_sources.keys():
-                self._like_model.point_sources[key].position.ra.free = True
-                self._like_model.point_sources[key].position.dec.free = True
+                pass
+#                self._like_model.point_sources[key].position.ra.free = True
+#                self._like_model.point_sources[key].position.dec.free = True
 
-        self._like_model.point_sources[
-            key].position.ra.prior = Uniform_prior(
-            lower_bound=0., upper_bound=360)
-        self._like_model.point_sources[
-            key].position.dec.prior = Cosine_Prior(
-            lower_bound=-90., upper_bound=90)
+        # self._like_model.point_sources[
+        #     key].position.ra.prior = Uniform_prior(
+        #     lower_bound=0., upper_bound=360)
+        # self._like_model.point_sources[
+        #     key].position.dec.prior = Cosine_Prior(
+        #     lower_bound=-90., upper_bound=90)
 
         ra = self._like_model.point_sources[key].position.ra.value
         dec = self._like_model.point_sources[key].position.dec.value
@@ -103,8 +120,25 @@ class BALROGLike(DispersionSpectrumLike):
         if self._free_position:
 
             # assumes that the is only one point source which is how it should be!
-            ra, dec = self._like_model.get_point_source_position(0)
- 
+            # ra, dec = self._like_model.get_point_source_position(0)  
+
+            xyz = np.array([self._like_model.x.value,
+                            self._like_model.y.value,
+                            self._like_model.z.value])
+
+            x, y, z = xyz/np.linalg.norm(xyz)
+
+            ra = ra_calc(x,y)
+
+            dec = dec_calc(z)
+
+            if ra < 0:
+                ra +=360.
+
+            
+            
+
+            
             self._rsp.set_location(ra, dec)
 
         return super(BALROGLike, self).get_model()
