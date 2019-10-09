@@ -101,26 +101,27 @@ class DRMGen(object):
 
         return response
 
-    def to_fits(self,ra,dec,filename,overwrite):
+    def to_3ML_response_direct_sat_coord(self, ra, dec):
 
-        response = self.to_3ML_response(ra,dec)
+        self.set_location_direct_sat_coord(ra, dec)
+
+        response = InstrumentResponse(self.matrix, self.ebounds, self.monte_carlo_energies)
+
+        return response
+
+    def to_fits(self, ra, dec, filename, overwrite):
+
+        response = self.to_3ML_response(ra, dec)
 
         split_filename = filename.split('.')
 
         if len(split_filename) > 1:
+            filename = ''.join(split_filename)
 
-            filename =  ''.join(split_filename)
-
-
-
-
-
-        response.to_fits("%s_%s.rsp" % (filename,lu[self._det_number]),
+        response.to_fits("%s_%s.rsp" % (filename, lu[self._det_number]),
                          'GLAST',
                          'GBM',
                          overwrite)
-
-
 
     def set_location(self, ra, dec):
         """
@@ -152,10 +153,41 @@ class DRMGen(object):
             self._drm = self._make_drm(az, el, self._geo_az, self._geo_el)
 
         # go ahead and transpose it for spectal fitting, etc.
-        #self._drm_transpose = self._drm.T
+        # self._drm_transpose = self._drm.T
 
-    def set_time(self,time):
+    def set_location_direct_sat_coord(self, ra, dec):
+        """
+        Set the Ra and Dec of the DRM to be built. This invokes DRM generation as well.
 
+        :param ra: ra in degrees
+        :param dec: dec in degrees
+        """
+
+        self.ra = ra
+        self.dec = dec
+
+        if self._occult:
+            if is_occulted(ra, dec, self._sc_pos):
+                self._drm = self._occulted_DRM
+
+            else:
+
+                # get the spacecraft coordinates
+                az, el = ra, dec
+
+                # build the DRM
+                self._drm = self._make_drm(az, el, self._geo_az, self._geo_el)
+        else:
+            # get the spacecraft coordinates
+            az, el = ra, dec
+
+            # build the DRM
+            self._drm = self._make_drm(az, el, self._geo_az, self._geo_el)
+
+        # go ahead and transpose it for spectal fitting, etc.
+        # self._drm_transpose = self._drm.T
+
+    def set_time(self, time):
 
         self._time = time
 
