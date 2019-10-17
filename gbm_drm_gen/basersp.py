@@ -74,37 +74,37 @@ class DetDatabase(object):
                 match = re.match('^z0*(\d+)_az0*(\d+)$', key)
                 z, az = map(str,match.groups())
                 
-                self._rsps['%s_%s' % (az, z)] = value.value
+                self._rsps['%s_%s' % (az, z)] = value[()]
 
-        self.at_scat_data = self._detector_group['at_scat_data'].value
-        self.e_in = self._detector_group['e_in'].value
-        self.lat_edge = self._detector_group['lat_edge'].value
-        self.theta_edge = self._detector_group['theta_edge'].value
-        self.phi_edge = self._detector_group['phi_edge'].value
-        self.lat_cent = self._detector_group['lat_cent'].value
-        self.theta_cent = self._detector_group['theta_cent'].value
-        self.phi_cent = self._detector_group['phi_cent'].value
-        self.double_phi_cent = self._detector_group['double_phi_cent'].value
+        self.at_scat_data = self._detector_group['at_scat_data'][()]
+        self.e_in = self._detector_group['e_in'][()]
+        self.lat_edge = self._detector_group['lat_edge'][()]
+        self.theta_edge = self._detector_group['theta_edge'][()]
+        self.phi_edge = self._detector_group['phi_edge'][()]
+        self.lat_cent = self._detector_group['lat_cent'][()]
+        self.theta_cent = self._detector_group['theta_cent'][()]
+        self.phi_cent = self._detector_group['phi_cent'][()]
+        self.double_phi_cent = self._detector_group['double_phi_cent'][()]
 
-        self.X = self._detector_group['X'].value
-        self.Y = self._detector_group['Y'].value
-        self.Z = self._detector_group['Z'].value
+        self.X = self._detector_group['X'][()]
+        self.Y = self._detector_group['Y'][()]
+        self.Z = self._detector_group['Z'][()]
 
-        self.Azimuth = self._detector_group['Azimuth'].value
-        self.Zenith = self._detector_group['Zenith'].value
-        self.milliaz = self._detector_group['milliaz'].value
-        self.millizen = self._detector_group['millizen'].value
-        self.LIST = self._detector_group['LIST'].value
-        self.LPTR = self._detector_group['LPTR'].value
-        self.LEND = self._detector_group['LEND'].value
+        self.Azimuth = self._detector_group['Azimuth'][()]
+        self.Zenith = self._detector_group['Zenith'][()]
+        self.milliaz = self._detector_group['milliaz'][()]
+        self.millizen = self._detector_group['millizen'][()]
+        self.LIST = self._detector_group['LIST'][()]
+        self.LPTR = self._detector_group['LPTR'][()]
+        self.LEND = self._detector_group['LEND'][()]
 
-        self.epx_lo = self._detector_group['epx_lo'].value
-        self.epx_hi = self._detector_group['epx_hi'].value
+        self.epx_lo = self._detector_group['epx_lo'][()]
+        self.epx_hi = self._detector_group['epx_hi'][()]
 
-        self.ichan = self._detector_group['ichan'].value
-        self.ienerg = self._detector_group['ienerg'].value
-        self.energ_lo = self._detector_group['energ_lo'].value
-        self.energ_hi = self._detector_group['energ_hi'].value
+        self.ichan = self._detector_group['ichan'][()]
+        self.ienerg = self._detector_group['ienerg'][()]
+        self.energ_lo = self._detector_group['energ_lo'][()]
+        self.energ_hi = self._detector_group['energ_hi'][()]
 
 
 _h5_database = h5py.File(path_to_balrog_db, 'r')
