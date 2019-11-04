@@ -42,7 +42,8 @@ class DRMGenTTE(DRMGen):
 
     def __init__(
         self,
-        tte_file,
+        tte_file=None,
+            det_name=None,
         time=0.0,
         cspecfile=None,
         trigdat=None,
@@ -58,9 +59,18 @@ class DRMGenTTE(DRMGen):
 
         self._matrix_type = mat_type
 
-        with fits.open(tte_file) as f:
 
-            det_name = f["PRIMARY"].header["DETNAM"]
+        if tte_file is None:
+            assert det_name is not None, 'must specify a TTE file or a det name'
+
+            assert det_name in list(det_name_lookup.keys()), 'improper det_name' 
+
+            
+        else:
+            
+            with fits.open(tte_file) as f:
+
+                det_name = f["PRIMARY"].header["DETNAM"]
 
         self._det_number = det_name_lookup[det_name]
 
