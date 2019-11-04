@@ -1,6 +1,6 @@
 from threeML.plugins.DispersionSpectrumLike import DispersionSpectrumLike
 from astromodels.functions.priors import Uniform_prior, Cosine_Prior
-from balrog_drm import BALROG_DRM
+from .balrog_drm import BALROG_DRM
 
 
 class BALROGLike(DispersionSpectrumLike):

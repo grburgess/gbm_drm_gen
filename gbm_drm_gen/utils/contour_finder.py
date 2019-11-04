@@ -1,5 +1,5 @@
 import numpy as np
-from general_utils import check_power_of_two, pix_to_sky
+from .general_utils import check_power_of_two, pix_to_sky
 import healpy as hp
 
 
