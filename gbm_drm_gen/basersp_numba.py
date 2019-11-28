@@ -5,6 +5,10 @@ import numpy as np
 import collections
 import re
 
+from numba import types
+from numba.typed import Dict
+
+
 #from gbm_drm_gen.config.gbm_drm_gen_config import gbm_drm_gen_config
 
 lu = dict(
@@ -63,9 +67,16 @@ class DetDatabase(object):
         #return self._detector_group["z%s_az%s" %
         #                            (z.zfill(6), az.zfill(6))]  #.value
 
+
+    @property
+    def rsps(self):
+        return self._rsps
+        
     def _load_variables(self):
 
-        self._rsps = collections.OrderedDict()
+        self._rsps = Dict.empty(   key_type=types.unicode_type,
+                                   value_type=types.float64[:,:]
+        )
 
         for key, value in self._detector_group.items():
 

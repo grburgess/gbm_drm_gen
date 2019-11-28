@@ -7,21 +7,38 @@ from threeML.utils.OGIP.response import InstrumentResponse
 from gbm_drm_gen.basersp import rsp_database
 from gbm_drm_gen.utils.geometry import ang2cart, is_occulted
 
+from gbm_drm_gen.matrix_functions import calc_sphere_dist, echan_integrator
+
+
+
 lu = [
-    'n0', "n1", 'n2', 'n3', 'n4', 'n5', 'n6', 'n7', 'n8', 'n9', 'na', 'nb',
-    'b0', 'b1'
+    "n0",
+    "n1",
+    "n2",
+    "n3",
+    "n4",
+    "n5",
+    "n6",
+    "n7",
+    "n8",
+    "n9",
+    "na",
+    "nb",
+    "b0",
+    "b1",
 ]
 
 
-
 class DRMGen(object):
-    def __init__(self,
-                 quaternions,
-                 sc_pos,
-                 det_number,
-                 ebin_edge_in,
-                 mat_type=0,
-                 ebin_edge_out=None):
+    def __init__(
+        self,
+        quaternions,
+        sc_pos,
+        det_number,
+        ebin_edge_in,
+        mat_type=0,
+        ebin_edge_out=None,
+    ):
         """
         A generic GBM DRM generator. This can be inherited for specific purposes.
         It takes as input various spacecraft files to figure out geometry. The user can
@@ -61,20 +78,16 @@ class DRMGen(object):
         self._ein = np.zeros(self._nobins_in, dtype=np.float32)
         energ_lo = self._database.energ_lo
         energ_hi = self._database.energ_hi
-        self._ein[:self._database.ienerg] = energ_lo
+        self._ein[: self._database.ienerg] = energ_lo
         self._ein[self._database.ienerg] = energ_hi[-1]
-
 
         self._out_edge = ebin_edge_out
         self._in_edge = ebin_edge_in
 
-    
         self._nobins_out = len(self._out_edge) - 1
-
 
         self._quaternions = quaternions
         self._sc_pos = sc_pos
-        
 
         self._compute_spacecraft_coordinates()
 
@@ -97,30 +110,25 @@ class DRMGen(object):
 
         self.set_location(ra, dec)
 
-        response = InstrumentResponse(self.matrix,self.ebounds,self.monte_carlo_energies)
+        response = InstrumentResponse(
+            self.matrix, self.ebounds, self.monte_carlo_energies
+        )
 
         return response
 
-    def to_fits(self,ra,dec,filename,overwrite):
+    def to_fits(self, ra, dec, filename, overwrite):
 
-        response = self.to_3ML_response(ra,dec)
+        response = self.to_3ML_response(ra, dec)
 
-        split_filename = filename.split('.')
+        split_filename = filename.split(".")
 
         if len(split_filename) > 1:
 
-            filename =  ''.join(split_filename)
+            filename = "".join(split_filename)
 
-
-
-
-
-        response.to_fits("%s_%s.rsp" % (filename,lu[self._det_number]),
-                         'GLAST',
-                         'GBM',
-                         overwrite)
-
-
+        response.to_fits(
+            "%s_%s.rsp" % (filename, lu[self._det_number]), "GLAST", "GBM", overwrite
+        )
 
     def set_location(self, ra, dec):
         """
@@ -152,10 +160,9 @@ class DRMGen(object):
             self._drm = self._make_drm(az, el, self._geo_az, self._geo_el)
 
         # go ahead and transpose it for spectal fitting, etc.
-        #self._drm_transpose = self._drm.T
+        # self._drm_transpose = self._drm.T
 
-    def set_time(self,time):
-
+    def set_time(self, time):
 
         self._time = time
 
@@ -163,8 +170,7 @@ class DRMGen(object):
 
     def _sc_quaternions_updater(self):
 
-        raise NotImplementedError('implemented in subclass')
-
+        raise NotImplementedError("implemented in subclass")
 
     def _compute_spacecraft_coordinates(self):
         """
@@ -178,17 +184,47 @@ class DRMGen(object):
         geodir = np.zeros(3)
 
         self._scx[0] = (
-            self._quaternions[0] ** 2 - self._quaternions[1] ** 2 - self._quaternions[2] ** 2 + self._quaternions[3] ** 2)
-        self._scx[1] = 2.0 * (self._quaternions[0] * self._quaternions[1] + self._quaternions[3] * self._quaternions[2])
-        self._scx[2] = 2.0 * (self._quaternions[0] * self._quaternions[2] - self._quaternions[3] * self._quaternions[1])
-        self._scy[0] = 2.0 * (self._quaternions[0] * self._quaternions[1] - self._quaternions[3] * self._quaternions[2])
+            self._quaternions[0] ** 2
+            - self._quaternions[1] ** 2
+            - self._quaternions[2] ** 2
+            + self._quaternions[3] ** 2
+        )
+        self._scx[1] = 2.0 * (
+            self._quaternions[0] * self._quaternions[1]
+            + self._quaternions[3] * self._quaternions[2]
+        )
+        self._scx[2] = 2.0 * (
+            self._quaternions[0] * self._quaternions[2]
+            - self._quaternions[3] * self._quaternions[1]
+        )
+        self._scy[0] = 2.0 * (
+            self._quaternions[0] * self._quaternions[1]
+            - self._quaternions[3] * self._quaternions[2]
+        )
         self._scy[1] = (
-            -self._quaternions[0] ** 2 + self._quaternions[1] ** 2 - self._quaternions[2] ** 2 + self._quaternions[3] ** 2)
-        self._scy[2] = 2.0 * (self._quaternions[1] * self._quaternions[2] + self._quaternions[3] * self._quaternions[0])
-        self._scz[0] = 2.0 * (self._quaternions[0] * self._quaternions[2] + self._quaternions[3] * self._quaternions[1])
-        self._scz[1] = 2.0 * (self._quaternions[1] * self._quaternions[2] - self._quaternions[3] * self._quaternions[0])
+            -self._quaternions[0] ** 2
+            + self._quaternions[1] ** 2
+            - self._quaternions[2] ** 2
+            + self._quaternions[3] ** 2
+        )
+        self._scy[2] = 2.0 * (
+            self._quaternions[1] * self._quaternions[2]
+            + self._quaternions[3] * self._quaternions[0]
+        )
+        self._scz[0] = 2.0 * (
+            self._quaternions[0] * self._quaternions[2]
+            + self._quaternions[3] * self._quaternions[1]
+        )
+        self._scz[1] = 2.0 * (
+            self._quaternions[1] * self._quaternions[2]
+            - self._quaternions[3] * self._quaternions[0]
+        )
         self._scz[2] = (
-            -self._quaternions[0] ** 2 - self._quaternions[1] ** 2 + self._quaternions[2] ** 2 + self._quaternions[3] ** 2)
+            -self._quaternions[0] ** 2
+            - self._quaternions[1] ** 2
+            + self._quaternions[2] ** 2
+            + self._quaternions[3] ** 2
+        )
 
         geodir[0] = -self._scx.dot(self._sc_pos)
         geodir[1] = -self._scy.dot(self._sc_pos)
@@ -200,12 +236,12 @@ class DRMGen(object):
 
         geo_az = np.arctan2(geodir[1], geodir[0])
 
-        if (geo_az < 0.0):
+        if geo_az < 0.0:
             geo_az += 2 * np.pi
-        while (geo_az > 2 * np.pi):
+        while geo_az > 2 * np.pi:
             geo_az -= 2 * np.pi
 
-        geo_el = np.arctan2(np.sqrt(geodir[0]**2 + geodir[1]**2), geodir[2])
+        geo_el = np.arctan2(np.sqrt(geodir[0] ** 2 + geodir[1] ** 2), geodir[2])
 
         self._geo_el = 90 - np.rad2deg(geo_el)
 
@@ -225,10 +261,10 @@ class DRMGen(object):
         el = np.arccos(source_pos_sc[2])
         az = np.arctan2(source_pos_sc[1], source_pos_sc[0])
 
-        if (az < 0.0):
+        if az < 0.0:
             az += 2 * np.pi
         el = 90 - np.rad2deg(el)
-        az = np.rad2deg(0. + az)
+        az = np.rad2deg(0.0 + az)
 
         return [az, el]
 
@@ -242,33 +278,43 @@ class DRMGen(object):
         :return:
         """
 
-        final_drm = np.zeros(
-            (self._nobins_in, self._nobins_out), dtype=np.float32)
+        final_drm = np.zeros((self._nobins_in, self._nobins_out), dtype=np.float32)
 
         ## SKY Interpolation
 
         rlon = src_az
         rlat = src_el
 
-        sf = np.arctan(1.) / 45.
+        sf = np.arctan(1.0) / 45.0
         plat = src_el * sf
         plon = src_az * sf
-        P = np.array([
-            np.cos(plat) * np.cos(plon), np.cos(plat) * np.sin(plon),
-            np.sin(plat)
-        ], np.float32)
+        P = np.array(
+            [np.cos(plat) * np.cos(plon), np.cos(plat) * np.sin(plon), np.sin(plat)],
+            np.float32,
+        )
 
         N = len(self._database.LEND)
         b1, b2, b3, i1, i2, i3 = ftran.trfind(
-            0, P, N, self._database.X, self._database.Y, self._database.Z,
-            self._database.LIST, self._database.LPTR, self._database.LEND)
+            0,
+            P,
+            N,
+            self._database.X,
+            self._database.Y,
+            self._database.Z,
+            self._database.LIST,
+            self._database.LPTR,
+            self._database.LEND,
+        )
 
-        mat1 = self._database.get_rsp(self._database.millizen[i1 - 1],
-                                      self._database.milliaz[i1 - 1])
-        mat2 = self._database.get_rsp(self._database.millizen[i2 - 1],
-                                      self._database.milliaz[i2 - 1])
-        mat3 = self._database.get_rsp(self._database.millizen[i3 - 1],
-                                      self._database.milliaz[i3 - 1])
+        mat1 = self._database.get_rsp(
+            self._database.millizen[i1 - 1], self._database.milliaz[i1 - 1]
+        )
+        mat2 = self._database.get_rsp(
+            self._database.millizen[i2 - 1], self._database.milliaz[i2 - 1]
+        )
+        mat3 = self._database.get_rsp(
+            self._database.millizen[i3 - 1], self._database.milliaz[i3 - 1]
+        )
         ## Interpolator on triangle
 
         sum = b1 + b2 + b3
@@ -281,27 +327,30 @@ class DRMGen(object):
         n_tmp_phot_bin = 2 * self._nobins_in + self._nobins_in % 2
         tmp_phot_bin = np.zeros(n_tmp_phot_bin, dtype=np.float32)
         tmp_phot_bin[::2] = self._in_edge[:-1]
-        tmp_phot_bin[1::2] = 10**(
-            (np.log10(self._in_edge[:-1]) + np.log10(self._in_edge[1:])) / 2.)
+        tmp_phot_bin[1::2] = 10 ** (
+            (np.log10(self._in_edge[:-1]) + np.log10(self._in_edge[1:])) / 2.0
+        )
 
         #### Atmospheric scattering
         if self._matrix_type == 1 or self._matrix_type == 2:
 
             # these change each time the source position is changed
-            theta_geo = 90. - geo_el
+            theta_geo = 90.0 - geo_el
             phi_geo = geo_az
             theta_source = 90 - rlat
             phi_source = rlon
 
             ## Get new coordinates in the proper space
-            gx, gy, gz, sl = ftran.geocords(theta_geo, phi_geo, theta_source,
-                                            phi_source)
-            lat = 180. - np.rad2deg(
-                np.arccos(sl[0] * gz[0] + sl[1] * gz[1] + sl[2] * gz[2]))
-            atscat_diff_matrix = np.zeros(
-                (n_tmp_phot_bin - 1, self._nobins_out))
+            gx, gy, gz, sl = ftran.geocords(
+                theta_geo, phi_geo, theta_source, phi_source
+            )
+            lat = 180.0 - np.rad2deg(
+                np.arccos(sl[0] * gz[0] + sl[1] * gz[1] + sl[2] * gz[2])
+            )
+            atscat_diff_matrix = np.zeros((n_tmp_phot_bin - 1, self._nobins_out))
             if lat <= self._database.lat_edge[-1] and (
-                    lat < self._database.lat_cent[-1]):
+                lat < self._database.lat_cent[-1]
+            ):
                 coslat_corr = np.abs(np.cos(np.deg2rad(lat)))
 
                 if lat <= self._database.lat_cent[0]:
@@ -312,33 +361,54 @@ class DRMGen(object):
                     idx = np.where(self._database.lat_cent < lat)[0][-1]
                     il_low = idx - 1
                     il_high = idx
-                    l_frac = 1.0 - (lat - self._database.lat_cent[idx]
-                                    ) / (self._database.lat_cent[idx + 1] -
-                                         self._database.lat_cent[idx])
+                    l_frac = 1.0 - (lat - self._database.lat_cent[idx]) / (
+                        self._database.lat_cent[idx + 1] - self._database.lat_cent[idx]
+                    )
 
                 # We now have to loop over all the at scat data
                 # This could be sped up by moving this to FORTRAN
-                tmp_out = np.zeros((len(self._database.theta_cent) *
-                                    len(self._database.double_phi_cent) * 2,
-                                    self._database.ienerg, self._nobins_out))
+                tmp_out = np.zeros(
+                    (
+                        len(self._database.theta_cent)
+                        * len(self._database.double_phi_cent)
+                        * 2,
+                        self._database.ienerg,
+                        self._nobins_out,
+                    )
+                )
 
-                tmp_out = at_scat.get_at_scat(gx, gy, gz, il_low, il_high,
-                                              l_frac, self._nobins_out,
-                                              self._out_edge, self._database)
+                tmp_out = at_scat.get_at_scat(
+                    gx,
+                    gy,
+                    gz,
+                    il_low,
+                    il_high,
+                    l_frac,
+                    self._nobins_out,
+                    self._out_edge,
+                    self._database,
+                )
 
                 tmp_out *= coslat_corr
                 atscat_diff_matrix = ftran.atscat_highres_ephoton_interpolator(
-                    tmp_phot_bin, self._ein, tmp_out)
+                    tmp_phot_bin, self._ein, tmp_out
+                )
 
         ###################################
 
         new_epx_lo, new_epx_hi, diff_matrix = ftran.highres_ephoton_interpolator(
-            tmp_phot_bin, self._ein, out_matrix, self._database.epx_lo,
-            self._database.epx_hi, self._database.ichan, n_tmp_phot_bin)
+            tmp_phot_bin,
+            self._ein,
+            out_matrix,
+            self._database.epx_lo,
+            self._database.epx_hi,
+            self._database.ichan,
+            n_tmp_phot_bin,
+        )
 
-        binned_matrix = ftran.echan_integrator(diff_matrix, new_epx_lo,
-                                               new_epx_hi, self._database.ichan,
-                                               self._out_edge)
+        binned_matrix = ftran.echan_integrator(
+            diff_matrix, new_epx_lo, new_epx_hi, self._database.ichan, self._out_edge
+        )
 
         if self._matrix_type == 1:
             binned_matrix = atscat_diff_matrix
@@ -349,14 +419,16 @@ class DRMGen(object):
         # Integrate photon edge with trapazoid
 
         final_drm[:-1, :] = (
-            binned_matrix[::2, :][:-1, :] / 2. + binned_matrix[1::2, :][:-1, :]
-            + binned_matrix[2::2, :] / 2.) / 2.
+            binned_matrix[::2, :][:-1, :] / 2.0
+            + binned_matrix[1::2, :][:-1, :]
+            + binned_matrix[2::2, :] / 2.0
+        ) / 2.0
 
         return final_drm
 
-
-    def _at_scat(self, itheta, theta_u, iphi, phi_u, gx, gy, gz, il_low,
-                 il_high, l_frac):
+    def _at_scat(
+        self, itheta, theta_u, iphi, phi_u, gx, gy, gz, il_low, il_high, l_frac
+    ):
         """
 
         :param itheta:
@@ -371,57 +443,449 @@ class DRMGen(object):
         :param l_frac:
         :return:
         """
-        dirx, diry, dirz, az, el = ftran.geo_to_space(theta_u, phi_u, gx, gy,
-                                                      gz)
+        dirx, diry, dirz, az, el = ftran.geo_to_space(theta_u, phi_u, gx, gy, gz)
 
-        sf = np.arctan(1.) / 45.
+        sf = np.arctan(1.0) / 45.0
         plat = el * sf
         plon = az * sf
-        P = np.array([
-            np.cos(plat) * np.cos(plon), np.cos(plat) * np.sin(plon),
-            np.sin(plat)
-        ], np.float32)
+        P = np.array(
+            [np.cos(plat) * np.cos(plon), np.cos(plat) * np.sin(plon), np.sin(plat)],
+            np.float32,
+        )
 
         # Find a new interpolated matrix
         ist = 0
 
         N = len(self._database.LEND)
         b1, b2, b3, i1, i2, i3 = ftran.trfind(
-            ist, P, N, self._database.X, self._database.Y, self._database.Z,
-            self._database.LIST, self._database.LPTR, self._database.LEND)
+            ist,
+            P,
+            N,
+            self._database.X,
+            self._database.Y,
+            self._database.Z,
+            self._database.LIST,
+            self._database.LPTR,
+            self._database.LEND,
+        )
         i_array = np.array([i1, i2, i3])
 
-        dist1 = ftran.calc_sphere_dist(az, 90. - el,
-                                       self._database.Azimuth[i1 - 1],
-                                       self._database.Zenith[i1 - 1])
-        dist2 = ftran.calc_sphere_dist(az, 90. - el,
-                                       self._database.Azimuth[i2 - 1],
-                                       self._database.Zenith[i2 - 1])
-        dist3 = ftran.calc_sphere_dist(az, 90. - el,
-                                       self._database.Azimuth[i3 - 1],
-                                       self._database.Zenith[i3 - 1])
+        dist1 = ftran.calc_sphere_dist(
+            az, 90.0 - el, self._database.Azimuth[i1 - 1], self._database.Zenith[i1 - 1]
+        )
+        dist2 = ftran.calc_sphere_dist(
+            az, 90.0 - el, self._database.Azimuth[i2 - 1], self._database.Zenith[i2 - 1]
+        )
+        dist3 = ftran.calc_sphere_dist(
+            az, 90.0 - el, self._database.Azimuth[i3 - 1], self._database.Zenith[i3 - 1]
+        )
 
         dist_array = np.array([dist1, dist2, dist3])
         i1 = i_array[np.argmin(dist_array)]
 
-        tmpdrm = self._database.get_rsp(self._database.millizen[i1 - 1],
-                                        self._database.milliaz[i1 - 1])
+        tmpdrm = self._database.get_rsp(
+            self._database.millizen[i1 - 1], self._database.milliaz[i1 - 1]
+        )
 
         # intergrate the new drm
         direct_diff_matrix = ftran.echan_integrator(
-            tmpdrm, self._database.epx_lo, self._database.epx_hi,
-            self._database.ichan, self._out_edge)
+            tmpdrm,
+            self._database.epx_lo,
+            self._database.epx_hi,
+            self._database.ichan,
+            self._out_edge,
+        )
 
         # Now let FORTRAN add the at scat to the direct
         tmp_out = ftran.sum_at_scat(
             direct_diff_matrix,
             self._database.at_scat_data[:, :, il_low, itheta, iphi],
-            self._database.at_scat_data[:, :, il_high, itheta, iphi], l_frac)
+            self._database.at_scat_data[:, :, il_high, itheta, iphi],
+            l_frac,
+        )
 
         return tmp_out
 
         ###################################################  ################
 
 
+def _build_drm(
+    src_az,
+    src_el,
+    geo_az,
+    geo_el,
+    nobins_in,
+    nobins_out,
+    X,
+    Y,
+    Z,
+    LIST,
+    LPTR,
+    LEND,
+    milliaz,
+    millizen,
+    in_edge,
+    lat_edge,
+    lat_cent,
+    theta_cent,
+    phi_cent,
+    ienerg,
+    out_edge,
+    ein,
+    epx_lo,
+    epx_hi,
+    ichan,
+    matrix_type,
+        rsps,
+        tmp_phot_bin,
+):
+
+    final_drm = np.zeros((nobins_in, nobins_out))
+
+    ## SKY Interpolation
+
+    rlon = src_az
+    rlat = src_el
+
+    sf = np.arctan(1.0) / 45.0
+    plat = src_el * sf
+    plon = src_az * sf
+    P = np.array(
+        [np.cos(plat) * np.cos(plon), np.cos(plat) * np.sin(plon), np.sin(plat)] )
+
+    N = len(LEND)
+    b1, b2, b3, i1, i2, i3 = ftran.trfind(
+        0,
+        P,
+        N,
+        X,
+        Y,
+        Z,
+        LIST,
+        LPTR,
+        LEND,
+    )
+
+    # mod here
+
+    
+    mat1 = rsps[millizen[i1 - 1] +'_'+ milliaz[i1 - 1]]
+    mat2 = rsps[millizen[i2 - 1] +'_'+ milliaz[i2 - 1]]
+    mat3 = rsps[millizen[i2 - 1] +'_'+ milliaz[i3 - 1]]
+
+    ## Interpolator on triangle
+
+    sum = b1 + b2 + b3
+    b1n = b1 / sum
+    b2n = b2 / sum
+    b3n = b3 / sum
 
 
+    #### need to do a loop here
+
+    out_matrix = np.empty((mat1.shape[0], mat1.shape[1]))
+
+    for i in range(mat1.shape[0]):
+        for j in range(mat1.shape[1]):
+            out_matrix[i,j] = b1n * mat1[i,j] + b2n * mat2[i,j] + b3n * mat3[i,j]
+
+            
+    #### move outside loop        
+    # n_tmp_phot_bin = 2 * self._nobins_in + self._nobins_in % 2
+    # tmp_phot_bin = np.zeros(n_tmp_phot_bin, dtype=np.float32)
+    # tmp_phot_bin[::2] = self._in_edge[:-1]
+    # tmp_phot_bin[1::2] = 10 ** (
+    #     (np.log10(self._in_edge[:-1]) + np.log10(self._in_edge[1:])) / 2.0
+    # )
+
+    
+    
+    #### Atmospheric scattering
+    if matrix_type == 1 or matrix_type == 2:
+
+        # these change each time the source position is changed
+        theta_geo = 90.0 - geo_el
+        phi_geo = geo_az
+        theta_source = 90 - rlat
+        phi_source = rlon
+
+        ## Get new coordinates in the proper space
+
+
+        #gx, gy, gz, sl = ftran.geocords(theta_geo, phi_geo, theta_source, phi_source)
+
+        gx = np.empty(3)
+        gy = np.empty(3)
+        gz = np.empty(3)
+        sl = np.empty(3)
+        
+        gz[0] = np.sin(theta_geo * dtr) * np.cos(phi_geo * dtr)
+        gz[1] = np.sin(theta_geo * dtr) * np.sin(phi_geo * dtr)
+        gz[2] = np.cos(theta_geo * dtr)
+        
+        gzr = np.sqrt(gz[0] * gz[0] + gz[1] * gz[1] + gz[2] * gz[2])
+        gz[0] = gz[0] / gzr
+        gz[1] = gz[1] / gzr
+        gz[2] = gz[2] / gzr
+        
+        sl[0] = np.sin(theta_source * dtr) * np.cos(phi_source * dtr)
+        sl[1] = np.sin(theta_source * dtr) * np.sin(phi_source * dtr)
+        sl[2] = np.cos(theta_source * dtr)
+        
+        slr = np.sqrt(sl[0] * sl[0] + sl[1] * sl[1] + sl[2] * sl[2])
+        sl[0] = sl[0] / slr
+        sl[1] = sl[1] / slr
+        sl[2] = sl[2] / slr
+        
+        gy[0] = gz[1] * sl[2] - gz[2] * sl[1]
+        gy[1] = gz[2] * sl[0] - gz[0] * sl[2]
+        gy[2] = gz[0] * sl[1] - gz[1] * sl[0]
+        
+        gyr = np.sqrt(gy[0] * gy[0] + gy[1] * gy[1] + gy[2] * gy[2])
+        
+        gy[0] = gy[0] / gyr
+        gy[1] = gy[1] / gyr
+        gy[2] = gy[2] / gyr
+        
+        gx[0] = gy[1] * gz[2] - gy[2] * gz[1]
+        gx[1] = gy[2] * gz[0] - gy[0] * gz[2]
+        gx[2] = gy[0] * gz[1] - gy[1] * gz[0]
+        
+        gxr = np.sqrt(gx[0] * gx[0] + gx[1] * gx[1] + gx[2] * gx[2])
+        gx[0] = gx[0] / gxr
+        gx[1] = gx[1] / gxr
+        gx[2] = gx[2] / gxr
+
+
+
+        
+
+
+
+        lat = 180.0 - np.rad2deg(
+            np.arccos(sl[0] * gz[0] + sl[1] * gz[1] + sl[2] * gz[2])
+        )
+        atscat_diff_matrix = np.zeros((n_tmp_phot_bin - 1, nobins_out))
+        if lat <= lat_edge[-1] and (lat < lat_cent[-1]):
+            coslat_corr = np.abs(np.cos(np.deg2rad(lat)))
+
+            if lat <= lat_cent[0]:
+                il_low = 0
+                il_high = 1
+                l_frac = 0.0
+            else:
+                idx = np.where(lat_cent < lat)[0][-1]
+                il_low = idx - 1
+                il_high = idx
+                l_frac = 1.0 - (lat - lat_cent[idx]) / (
+                    lat_cent[idx + 1] - lat_cent[idx]
+                )
+
+            # We now have to loop over all the at scat data
+            # This could be sped up by moving this to FORTRAN
+            # tmp_out = np.zeros(
+            #     (
+            #         len(theta_cent)
+            #         * len(double_phi_cent)
+            #         * 2,
+            #         ienerg,
+            #         nobins_out,
+            #     )
+            # )
+
+            # #############
+            # #############
+
+            # out_matrix = np.zeros((len(theta_cent)*len(double_phi_cent)*2,ienerg,nobins_out))
+
+
+    
+            num_theta = len(theta_cent)
+            num_phi   = len(double_phi_cent)
+            
+
+            num_loops = num_theta*num_phi*2
+
+            theta_u = theta_cent
+            phi_u   = double_phi_cent
+
+
+            # loop over all the fucking atm matrices
+            tmp_out = np.zeros((ienerg,nobins_out))
+
+            itr = 0
+            for i in range(num_theta):
+                for j in range(num_phi):
+                    for k in range(1):
+
+                        dtr = np.arccos(-1.0) / 180.0
+
+                        xg = np.sin(theta_u[i] * dtr) * np.cos(phi_u[j,k] * dtr)
+                        yg = np.sin(theta_u[i] * dtr) * np.sin(phi_u[j,k] * dtr)
+                        zg = np.cos(theta_u[i] * dtr)
+                        
+                        dirx = xg * gx[0] + yg * gy[0] + zg * gz[0]
+                        diry = xg * gx[1] + yg * gy[1] + zg * gz[1]
+                        dirz = xg * gx[2] + yg * gy[2] + zg * gz[2]
+                        
+                        r = np.sqrt(dirx * dirx + diry * diry + dirz * dirz)
+                        dirx = dirx / r
+                        diry = diry / r
+                        dirz = dirz / r
+                        
+                        az = np.arctan2(diry, dirx) / dtr
+                        
+                        if az < 0.0:
+                            az = az + 360.0
+
+                        el = 90.0 - np.arccos(dirz) / dtr
+
+
+
+
+
+                        
+                        sf   = np.arctan(1.)/45.
+                        plat = el * sf
+                        plon = az * sf
+                        P = np.array([np.cos(plat) * np.cos(plon),
+                                      np.cos(plat) * np.sin(plon),
+                                      np.sin(plat)],np.float32)
+                        
+                        # Find a new interpolated matrix
+                        ist = 0
+                        
+                        N=len(LEND)
+                        b1,b2,b3,i1,i2,i3=ftran.trfind(ist,
+                                                   P,
+                                                   N,
+                                                   X,
+                                                   Y,
+                                                   Z,
+                                                   LIST,
+                                                   LPTR,
+                                                   LEND)
+                        i_array= [i1,i2,i3]
+                        
+                        dist1 = calc_sphere_dist(az,90.-el,
+                                                   Azimuth[i1-1],
+                                                   Zenith[i1-1])
+                        dist2 = calc_sphere_dist(az,90.-el,
+                                                       Azimuth[i2-1],
+                                                       Zenith[i2-1])
+                        dist3 = calc_sphere_dist(az,90.-el,
+                                                           Azimuth[i3-1],
+                                                           Zenith[i3-1])
+
+                        dist_array = np.array([dist1,dist2,dist3])
+                        i1 = i_array[np.argmin(dist_array)]
+                            
+
+
+                        
+                        tmpdrm = rsps[millizen[i1-1] + '_' + milliaz[i1-1]]
+
+
+                        # intergrate the new drm
+                        direct_diff_matrix = echan_integrator(tmpdrm,
+                                                              epx_lo,
+                                                              epx_hi,
+                                                              ichan,
+                                                              out_edge)
+
+
+
+
+
+                        for ii in range(ienerg):
+                            for jj in range(nobins_out):
+                                for kk in range(ienerg):
+
+                                    out_matrix[ii, jj] += (at_scat_data[ii, kk, il_low, i, j] * l_frac + at_scat_data[ii,kk,il_high,i,j]*(1-l_frac)) * direct_diff_matrix[kk, jj]
+                        
+
+                        # # Now let FORTRAN add the at scat to the direct
+                        # tmp_out = ftran.sum_at_scat(direct_diff_matrix,
+                        #                                 at_scat_data[:,:,il_low,i,j],
+                        #                                 at_scat_data[:,:,il_high,i,j],
+                        #                                 l_frac)
+
+                        # out_matrix[i] = tmp_out
+
+
+
+
+
+                    ############
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+            tmp_out = at_scat.get_at_scat(
+                gx,
+                gy,
+                gz,
+                il_low,
+                il_high,
+                l_frac,
+                nobins_out,
+                out_edge,
+                database,
+            )
+
+            tmp_out *= coslat_corr
+            atscat_diff_matrix = ftran.atscat_highres_ephoton_interpolator(
+                tmp_phot_bin, ein, tmp_out
+            )
+
+    ###################################
+
+    new_epx_lo, new_epx_hi, diff_matrix = ftran.highres_ephoton_interpolator(
+        tmp_phot_bin,
+        ein,
+        out_matrix,
+        epx_lo,
+        epx_hi,
+        ichan,
+        n_tmp_phot_bin,
+    )
+
+    binned_matrix = ftran.echan_integrator(
+        diff_matrix, new_epx_lo, new_epx_hi, ichan, out_edge
+    )
+
+    if matrix_type == 1:
+        binned_matrix = atscat_diff_matrix
+
+    if matrix_type == 2:
+        binned_matrix[:-1, :] += atscat_diff_matrix
+
+    # Integrate photon edge with trapazoid
+
+    final_drm[:-1, :] = (
+        binned_matrix[::2, :][:-1, :] / 2.0
+        + binned_matrix[1::2, :][:-1, :]
+        + binned_matrix[2::2, :] / 2.0
+    ) / 2.0
+
+    return final_drm
