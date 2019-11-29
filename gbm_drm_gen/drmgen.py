@@ -841,17 +841,17 @@ def _build_drm(
 
 
             
-            tmp_out = at_scat.get_at_scat(
-                gx,
-                gy,
-                gz,
-                il_low,
-                il_high,
-                l_frac,
-                nobins_out,
-                out_edge,
-                database,
-            )
+            # tmp_out = at_scat.get_at_scat(
+            #     gx,
+            #     gy,
+            #     gz,
+            #     il_low,
+            #     il_high,
+            #     l_frac,
+            #     nobins_out,
+            #     out_edge,
+            #     database,
+            # )
 
             tmp_out *= coslat_corr
             atscat_diff_matrix = ftran.atscat_highres_ephoton_interpolator(
