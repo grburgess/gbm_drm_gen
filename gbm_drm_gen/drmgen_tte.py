@@ -204,4 +204,4 @@ class DRMGenTTE(DRMGen):
                                         det_number=self._det_number,
                                         ebin_edge_in=self._in_edge,
                                         mat_type=self._matrix_type,
-                                        ebin_edge_out=self._out_edge)
+                                        ebin_edge_out=self._out_edge,occult=self._occult)

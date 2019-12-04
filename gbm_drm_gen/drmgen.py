@@ -21,7 +21,7 @@ class DRMGen(object):
                  det_number,
                  ebin_edge_in,
                  mat_type=0,
-                 ebin_edge_out=None):
+                 ebin_edge_out=None,occult=True):
         """
         A generic GBM DRM generator. This can be inherited for specific purposes.
         It takes as input various spacecraft files to figure out geometry. The user can
@@ -51,7 +51,7 @@ class DRMGen(object):
         self._nobins_in = len(ebin_edge_in) - 1
 
         # If you want to use occulting
-        self._occult = True
+        self._occult = occult
 
         ##### Initiate database loading:
 
