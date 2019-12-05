@@ -80,16 +80,31 @@ class BALROGLike(DispersionSpectrumLike):
                 self._like_model.point_sources[key].position.ra.free = True
                 self._like_model.point_sources[key].position.dec.free = True
 
-        self._like_model.point_sources[key].position.ra.prior = Uniform_prior(
-            lower_bound=0.0, upper_bound=360
-        )
-        self._like_model.point_sources[key].position.dec.prior = Cosine_Prior(
-            lower_bound=-90.0, upper_bound=90
-        )
+                self._like_model.point_sources[key].position.ra.prior = Uniform_prior(
+                    lower_bound=0.0, upper_bound=360
+                )
+                self._like_model.point_sources[key].position.dec.prior = Cosine_Prior(
+                    lower_bound=-90.0, upper_bound=90
+                )
 
-        ra = self._like_model.point_sources[key].position.ra.value
-        dec = self._like_model.point_sources[key].position.dec.value
+                ra = self._like_model.point_sources[key].position.ra.value
+                dec = self._like_model.point_sources[key].position.dec.value
 
+        else:
+
+            for key in self._like_model.point_sources.keys():
+
+                self._like_model.point_sources[key].position.ra.prior = Uniform_prior(
+                    lower_bound=0.0, upper_bound=360
+                )
+                self._like_model.point_sources[key].position.dec.prior = Cosine_Prior(
+                    lower_bound=-90.0, upper_bound=90
+                )
+
+                ra = self._like_model.point_sources[key].position.ra.value
+                dec = self._like_model.point_sources[key].position.dec.value
+            
+            
         self._rsp.set_location(ra, dec)
 
     def get_model(self):
