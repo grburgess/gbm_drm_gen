@@ -2,6 +2,99 @@ import numpy as np
 import numba as nb
 
 
+@nb.njit(fastmath=False, parallel=False)
+def trfind(point_assume_f, grid_points_list_f):
+    # for i in range(len(grid_points_list_f[:30])):
+    #    distance_list[i] = float(np.arccos(np.dot(grid_points_list_f[i], point_assume_f)))
+
+    N = grid_points_list.shape[0]
+
+    #     distance_list = np.empty(N)
+
+    #     min_distance = np.array[10., 10., 10.]
+
+    #     idx = np.array([0,0,0])
+
+    #     num = 0
+
+    i1 = 0
+    i2 = 0
+    i3 = 0
+
+    mini = 9
+    midi = 10
+    maxi = 11
+
+    for i in range(N):
+
+        distance = np.arccos(
+            grid_points_list_f[i, 0] * point_assume_f[0]
+            + grid_points_list_f[i, 1] * point_assume_f[1]
+            + grid_points_list_f[i, 2] * point_assume_f[2]
+        )
+        if distance < maxi:
+            if distance > mini:
+
+                if distance < midi:
+                    maxi = midi
+                    i3 = i2
+                    midi = distance
+                    i2 = i
+
+                else:
+                    maxi = distance
+                    i3 = i
+
+            else:
+
+                maxi = midi
+                midi = mini
+                mini = distance
+                i3 = i2
+                i2 = i1
+                i1 = i
+
+
+
+    
+    weights =  calc_weights_numba(grid_points_list_f[i1],
+                                  grid_points_list_f[i2],
+                                  grid_points_list_f[i3], 
+                                  point_assume_f)
+    return  weights[0], weights[1],weights[2],  i1,i2, i3
+                
+@nb.njit(fastmath=True)
+def calc_weights_numba(p1, p2, p3, p_find):
+    """
+    ###################### Weights from https://codeplea.com/triangular-interpolation ############
+    p1_lat = np.arcsin(p1[2])
+    p1_lon = np.arctan2(p1[1],p1[0])
+
+    p2_lat = np.arcsin(p2[2])
+    p2_lon = np.arctan2(p2[1],p2[0])
+
+    p3_lat = np.arcsin(p3[2])
+    p3_lon = np.arctan2(p3[1],p3[0])
+
+    pf_lat = np.arcsin(p_find[2])
+    pf_lon = np.arctan2(p_find[1],p_find[0])
+
+    W1 = ((p2_lat-p3_lat)*(pf_lon-p3_lon)+(p3_lon-p2_lon)*(pf_lat-p3_lat))/((p2_lat-p3_lat)*(p1_lon-p3_lon)+(p3_lon-p2_lon)*(p1_lat-p3_lat))
+    W2 = ((p3_lat-p1_lat)*(pf_lon-p3_lon)+(p1_lon-p3_lon)*(pf_lat-p3_lat))/((p2_lat-p3_lat)*(p1_lon-p3_lon)+(p3_lon-p2_lon)*(p1_lat-p3_lat))
+    W3 = 1-W1-W2
+    """
+
+    ###################### Weights from ftran code. But NOT set to 0 when they are negative ############
+
+    w = np.zeros(3)
+
+    w[0] = p_find[0]*(p1[1]*p2[2]-p2[1]*p1[2])-p_find[1]*(p1[0]*p2[2]-p2[0]*p1[2])+p_find[2]*(p1[0]*p2[1]-p2[0]*p1[1])
+    w[1] = p_find[0]*(p2[1]*p3[2]-p3[1]*p2[2])-p_find[1]*(p2[0]*p3[2]-p3[0]*p2[2])+p_find[2]*(p2[0]*p3[1]-p3[0]*p2[1])
+    w[2] = p_find[0]*(p3[1]*p1[2]-p1[1]*p3[2])-p_find[1]*(p3[0]*p1[2]-p1[0]*p3[2])+p_find[2]*(p3[0]*p1[1]-p1[0]*p3[1])
+    return np.abs(w)
+
+
+
 @nb.njit(fastmath=True)
 def geocords(theta_geo, phi_geo, theta_source, phi_source):
 

@@ -7,7 +7,7 @@ from threeML.utils.OGIP.response import InstrumentResponse
 from gbm_drm_gen.basersp import rsp_database
 from gbm_drm_gen.utils.geometry import ang2cart, is_occulted
 
-from gbm_drm_gen.matrix_functions import calc_sphere_dist, echan_integrator
+from gbm_drm_gen.matrix_functions import calc_sphere_dist, echan_integrator, trfind, atscat_highres_ephoton_interpolator
 
 
 
@@ -536,8 +536,8 @@ def _build_drm(
     epx_hi,
     ichan,
     matrix_type,
-        rsps,
-        tmp_phot_bin,
+    rsps,
+    tmp_phot_bin,
 ):
 
     final_drm = np.zeros((nobins_in, nobins_out))
@@ -553,19 +553,31 @@ def _build_drm(
     P = np.array(
         [np.cos(plat) * np.cos(plon), np.cos(plat) * np.sin(plon), np.sin(plat)] )
 
-    N = len(LEND)
-    b1, b2, b3, i1, i2, i3 = ftran.trfind(
-        0,
-        P,
-        N,
-        X,
-        Y,
-        Z,
-        LIST,
-        LPTR,
-        LEND,
-    )
 
+    
+    grid_points_list = np.array([np.cos(np.deg2rad(zen))*np.cos(np.deg2rad(az)),np.cos(np.deg2rad(zen))*np.sin(np.deg2rad(az)),np.sin(np.deg2rad(zen))]).T
+
+    
+    
+#    N = len(LEND)
+    # b1, b2, b3, i1, i2, i3 = ftran.trfind(
+    #     0,
+    #     P,
+    #     N,
+    #     X,
+    #     Y,
+    #     Z,
+    #     LIST,
+    #     LPTR,
+    #     LEND,
+    # )
+
+    b1,b2,b3, i1, i2, i3 = trfind(P, grid_points_list)
+
+    i1+=1
+    i2+=1
+    i3+=1
+    
     # mod here
 
     
@@ -754,18 +766,19 @@ def _build_drm(
                         
                         # Find a new interpolated matrix
                         ist = 0
+
+
+                        b1,b2,b3, i1, i2, i3 = trfind(P, grid_points_list)
+
+                        i1+=1
+                        i2+=1
+                        i3+=1
+
                         
                         N=len(LEND)
-                        b1,b2,b3,i1,i2,i3=ftran.trfind(ist,
-                                                   P,
-                                                   N,
-                                                   X,
-                                                   Y,
-                                                   Z,
-                                                   LIST,
-                                                   LPTR,
-                                                   LEND)
+
                         i_array= [i1,i2,i3]
+
                         
                         dist1 = calc_sphere_dist(az,90.-el,
                                                    Azimuth[i1-1],
@@ -804,63 +817,15 @@ def _build_drm(
                                     out_matrix[ii, jj] += (at_scat_data[ii, kk, il_low, i, j] * l_frac + at_scat_data[ii,kk,il_high,i,j]*(1-l_frac)) * direct_diff_matrix[kk, jj]
                         
 
-                        # # Now let FORTRAN add the at scat to the direct
-                        # tmp_out = ftran.sum_at_scat(direct_diff_matrix,
-                        #                                 at_scat_data[:,:,il_low,i,j],
-                        #                                 at_scat_data[:,:,il_high,i,j],
-                        #                                 l_frac)
-
-                        # out_matrix[i] = tmp_out
-
-
-
-
-
-                    ############
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-            # tmp_out = at_scat.get_at_scat(
-            #     gx,
-            #     gy,
-            #     gz,
-            #     il_low,
-            #     il_high,
-            #     l_frac,
-            #     nobins_out,
-            #     out_edge,
-            #     database,
-            # )
 
             tmp_out *= coslat_corr
-            atscat_diff_matrix = ftran.atscat_highres_ephoton_interpolator(
-                tmp_phot_bin, ein, tmp_out
+            atscat_diff_matrix = atscat_highres_ephoton_interpolator(
+                tmp_phot_bin, nobins_in ,ein, nvbins, tmp_out, nobins_out
             )
 
     ###################################
 
-    new_epx_lo, new_epx_hi, diff_matrix = ftran.highres_ephoton_interpolator(
+    new_epx_lo, new_epx_hi, diff_matrix = highres_ephoton_interpolator(
         tmp_phot_bin,
         ein,
         out_matrix,
@@ -870,7 +835,7 @@ def _build_drm(
         n_tmp_phot_bin,
     )
 
-    binned_matrix = ftran.echan_integrator(
+    binned_matrix = echan_integrator(
         diff_matrix, new_epx_lo, new_epx_hi, ichan, out_edge
     )
 
