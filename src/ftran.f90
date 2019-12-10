@@ -386,7 +386,7 @@ subroutine sum_at_scat(direct_diff_matrix,     at_scat_data_lo,at_scat_data_hi,l
   do i=1,ienerg
      do j=1,nobins_out
         do k=1,ienerg
-           out_matrix(i,j) =(at_scat_data_lo(i,k)*              l_fract+at_scat_data_hi(i,k)*         (1.0-l_fract))*direct_diff_matrix(k,j)
+           out_matrix(i,j) =out_matrix(i,j)+(at_scat_data_lo(i,k)*              l_fract+at_scat_data_hi(i,k)*         (1.0-l_fract))*direct_diff_matrix(k,j)
            
         enddo
      enddo
