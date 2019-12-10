@@ -288,7 +288,7 @@ class DRMGen(object):
 
         #### move outside loop
 
-        print('numba')
+        
         
         n_tmp_phot_bin = 2 * self._nobins_in + self._nobins_in % 2
         tmp_phot_bin = np.zeros(n_tmp_phot_bin)
@@ -454,6 +454,7 @@ class DRMGen(object):
                     tmp_phot_bin, self._ein, tmp_out
                 )
 
+        return atscat_diff_matrix
         ###################################
 
         new_epx_lo, new_epx_hi, diff_matrix = ftran.highres_ephoton_interpolator(
@@ -569,7 +570,7 @@ class DRMGen(object):
         ###################################################  ################
 
 
-#@nb.njit(fastmath=True)
+@nb.njit(fastmath=True)
 def _build_drm(
     src_az,
     src_el,
@@ -820,6 +821,7 @@ def _build_drm(
             tmp_out *= coslat_corr
             atscat_diff_matrix = atscat_highres_ephoton_interpolator(tmp_phot_bin,  ein, tmp_out )
 
+    return atscat_diff_matrix
     ###################################
 
     new_epx_lo, new_epx_hi, diff_matrix = highres_ephoton_interpolator(

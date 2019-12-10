@@ -206,8 +206,11 @@ def highres_ephoton_interpolator(
     ivfind = 0
 
     for i in range(nobins_in):
+
         for j in range(ivfind, nvbins):
+
             if (ebin_edge_in[i] >= ein[j]) and ebin_edge_in[i] < ein[j + 1]:
+
                 ivfind = j
 
                 mu = (np.log(ebin_edge_in[i]) - np.log(ein[ivfind])) / (
