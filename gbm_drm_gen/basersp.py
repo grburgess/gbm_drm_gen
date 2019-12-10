@@ -67,7 +67,7 @@ class DetDatabase(object):
 
         self._rsps = collections.OrderedDict()
 
-        for key, value in self._detector_group.iteritems():
+        for key, value in self._detector_group.items():
 
             if key[0] == "z":
 

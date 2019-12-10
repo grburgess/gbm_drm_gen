@@ -9,7 +9,7 @@ import astropy.units as u
 import collections
 
 
-from balrog_healpix_map import BALROGHealpixMap
+from .balrog_healpix_map import BALROGHealpixMap
 from gbm_drm_gen.utils.general_utils import ThetaFormatterShiftPi, theta_shifter
 from gbm_drm_gen.utils.contour_finder import ContourFinder
 
