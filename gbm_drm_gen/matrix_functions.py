@@ -4,26 +4,16 @@ import numba as nb
 
 @nb.njit(fastmath=False, parallel=False)
 def trfind(point_assume_f, grid_points_list_f):
-    # for i in range(len(grid_points_list_f[:30])):
-    #    distance_list[i] = float(np.arccos(np.dot(grid_points_list_f[i], point_assume_f)))
 
-    N = grid_points_list.shape[0]
-
-    #     distance_list = np.empty(N)
-
-    #     min_distance = np.array[10., 10., 10.]
-
-    #     idx = np.array([0,0,0])
-
-    #     num = 0
+    N = grid_points_list_f.shape[0]
 
     i1 = 0
     i2 = 0
     i3 = 0
 
-    mini = 9
-    midi = 10
-    maxi = 11
+    mini = 9.
+    midi = 10.
+    maxi = 11.
 
     for i in range(N):
 
@@ -54,15 +44,15 @@ def trfind(point_assume_f, grid_points_list_f):
                 i2 = i1
                 i1 = i
 
+    weights = calc_weights_numba(
+        grid_points_list_f[i1],
+        grid_points_list_f[i2],
+        grid_points_list_f[i3],
+        point_assume_f,
+    )
+    return weights[0], weights[1], weights[2], i1, i2, i3
 
 
-    
-    weights =  calc_weights_numba(grid_points_list_f[i1],
-                                  grid_points_list_f[i2],
-                                  grid_points_list_f[i3], 
-                                  point_assume_f)
-    return  weights[0], weights[1],weights[2],  i1,i2, i3
-                
 @nb.njit(fastmath=True)
 def calc_weights_numba(p1, p2, p3, p_find):
     """
@@ -88,11 +78,22 @@ def calc_weights_numba(p1, p2, p3, p_find):
 
     w = np.zeros(3)
 
-    w[0] = p_find[0]*(p1[1]*p2[2]-p2[1]*p1[2])-p_find[1]*(p1[0]*p2[2]-p2[0]*p1[2])+p_find[2]*(p1[0]*p2[1]-p2[0]*p1[1])
-    w[1] = p_find[0]*(p2[1]*p3[2]-p3[1]*p2[2])-p_find[1]*(p2[0]*p3[2]-p3[0]*p2[2])+p_find[2]*(p2[0]*p3[1]-p3[0]*p2[1])
-    w[2] = p_find[0]*(p3[1]*p1[2]-p1[1]*p3[2])-p_find[1]*(p3[0]*p1[2]-p1[0]*p3[2])+p_find[2]*(p3[0]*p1[1]-p1[0]*p3[1])
+    w[0] = (
+        p_find[0] * (p1[1] * p2[2] - p2[1] * p1[2])
+        - p_find[1] * (p1[0] * p2[2] - p2[0] * p1[2])
+        + p_find[2] * (p1[0] * p2[1] - p2[0] * p1[1])
+    )
+    w[1] = (
+        p_find[0] * (p2[1] * p3[2] - p3[1] * p2[2])
+        - p_find[1] * (p2[0] * p3[2] - p3[0] * p2[2])
+        + p_find[2] * (p2[0] * p3[1] - p3[0] * p2[1])
+    )
+    w[2] = (
+        p_find[0] * (p3[1] * p1[2] - p1[1] * p3[2])
+        - p_find[1] * (p3[0] * p1[2] - p1[0] * p3[2])
+        + p_find[2] * (p3[0] * p1[1] - p1[0] * p3[1])
+    )
     return np.abs(w)
-
 
 
 @nb.njit(fastmath=True)
@@ -146,7 +147,7 @@ def geocords(theta_geo, phi_geo, theta_source, phi_source):
 @nb.njit(fastmath=True)
 def geo_to_space(theta_u, phi_u, gx, gy, gz):
 
-    dtr = np.arccos(-1.0) / 180.0
+    dtr = np.pi / 180.0
 
     xg = np.sin(theta_u * dtr) * np.cos(phi_u * dtr)
     yg = np.sin(theta_u * dtr) * np.sin(phi_u * dtr)
@@ -172,8 +173,8 @@ def geo_to_space(theta_u, phi_u, gx, gy, gz):
 
 
 @nb.njit(fastmath=True)
-def calc_sphere_dist(ra1, dec1, ra2, dec2):
-    dtr = np.arccos(-1.0) / 180.0
+def calc_sphere_dist(ra1, dec1, ra2, dec2, dtr):
+
     y = np.sqrt(
         (np.cos(dec2 * dtr) * np.sin((ra1 - ra2) * dtr)) ** 2
         + (
@@ -182,31 +183,35 @@ def calc_sphere_dist(ra1, dec1, ra2, dec2):
         )
         ** 2
     )
-    x = np.sin(dec1 * dtr) * np.sin(dec2 * dtr) + np.cos(dec1 * dtr) * npcos(
+    x = np.sin(dec1 * dtr) * np.sin(dec2 * dtr) + np.cos(dec1 * dtr) * np.cos(
         dec2 * dtr
     ) * np.cos((ra1 - ra2) * dtr)
-    dist = np.arctan2(y, x) / dtr
+    return np.arctan2(y, x) / dtr
 
 
 @nb.njit(fastmath=True)
 def highres_ephoton_interpolator(
-    ebin_edge_in, nobins_in, ein, nvbins, matrix, edif_edge_lo, edif_edge_hi, nhbins
+    ebin_edge_in, ein, matrix, edif_edge_lo, edif_edge_hi, nhbins
 ):
+
+    nobins_in = len(ebin_edge_in)
+
+    nvbins = len(ein) - 1
 
     new_epx_lo = np.empty((nobins_in, 64))
     new_epx_hi = np.empty((nobins_in, 64))
 
     diff_matrix = np.empty((nobins_in, 64))
 
-    ivfind = 1
+    ivfind = 0
 
     for i in range(nobins_in):
-        for j in range(ivfind - 1, nvbins):
-            if (ebin_edge_in[i] >= e_in[j]) and ebin_edge_in[i] < e_in[j + 1]:
+        for j in range(ivfind, nvbins):
+            if (ebin_edge_in[i] >= ein[j]) and ebin_edge_in[i] < ein[j + 1]:
                 ivfind = j
 
-                mu = (np.log(ebin_edge_in[i]) - np.log(e_in[ivfind])) / (
-                    np.loglog(e_in[ivfind + 1]) - np.log(e_in[ivfind])
+                mu = (np.log(ebin_edge_in[i]) - np.log(ein[ivfind])) / (
+                    np.log(ein[ivfind + 1]) - np.log(ein[ivfind])
                 )
                 if (mu < 0.0) and (mu > -1e-5):
                     mu = 0.0
@@ -219,31 +224,36 @@ def highres_ephoton_interpolator(
                         edif_edge_lo[ivfind, k] / ein[ivfind] * (1 - mu)
                         + edif_edge_lo[ivfind + 1, k] / ein[ivfind + 1] * mu
                     ) * ebin_edge_in[i]
+
                     new_epx_hi[i, k] = (
                         edif_edge_hi[ivfind, k] / ein[ivfind] * (1 - mu)
                         + edif_edge_hi[ivfind + 1, k] / ein[ivfind + 1] * mu
                     ) * ebin_edge_in[i]
+
                     diff_matrix[i, k] = (
                         matrix[ivfind, k] * (1 - mu) + matrix[ivfind + 1, k] * mu
                     )
-    return new_epx_lo, new_epx_hi, highres_ephoton_interpolator
+
+    return new_epx_lo, new_epx_hi, diff_matrix
 
 
 @nb.njit(fastmath=True)
-def atscat_highres_ephoton_interpolator(
-    ebin_edge_in, nobins_in, e_in, nvbins, matrix, nobins_out
-):
+def atscat_highres_ephoton_interpolator(ebin_edge_in, ein, matrix):
 
-    new_matrix = np.zeros((nobins_out, nobins_in))
+    nobins_in = len(ebin_edge_in) - 1
+    nvbins = len(ein) - 1
+    nobins_out = matrix.shape[1]
 
-    ivfind = 1
+    new_matrix = np.zeros((nobins_in, nobins_out))
+
+    ivfind = 0
 
     for i in range(nobins_in):
-        for j in range(ivfind - 1, nvbins):
-            if (ebin_edge_in[i] >= e_in[j]) and ebin_edge_in[i] < e_in[j + 1]:
+        for j in range(ivfind, nvbins):
+            if (ebin_edge_in[i] >= ein[j]) and ebin_edge_in[i] < ein[j + 1]:
                 ivfind = j
-                mu = (np.log(ebin_edge_in[i]) - np.log(e_in[ivfind])) / (
-                    np.loglog(e_in[ivfind + 1]) - np.log(e_in[ivfind])
+                mu = (np.log(ebin_edge_in[i]) - np.log(ein[ivfind])) / (
+                    np.log(ein[ivfind + 1]) - np.log(ein[ivfind])
                 )
                 if (mu < 0.0) and (mu > -1e-5):
                     mu = 0.0

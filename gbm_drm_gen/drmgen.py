@@ -5,13 +5,18 @@ import numpy as np
 from threeML.utils.OGIP.response import InstrumentResponse
 
 from gbm_drm_gen.basersp import rsp_database
+from gbm_drm_gen.basersp_numba import rsp_database_nb
 from gbm_drm_gen.utils.geometry import ang2cart, is_occulted
+
+import numba as nb
+
 
 from gbm_drm_gen.matrix_functions import (
     calc_sphere_dist,
     echan_integrator,
     trfind,
     atscat_highres_ephoton_interpolator,
+    highres_ephoton_interpolator,
 )
 
 
@@ -79,6 +84,7 @@ class DRMGen(object):
         self._det_number = det_number
 
         self._database = rsp_database[lu[det_number]]
+        self._database_nb = rsp_database_nb[lu[det_number]]
         self._ein = np.zeros(self._nobins_in, dtype=np.float32)
         energ_lo = self._database.energ_lo
         energ_hi = self._database.energ_hi
@@ -145,7 +151,7 @@ class DRMGen(object):
         self.ra = ra
         self.dec = dec
 
-        if self._occult:
+        if False:  # self._occult:
             if is_occulted(ra, dec, self._sc_pos):
                 self._drm = self._occulted_DRM
 
@@ -278,10 +284,12 @@ class DRMGen(object):
 
         return [az, el]
 
-    
     def _make_drm_numba(self, src_az, src_el, geo_az, geo_el):
 
         #### move outside loop
+
+        print('numba')
+        
         n_tmp_phot_bin = 2 * self._nobins_in + self._nobins_in % 2
         tmp_phot_bin = np.zeros(n_tmp_phot_bin)
         tmp_phot_bin[::2] = self._in_edge[:-1]
@@ -289,34 +297,37 @@ class DRMGen(object):
             (np.log10(self._in_edge[:-1]) + np.log10(self._in_edge[1:])) / 2.0
         )
 
-
-        return _build_drm(src_az, src_el, geo_az, geo_el,
-                   nobins_in = self._nobins_in,
-                   nobins_out = self._nobins_out,
-                   Azimuth = self._database.Azimuth,
-                   Zenith = self._database.Zenith,
-                   milliaz = self._database.milliaz,
-                   millizen = self._database.millizen,
-                   in_edge = self._in_edge,
-                   lat_edge = self._database.lat_edge,
-                   lat_cent = self._database.lat_cent,
-                   theta_cent = self._database.theta_cent,
-                   phi_cent = self._database.phi_cent,
-                   ienerg = self._database.ienerg,
-                   out_edge = self._out_edge,
-                   ein = self._database.ein,
-                   epx_lo = self._database.epx_lo,
-                   epx_hi = self._database.epx_hi,
-                   ichan = self._database.ichan,
-                   matrix_type = self._matrix_type,
-                   rsps = self._database.rsps,
-                   tmp_phot_bin = tmp_phot_bin
-
-
-
+        return _build_drm(
+            src_az,
+            src_el,
+            geo_az,
+            geo_el,
+            nobins_in=self._nobins_in,
+            nobins_out=self._nobins_out,
+            Azimuth=self._database_nb.Azimuth,
+            Zenith=self._database_nb.Zenith,
+            grid_points_list=self._database_nb.grid_points_list,
+            milliaz=self._database_nb.milliaz,
+            millizen=self._database_nb.millizen,
+            in_edge=self._in_edge,
+            lat_edge=self._database_nb.lat_edge,
+            lat_cent=self._database_nb.lat_cent,
+            theta_cent=self._database_nb.theta_cent,
+            phi_cent=self._database_nb.phi_cent,
+            double_phi_cent=self._database_nb.double_phi_cent,
+            ienerg=self._database_nb.ienerg,
+            out_edge=self._out_edge,
+            ein=self._ein,
+            epx_lo=self._database_nb.epx_lo,
+            epx_hi=self._database_nb.epx_hi,
+            ichan=self._database_nb.ichan,
+            matrix_type=self._matrix_type,
+            rsps=self._database_nb.rsps,
+            n_tmp_phot_bin=n_tmp_phot_bin,
+            tmp_phot_bin=tmp_phot_bin,
+            at_scat_data=self._database_nb.at_scat_data,
         )
-    
-    
+
     def _make_drm(self, src_az, src_el, geo_az, geo_el):
         """
         The DRM generator. Should not be invoked by the user except via the set location member funtion.
@@ -558,6 +569,7 @@ class DRMGen(object):
         ###################################################  ################
 
 
+#@nb.njit(fastmath=True)
 def _build_drm(
     src_az,
     src_el,
@@ -565,14 +577,9 @@ def _build_drm(
     geo_el,
     nobins_in,
     nobins_out,
-    # X,
-    # Y,
-    # Z,
-    # LIST,
-    # LPTR,
-    # LEND,
     Azimuth,
     Zenith,
+    grid_points_list,
     milliaz,
     millizen,
     in_edge,
@@ -580,6 +587,7 @@ def _build_drm(
     lat_cent,
     theta_cent,
     phi_cent,
+    double_phi_cent,
     ienerg,
     out_edge,
     ein,
@@ -588,15 +596,16 @@ def _build_drm(
     ichan,
     matrix_type,
     rsps,
+    n_tmp_phot_bin,
     tmp_phot_bin,
+    at_scat_data,
 ):
 
-
-    nvbins = len(ein) - 1
-    
     final_drm = np.zeros((nobins_in, nobins_out))
 
     ## SKY Interpolation
+
+    dtr = np.pi / 180.0
 
     rlon = src_az
     rlat = src_el
@@ -608,14 +617,6 @@ def _build_drm(
         [np.cos(plat) * np.cos(plon), np.cos(plat) * np.sin(plon), np.sin(plat)]
     )
 
-    grid_points_list = np.array(
-        [
-            np.cos(np.deg2rad(90-Zenith)) * np.cos(np.deg2rad(Azimuth)),
-            np.cos(np.deg2rad(90-Zenith)) * np.sin(np.deg2rad(Azimuth)),
-            np.sin(np.deg2rad(90-Zenith)),
-        ]
-    ).T
-
     b1, b2, b3, i1, i2, i3 = trfind(P, grid_points_list)
 
     i1 += 1
@@ -624,9 +625,9 @@ def _build_drm(
 
     # mod here
 
-    mat1 = rsps[millizen[i1 - 1] + "_" + milliaz[i1 - 1]]
-    mat2 = rsps[millizen[i2 - 1] + "_" + milliaz[i2 - 1]]
-    mat3 = rsps[millizen[i2 - 1] + "_" + milliaz[i3 - 1]]
+    mat1 = rsps[milliaz[i1 - 1] + "_" + millizen[i1 - 1]]
+    mat2 = rsps[milliaz[i2 - 1] + "_" + millizen[i2 - 1]]
+    mat3 = rsps[milliaz[i3 - 1] + "_" + millizen[i3 - 1]]
 
     ## Interpolator on triangle
 
@@ -728,20 +729,16 @@ def _build_drm(
             num_theta = len(theta_cent)
             num_phi = len(double_phi_cent)
 
-            num_loops = num_theta * num_phi * 2
-
             theta_u = theta_cent
             phi_u = double_phi_cent
 
             # loop over all the fucking atm matrices
             tmp_out = np.zeros((ienerg, nobins_out))
 
-            itr = 0
+            # itr = 0
             for i in range(num_theta):
                 for j in range(num_phi):
                     for k in range(1):
-
-                        dtr = np.arccos(-1.0) / 180.0
 
                         xg = np.sin(theta_u[i] * dtr) * np.cos(phi_u[j, k] * dtr)
                         yg = np.sin(theta_u[i] * dtr) * np.sin(phi_u[j, k] * dtr)
@@ -771,8 +768,7 @@ def _build_drm(
                                 np.cos(plat) * np.cos(plon),
                                 np.cos(plat) * np.sin(plon),
                                 np.sin(plat),
-                            ],
-                            np.float32,
+                            ]
                         )
 
                         # Find a new interpolated matrix
@@ -784,24 +780,27 @@ def _build_drm(
                         i2 += 1
                         i3 += 1
 
-                        N = len(LEND)
+                        #                        N = len(LEND)
 
                         i_array = [i1, i2, i3]
 
                         dist1 = calc_sphere_dist(
-                            az, 90.0 - el, Azimuth[i1 - 1], Zenith[i1 - 1]
+                            az, 90.0 - el, Azimuth[i1 - 1], Zenith[i1 - 1], dtr
                         )
                         dist2 = calc_sphere_dist(
-                            az, 90.0 - el, Azimuth[i2 - 1], Zenith[i2 - 1]
+                            az, 90.0 - el, Azimuth[i2 - 1], Zenith[i2 - 1], dtr
                         )
                         dist3 = calc_sphere_dist(
-                            az, 90.0 - el, Azimuth[i3 - 1], Zenith[i3 - 1]
+                            az, 90.0 - el, Azimuth[i3 - 1], Zenith[i3 - 1], dtr
                         )
 
                         dist_array = np.array([dist1, dist2, dist3])
+
                         i1 = i_array[np.argmin(dist_array)]
 
-                        tmpdrm = rsps[millizen[i1 - 1] + "_" + milliaz[i1 - 1]]
+                        tmpdrm = rsps[milliaz[i1 - 1] + "_" + millizen[i1 - 1]]
+
+                        #                        print(tmpdrm.dtype)
 
                         # intergrate the new drm
                         direct_diff_matrix = echan_integrator(
@@ -812,21 +811,19 @@ def _build_drm(
                             for jj in range(nobins_out):
                                 for kk in range(ienerg):
 
-                                    out_matrix[ii, jj] += (
+                                    tmp_out[ii, jj] += (
                                         at_scat_data[ii, kk, il_low, i, j] * l_frac
                                         + at_scat_data[ii, kk, il_high, i, j]
                                         * (1 - l_frac)
                                     ) * direct_diff_matrix[kk, jj]
 
             tmp_out *= coslat_corr
-            atscat_diff_matrix = atscat_highres_ephoton_interpolator(
-                tmp_phot_bin, nobins_in, ein, nvbins, tmp_out, nobins_out
-            )
+            atscat_diff_matrix = atscat_highres_ephoton_interpolator(tmp_phot_bin,  ein, tmp_out )
 
     ###################################
 
     new_epx_lo, new_epx_hi, diff_matrix = highres_ephoton_interpolator(
-        tmp_phot_bin, ein, out_matrix, epx_lo, epx_hi, ichan, n_tmp_phot_bin,
+        tmp_phot_bin, ein, out_matrix, epx_lo, epx_hi, n_tmp_phot_bin,
     )
 
     binned_matrix = echan_integrator(
