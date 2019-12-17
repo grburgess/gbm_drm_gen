@@ -380,15 +380,14 @@ class DRMGenTrig(DRMGen):
         quaternions = self._all_quats[condition][0]
         sc_pos = self._all_sc_pos[condition][0]
 
-        super(DRMGenTrig, self).__init__(
-            quaternions=quaternions,
-            sc_pos=sc_pos,
-            det_number=self._det_number,
-            ebin_edge_in=self._in_edge,
-            mat_type=self._matrix_type,
-            ebin_edge_out=self._out_edge,
-        )
 
+        super(DRMGenTrig, self).__init__(quaternions=quaternions,
+                                         sc_pos=sc_pos,
+                                         det_number=self._det_number,
+                                         ebin_edge_in=self._in_edge,
+                                         mat_type=self._matrix_type,
+                                         ebin_edge_out=self._out_edge,
+                                         occult=self._occult)
 
 ################
 lu = [
