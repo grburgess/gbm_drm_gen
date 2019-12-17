@@ -2,3 +2,5 @@
 build/
 *.egg*
 dist/*
+/.DS_Store
+/at_scat.cpython-37m-darwin.so
