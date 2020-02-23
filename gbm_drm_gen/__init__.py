@@ -16,7 +16,7 @@ except:
 
 
 __all__ = [
-    "DRMGen",
+ 
     "DRMGenTTE",
     "BALROG_DRM",
     "BALROGLike",
