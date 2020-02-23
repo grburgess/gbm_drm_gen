@@ -7,7 +7,7 @@ try:
     from gbm_drm_gen.io.balrog_drm import BALROG_DRM
     from gbm_drm_gen.io.balrog_healpix_map import BALROGHealpixMap    
 
-except(ImportError):
+except:
     BALROGLike = None
     BALROG_DRM = None
     BALROGHealpixMap = None

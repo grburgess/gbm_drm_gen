@@ -1,7 +1,7 @@
 try:
     from threeML.utils.response import InstrumentResponse
 
-except(ImportError):
+except:
     from gbm_drm_gen.utils.response import InstrumentResponse
 
 
