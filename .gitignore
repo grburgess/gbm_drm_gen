@@ -8,3 +8,4 @@ dist/*
 /at_scat.cpython-37m-darwin.so
 /examples/.ipynb_checkpoints/
 *.pyc
+*.c
