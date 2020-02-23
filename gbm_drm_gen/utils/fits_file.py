@@ -230,7 +230,7 @@ class FITSExtension(object):
         self._hdu = fits.BinTableHDU.from_columns(fits.ColDefs(fits_columns), header=header)
 
         # update the header to indicate that the file was created by 3ML
-        self._hdu.header.set('CREATOR', "GBM_DRM_GEN v.%s" % (pkg_resources.get_distribution("dgm_drm_gen").version),
+        self._hdu.header.set('CREATOR', "GBM_DRM_GEN v.%s" % (pkg_resources.get_distribution("gbm_drm_gen").version),
              "(J. Burgess, jburgess@mpe.mpg.de)")
 
     @property

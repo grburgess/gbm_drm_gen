@@ -10,7 +10,7 @@ import copy
 import astropy.units as u
 
 from gbm_drm_gen.utils.file_utils import file_existing_and_readable, sanitize_filename
-from gbm_drm_gen.io.fits_file import FITSExtension, FITSFile
+from gbm_drm_gen.utils.fits_file import FITSExtension, FITSFile
 
 
 

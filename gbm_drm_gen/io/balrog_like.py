@@ -1,4 +1,12 @@
-from threeML.plugins.DispersionSpectrumLike import DispersionSpectrumLike
+try:
+    from threeML.plugins.DispersionSpectrumLike import DispersionSpectrumLike
+
+except(ImportError):
+
+    print('You do not have threeML installed')
+
+    raise RuntimeError()
+    
 from astromodels.functions.priors import Uniform_prior, Cosine_Prior
 from .balrog_drm import BALROG_DRM
 

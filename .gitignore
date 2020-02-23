@@ -10,3 +10,4 @@ dist/*
 *.pyc
 *.c
 src/at_scat.c
+/test_n6.rsp

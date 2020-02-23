@@ -1,4 +1,8 @@
-from threeML.utils.OGIP.response import InstrumentResponse
+try:
+    from threeML.utils.response import InstrumentResponse
+
+except(ImportError):
+    from gbm_drm_gen.utils.response import InstrumentResponse
 
 
 class BALROG_DRM(InstrumentResponse):
