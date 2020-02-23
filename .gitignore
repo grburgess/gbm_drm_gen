@@ -9,3 +9,4 @@ dist/*
 /examples/.ipynb_checkpoints/
 *.pyc
 *.c
+src/at_scat.c
