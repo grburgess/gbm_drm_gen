@@ -1,7 +1,7 @@
 import pkg_resources
 import os
 from shutil import copyfile
-import yaml
+
 
 
 def get_path_of_data_file(data_file):
