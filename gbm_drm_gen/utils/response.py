@@ -1,4 +1,4 @@
-import astropy.io.fits as pyfits
+import astropy.io.fits as fits
 import numpy as np
 import warnings
 import matplotlib.cm as cm
@@ -9,10 +9,10 @@ import copy
 
 import astropy.units as u
 
-from threeML.io.file_utils import file_existing_and_readable, sanitize_filename
-from threeML.io.fits_file import FITSExtension, FITSFile
-from threeML.utils.time_interval import TimeInterval
-from threeML.exceptions.custom_exceptions import custom_warnings
+from gbm_drm_gen.utils.file_utils import file_existing_and_readable, sanitize_filename
+from gbm_drm_gen.io.fits_file import FITSExtension, FITSFile
+
+
 
 
 class NoCoverageIntervals(RuntimeError):
@@ -366,7 +366,7 @@ class OGIPResponse(InstrumentResponse):
         self._rsp_file = rsp_file
 
         # Read the response
-        with pyfits.open(rsp_file) as f:
+        with fits.open(rsp_file) as f:
 
             try:
 
@@ -600,7 +600,7 @@ class OGIPResponse(InstrumentResponse):
             "Ancillary file %s not existing or not " "readable" % arf_file
         )
 
-        with pyfits.open(arf_file) as f:
+        with fits.open(arf_file) as f:
 
             data = f["SPECRESP"].data
 
