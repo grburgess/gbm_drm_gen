@@ -3,10 +3,12 @@ python:
   - '2.7'
   - '3.6'
   - '3.7'
+before_install:
+  - sudo apt-get install gfortran
 install:
-- pip install --upgrade pytest cython pytest-cov codecov numpy>=1.16
-- python setup.py install
+  - pip install --upgrade pytest cython pytest-cov codecov numpy>=1.16
+  - python setup.py install
 
 script:
-- python -m pytest -vv --log-cli-level=DEBUG   --cov=gbm_drm_gen/
+  - python -m pytest -vv --log-cli-level=DEBUG   --cov=gbm_drm_gen/
 #- codecov --token=15145a76-8e53-4122-9d1b-ab5396fbba1e
