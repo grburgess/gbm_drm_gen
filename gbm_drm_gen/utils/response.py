@@ -97,7 +97,7 @@ class InstrumentResponse(object):
 
         if self._mc_energies.max() < self._ebounds.max():
 
-            custom_warnings.warn(
+            warnings.warn(
                 "Maximum MC energy (%s) is smaller "
                 "than maximum EBOUNDS energy (%s)"
                 % (self._mc_energies.max(), self.ebounds.max()),
@@ -106,7 +106,7 @@ class InstrumentResponse(object):
 
         if self._mc_energies.min() > self._ebounds.min():
 
-            custom_warnings.warn(
+            warnings.warn(
                 "Minimum MC energy (%s) is larger than "
                 "minimum EBOUNDS energy (%s)"
                 % (self._mc_energies.min(), self._ebounds.min()),
