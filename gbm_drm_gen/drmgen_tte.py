@@ -59,7 +59,7 @@ class DRMGenTTE(DRMGen):
 
         self._matrix_type = mat_type
 
-        if name is None:
+        if det_name is None:
 
             assert tte_file is not None
 
@@ -68,7 +68,7 @@ class DRMGenTTE(DRMGen):
                 det_name = f["PRIMARY"].header["DETNAM"]
 
         else:
-            assert name in det_name_lookup, 'must use a valid detector name'
+            assert det_name in det_name_lookup, 'must use a valid detector name'
             
         self._det_number = det_name_lookup[det_name]
 
