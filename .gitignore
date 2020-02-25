@@ -11,3 +11,4 @@ dist/*
 *.c
 src/at_scat.c
 /test_n6.rsp
+/.pytest_cache/
