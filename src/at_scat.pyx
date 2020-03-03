@@ -110,6 +110,7 @@ cpdef np.ndarray[DTYPE_t, ndim=2] get_at_scat(np.ndarray[DTYPE_t, ndim=1] gx, np
                                                 database.at_scat_data[:,:,il_high,i,j],
                                                 l_frac)
 
-                    out_matrix[i] = tmp_out
-
+                    out_matrix[itr] = tmp_out
+                    itr += 1
+                    
     return out_matrix.sum(axis=0)

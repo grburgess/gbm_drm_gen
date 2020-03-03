@@ -2,3 +2,14 @@
 build/
 *.egg*
 dist/*
+/ftran.cpython-37m-darwin.so
+/gbm_drm_gen/.#at_scat.py
+/.DS_Store
+/at_scat.cpython-37m-darwin.so
+/examples/.ipynb_checkpoints/
+*.pyc
+*.c
+src/at_scat.c
+/test_n6.rsp
+/.pytest_cache/
+/src/ftran-f2pywrappers.f

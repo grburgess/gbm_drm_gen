@@ -43,7 +43,7 @@ def is_occulted(ra, dec, sc_pos):
     """
     # min_vis = 1.1955505376161157  # 68.5
 
-    earth_radius = 6371.
+    earth_radius = 6371.0
     fermi_radius = np.sqrt((sc_pos ** 2).sum())
 
     horizon_angle = 90 - np.rad2deg(np.arccos(earth_radius / fermi_radius))
@@ -55,8 +55,4 @@ def is_occulted(ra, dec, sc_pos):
     cart_position = ang2cart(ra, dec)
     ang_sep = get_ang(cart_position, -sc_pos)
 
-
     return ang_sep < min_vis
-
-
-

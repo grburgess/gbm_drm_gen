@@ -39,6 +39,7 @@ REQUIRED = [
     'astropy',
     'scipy',
     'h5py',
+    'responsum',
     #    'threeML',
     'gbmgeometry'
 ]
