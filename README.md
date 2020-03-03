@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/grburgess/gbm_drm_gen.svg?branch=master)](https://travis-ci.org/grburgess/gbm_drm_gen)
+[![codecov](https://codecov.io/gh/grburgess/gbm_drm_gen/branch/master/graph/badge.svg?token=vdaYSD8vdx)](https://codecov.io/gh/grburgess/gbm_drm_gen)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2590555.svg)](https://doi.org/10.5281/zenodo.2590555)
 
 # GBM Response Generator
