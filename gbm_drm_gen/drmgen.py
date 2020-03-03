@@ -118,6 +118,16 @@ class DRMGen(object):
 
         return response
 
+
+    def to_3ML_response_direct_sat_coord(self, az, el):
+
+        self.set_location_direct_sat_coord(az, el)
+
+        response = InstrumentResponse(self.matrix, self.ebounds, self.monte_carlo_energies)
+
+        return response
+      
+
     def to_fits(self, ra, dec, filename, overwrite):
 
         response = self.to_3ML_response(ra, dec)
@@ -131,6 +141,7 @@ class DRMGen(object):
         response.to_fits(
             "%s_%s.rsp" % (filename, lu[self._det_number]), "GLAST", "GBM", overwrite
         )
+        
 
     def set_location(self, ra, dec):
         """
@@ -163,6 +174,30 @@ class DRMGen(object):
 
         # go ahead and transpose it for spectal fitting, etc.
         # self._drm_transpose = self._drm.T
+
+
+    def set_location_direct_sat_coord(self, az, el):
+        """
+        Set the AZ and EL in satellite coordinates of the DRM to be built. This invokes DRM generation as well.
+
+        :param az: az in degrees
+        :param el: el in degrees
+        """
+
+        self.ra = az
+        self.dec = el
+
+        if self._occult:
+            if is_occulted(az, el, self._sc_pos):
+                self._drm = self._occulted_DRM
+                
+            else:
+                # build the DRM
+                self._drm = self._make_drm(az, el, self._geo_az, self._geo_el)
+        else:
+            # build the DRM
+            self._drm = self._make_drm(az, el, self._geo_az, self._geo_el)
+            
 
     def set_time(self, time):
 
