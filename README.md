@@ -3,6 +3,8 @@
 
 # GBM Response Generator
 
+![alt text](https://raw.githubusercontent.com/grburgess/gbm_drm_gen/master/logo.png)
+
 A fast, python based response generator for the Fermi-GBM. A 3ML plugin is also provided that allows for one to locate GRBs with any of the GBM spectral data. 
 
 If you find this code useful or use it please cite the following works:
