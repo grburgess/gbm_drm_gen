@@ -1,14 +1,21 @@
 language: python
 python:
-#  - '2.7'
-  - '3.6'
-  - '3.7'
+- '3.6'
+- '3.7'
 before_install:
-  - sudo apt-get install gfortran
+- sudo apt-get install gfortran
 install:
-  - pip install --upgrade pytest cython pytest-cov codecov numpy>=1.16
-  - python setup.py install
-
+- pip install --upgrade pytest cython pytest-cov codecov numpy>=1.16
+- python setup.py install
 script:
-  - python -m pytest -vv --cov=gbm_drm_gen/
-  - codecov --token=74fead2f-80bb-45b0-bc40-44a2c80ab9d6
+- python -m pytest -vv --cov=gbm_drm_gen/
+- codecov --token=74fead2f-80bb-45b0-bc40-44a2c80ab9d6
+deploy:
+  provider: pypi
+  user: "__token__"
+  password:
+    secure: pqH3W8/u1sL0lA3gEm4RKRDk6NE9Q1Pb5rXQRyPt46qmaxV1HbG85rrf3lg6VL7htyNLlYs2dyzulU5y/JwHNvLRtBzfAa5FA+Tqm5x8bC7z/beKe6DkV9Z1due0q6j+0bJLEYQW1d90NFolPVg/5PthFXcRymVAc70u8p7NukG9Q0/lcxTDe5rdtWIkab2ft1zoIpHMOi1xvxTzrwo8A/Ze0SMXAOSoG/zpOVcuqkkjydw/Scp9J+oA22nNUWNdPsqIXXH/OslPDnlYQUVEJv7/dhXXugrkVJo50I+bgWG1gQSAeSF3SydU/dqsDwNMkVVDvwrclRZKMICMxBwBJ1TKqTtvAkzZu2NjI6W5pwpOJz/SYVvJPdmOWQmalTzK9PJfQ5ALzQsBOdxl2taQoeybnCHWCvvfp3xsCQfBLFrYEiJb3Lkt6z5mFKGaywBd11Gb33OqYvZqKoYonNToxizLCxQRMKJxSOBnstyyjSm/wGrc/wZDYZ012q9E6Z//U4fKoC3DbFCG62x5fn7MZLngYE757CgKt9BvRswI3wG6VBdXzvIAA4d3QyT3TFWtN+vBR5p10xEeTOntHUjJSLyZQsHjTSGzIN+ODpAP88G0+Skpdyp34ZvHxL7vQSSiD3aOHzyZ5q97i1RNJTPmw7TXQhNvWc11zyVpr4xgCKc=
+  on:
+    tags: true
+  distributions: "sdist bdist_wheel" # Your distributions here
+  skip_existing: true
