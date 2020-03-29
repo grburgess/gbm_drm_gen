@@ -1,0 +1,2 @@
+include versioneer.py
+include gbm_drm_gen/_version.py
