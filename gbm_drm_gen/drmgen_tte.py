@@ -43,7 +43,7 @@ class DRMGenTTE(DRMGen):
     def __init__(
         self,
         tte_file=None,
-        det_name = None,    
+        det_name=None,
         time=0.0,
         cspecfile=None,
         trigdat=None,
@@ -68,8 +68,8 @@ class DRMGenTTE(DRMGen):
                 det_name = f["PRIMARY"].header["DETNAM"]
 
         else:
-            assert det_name in det_name_lookup, 'must use a valid detector name'
-            
+            assert det_name in det_name_lookup, "must use a valid detector name"
+
         self._det_number = det_name_lookup[det_name]
 
         if self._det_number > 11:
@@ -414,7 +414,7 @@ class DRMGenTTE(DRMGen):
 
         if trigdat is not None:
 
-            self._position_interpolator = gbmgeometry.PositionInterpolator(
+            self._position_interpolator = gbmgeometry.PositionInterpolator.from_trigdat(
                 trigdat=trigdat
             )
 
@@ -425,7 +425,7 @@ class DRMGenTTE(DRMGen):
 
         elif poshist is not None:
 
-            self._position_interpolator = gbmgeometry.PositionInterpolator(
+            self._position_interpolator = gbmgeometry.PositionInterpolator.from_poshist(
                 poshist=poshist, T0=T0
             )
 
@@ -466,12 +466,12 @@ class DRMGenTTE(DRMGen):
 
         sc_pos = self._position_interpolator.sc_pos(self._time)
 
-
-        super(DRMGenTTE, self).__init__(quaternions=quaternions,
-                                        sc_pos=sc_pos,
-                                        det_number=self._det_number,
-                                        ebin_edge_in=self._in_edge,
-                                        mat_type=self._matrix_type,
-                                        ebin_edge_out=self._out_edge,
-                                        occult=self._occult)
-
+        super(DRMGenTTE, self).__init__(
+            quaternions=quaternions,
+            sc_pos=sc_pos,
+            det_number=self._det_number,
+            ebin_edge_in=self._in_edge,
+            mat_type=self._matrix_type,
+            ebin_edge_out=self._out_edge,
+            occult=self._occult,
+        )
