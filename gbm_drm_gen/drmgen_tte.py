@@ -415,7 +415,7 @@ class DRMGenTTE(DRMGen):
         if trigdat is not None:
 
             self._position_interpolator = gbmgeometry.PositionInterpolator.from_trigdat(
-                trigdat=trigdat
+                trigdat_file=trigdat
             )
 
             self._gbm = gbmgeometry.GBM(
@@ -426,7 +426,7 @@ class DRMGenTTE(DRMGen):
         elif poshist is not None:
 
             self._position_interpolator = gbmgeometry.PositionInterpolator.from_poshist(
-                poshist=poshist, T0=T0
+                poshist_file=poshist, T0=T0
             )
 
             self._gbm = gbmgeometry.GBM(
