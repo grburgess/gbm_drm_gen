@@ -21,6 +21,7 @@ class BALROGLike(DispersionSpectrumLike):
         time=0,
         free_position=True,
         verbose=True,
+        **kwargs
     ):
         """
         BALROGLike is a general plugin for fitting GBM spectra and locations at the same time
@@ -57,7 +58,7 @@ class BALROGLike(DispersionSpectrumLike):
 
             observation._rsp = balrog_drm
 
-        super(BALROGLike, self).__init__(name, observation, background, verbose)
+        super(BALROGLike, self).__init__(name, observation, background, verbose, **kwargs)
 
         # only on the start up
 
