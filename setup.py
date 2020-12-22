@@ -14,6 +14,7 @@ ext1 = Extension(
     sources=["src/sig_ftran.pyf", "src/ftran.f90"],
     libraries=["m"],
     extra_f90_compile_args=["-fimplicit-none", "-ffree-line-length-none", "-Ofast"],
+    include_dirs=[numpy.get_include()]
 )
 
 # ext2 = Extension(

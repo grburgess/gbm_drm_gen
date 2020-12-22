@@ -6,8 +6,9 @@ except:
     print('You do not have threeML installed')
 
     raise ImportError()
-    
-from astromodels.functions.priors import Uniform_prior, Cosine_Prior
+
+from astromodels.functions.priors import Cosine_Prior, Uniform_prior
+
 from .balrog_drm import BALROG_DRM
 
 
@@ -58,7 +59,8 @@ class BALROGLike(DispersionSpectrumLike):
 
             observation._rsp = balrog_drm
 
-        super(BALROGLike, self).__init__(name, observation, background, verbose, **kwargs)
+        super(BALROGLike, self).__init__(
+            name, observation, background, verbose, **kwargs)
 
         # only on the start up
 
@@ -112,11 +114,10 @@ class BALROGLike(DispersionSpectrumLike):
 
                 ra = self._like_model.point_sources[key].position.ra.value
                 dec = self._like_model.point_sources[key].position.dec.value
-            
-            
+
         self._rsp.set_location(ra, dec)
 
-    def get_model(self):
+    def get_model(self,precalc_fluxes=None):
 
         # Here we update the GBM drm parameters which creates and new DRM for that location
         # we should only be dealing with one source for GBM
@@ -130,7 +131,7 @@ class BALROGLike(DispersionSpectrumLike):
 
             self._rsp.set_location(ra, dec)
 
-        return super(BALROGLike, self).get_model()
+        return super(BALROGLike, self).get_model(precalc_fluxes)
 
     @classmethod
     def from_spectrumlike(
@@ -138,8 +139,8 @@ class BALROGLike(DispersionSpectrumLike):
     ):
         """
         Generate a BALROGlike from an existing SpectrumLike child
-        
-        
+
+
         :param spectrum_like: the existing spectrumlike
         :param time: the time to generate the RSPs at
         :param drm_generator: optional BALROG DRM generator
