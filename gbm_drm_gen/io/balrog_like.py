@@ -22,6 +22,7 @@ class BALROGLike(DispersionSpectrumLike):
         time=0,
         free_position=True,
         verbose=True,
+        use_cache = False
         **kwargs
     ):
         """
@@ -38,7 +39,7 @@ class BALROGLike(DispersionSpectrumLike):
         """
 
         self._free_position = free_position
-
+        self._use_cache = use_cache
         if drm_generator is None:
 
             # If a generator is not supplied
@@ -115,7 +116,7 @@ class BALROGLike(DispersionSpectrumLike):
                 ra = self._like_model.point_sources[key].position.ra.value
                 dec = self._like_model.point_sources[key].position.dec.value
 
-        self._rsp.set_location(ra, dec)
+        self._rsp.set_location(ra, dec, cache=self._use_cache)
 
     def get_model(self,precalc_fluxes=None):
 
@@ -129,7 +130,7 @@ class BALROGLike(DispersionSpectrumLike):
             # assumes that the is only one point source which is how it should be!
             ra, dec = self._like_model.get_point_source_position(0)
 
-            self._rsp.set_location(ra, dec, cache = False)
+            self._rsp.set_location(ra, dec, cache=self._use_cache)
 
         return super(BALROGLike, self).get_model(precalc_fluxes)
 
