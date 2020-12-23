@@ -22,7 +22,7 @@ class BALROGLike(DispersionSpectrumLike):
         time=0,
         free_position=True,
         verbose=True,
-        use_cache = False
+        use_cache = False,
         **kwargs
     ):
         """
