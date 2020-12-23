@@ -52,12 +52,12 @@ class BALROG_DRM(InstrumentResponse):
 
         self._drm_generator.set_location(ra, dec)
 
-        self._cache.append[dict(cart=this_cart, matrix=self._drm_generator.matrix)]
+        self._cache.append(dict(cart=this_cart, matrix=self._drm_generator.matrix))
 
         return self._drm_generator.matrix
     
         
-    def set_location(self, ra, dec, cache=True):
+    def set_location(self, ra, dec, cache=False):
         """
         Set the source location
         :param ra: 
