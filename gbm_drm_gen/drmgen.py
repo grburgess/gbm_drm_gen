@@ -1,18 +1,38 @@
+import astropy.io.fits as fits
+import astropy.units as u
 import at_scat
 import ftran
-
+import gbmgeometry
 import numpy as np
 
 try:
-    #from threeML.utils.response import InstrumentResponse
+    # from threeML.utils.response import InstrumentResponse
     from threeML.utils.OGIP.response import InstrumentResponse
 
 
-except(ImportError):
+except (ImportError):
     from gbm_drm_gen.utils.response import InstrumentResponse
 
-from gbm_drm_gen.basersp import rsp_database
+from gbm_drm_gen.basersp import get_database
 from gbm_drm_gen.utils.geometry import ang2cart, is_occulted
+
+det_name_lookup = {
+    "NAI_00": 0,
+    "NAI_01": 1,
+    "NAI_02": 2,
+    "NAI_03": 3,
+    "NAI_04": 4,
+    "NAI_05": 5,
+    "NAI_06": 6,
+    "NAI_07": 7,
+    "NAI_08": 8,
+    "NAI_09": 9,
+    "NAI_10": 10,
+    "NAI_11": 11,
+    "BGO_00": 12,
+    "BGO_01": 13,
+}
+
 
 lu = [
     "n0",
@@ -33,15 +53,16 @@ lu = [
 
 
 class DRMGen(object):
-
-    def __init__(self,
-                 quaternions,
-                 sc_pos,
-                 det_number,
-                 ebin_edge_in,
-                 mat_type=0,
-                 ebin_edge_out=None,
-                 occult=True):
+    def __init__(
+        self,
+        quaternions,
+        sc_pos,
+        det_number,
+        ebin_edge_in,
+        mat_type=0,
+        ebin_edge_out=None,
+        occult=True,
+    ):
 
         """
         A generic GBM DRM generator. This can be inherited for specific purposes.
@@ -78,7 +99,7 @@ class DRMGen(object):
 
         self._det_number = det_number
 
-        self._database = rsp_database[lu[det_number]]
+        self._database = get_database(lu[det_number])
         self._ein = np.zeros(self._nobins_in, dtype=np.float32)
         energ_lo = self._database.energ_lo
         energ_hi = self._database.energ_hi
@@ -94,6 +115,9 @@ class DRMGen(object):
         self._sc_pos = sc_pos
 
         self._compute_spacecraft_coordinates()
+
+    # @classmethod
+    # def from_tte(cls)
 
     @property
     def ebounds(self):
@@ -120,15 +144,15 @@ class DRMGen(object):
 
         return response
 
-
     def to_3ML_response_direct_sat_coord(self, az, el):
 
         self.set_location_direct_sat_coord(az, el)
 
-        response = InstrumentResponse(self.matrix, self.ebounds, self.monte_carlo_energies)
+        response = InstrumentResponse(
+            self.matrix, self.ebounds, self.monte_carlo_energies
+        )
 
         return response
-      
 
     def to_fits(self, ra, dec, filename, overwrite):
 
@@ -143,7 +167,6 @@ class DRMGen(object):
         response.to_fits(
             "%s_%s.rsp" % (filename, lu[self._det_number]), "GLAST", "GBM", overwrite
         )
-        
 
     def set_location(self, ra, dec):
         """
@@ -177,7 +200,6 @@ class DRMGen(object):
         # go ahead and transpose it for spectal fitting, etc.
         # self._drm_transpose = self._drm.T
 
-
     def set_location_direct_sat_coord(self, az, el):
         """
         Set the AZ and EL in satellite coordinates of the DRM to be built. This invokes DRM generation as well.
@@ -192,14 +214,13 @@ class DRMGen(object):
         if self._occult:
             if is_occulted(az, el, self._sc_pos):
                 self._drm = self._occulted_DRM
-                
+
             else:
                 # build the DRM
                 self._drm = self._make_drm(az, el, self._geo_az, self._geo_el)
         else:
             # build the DRM
             self._drm = self._make_drm(az, el, self._geo_az, self._geo_el)
-            
 
     def set_time(self, time):
 

@@ -128,8 +128,13 @@ _all_dets = (
 
 rsp_database = collections.OrderedDict()
 
-with h5py.File(path_to_balrog_db, "r") as _h5_database:
 
-    for det in _all_dets:
+def get_database(det):
 
-        rsp_database[det] = DetDatabase(_h5_database[det])
+    assert det in _all_dets
+    
+    with h5py.File(path_to_balrog_db, "r") as h5_database:
+
+            db = DetDatabase(h5_database[det])
+
+    return db
