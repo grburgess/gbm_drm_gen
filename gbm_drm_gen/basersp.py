@@ -88,7 +88,7 @@ class DetDatabase(object):
 
         self.X = self._detector_group["X"][()]
         self.Y = self._detector_group["Y"][()]
-        self.Z = self._detector_group["Z"][()]
+       self.Z = self._detector_group["Z"][()]
 
         self.Azimuth = self._detector_group["Azimuth"][()]
         self.Zenith = self._detector_group["Zenith"][()]
@@ -107,7 +107,7 @@ class DetDatabase(object):
         self.energ_hi = self._detector_group["energ_hi"][()]
 
 
-_h5_database = h5py.File(path_to_balrog_db, "r")
+#_h5_database = h5py.File(path_to_balrog_db, "r")
 
 _all_dets = (
     "n0",
@@ -128,6 +128,8 @@ _all_dets = (
 
 rsp_database = collections.OrderedDict()
 
-for det in _all_dets:
+with h5py.File(path_to_balrog_db, "r") as _h5_database:
 
-    rsp_database[det] = DetDatabase(_h5_database[det])
+    for det in _all_dets:
+
+        rsp_database[det] = DetDatabase(_h5_database[det])

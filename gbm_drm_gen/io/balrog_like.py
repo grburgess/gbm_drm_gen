@@ -129,7 +129,7 @@ class BALROGLike(DispersionSpectrumLike):
             # assumes that the is only one point source which is how it should be!
             ra, dec = self._like_model.get_point_source_position(0)
 
-            self._rsp.set_location(ra, dec)
+            self._rsp.set_location(ra, dec, cache = False)
 
         return super(BALROGLike, self).get_model(precalc_fluxes)
 
