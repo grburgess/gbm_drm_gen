@@ -88,7 +88,7 @@ class DetDatabase(object):
 
         self.X = self._detector_group["X"][()]
         self.Y = self._detector_group["Y"][()]
-       self.Z = self._detector_group["Z"][()]
+        self.Z = self._detector_group["Z"][()]
 
         self.Azimuth = self._detector_group["Azimuth"][()]
         self.Zenith = self._detector_group["Zenith"][()]
