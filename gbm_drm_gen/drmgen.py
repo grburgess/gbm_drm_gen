@@ -1,5 +1,5 @@
-import at_scat
-import ftran
+# import at_scat
+# import ftran
 
 import numpy as np
 from threeML.utils.OGIP.response import InstrumentResponse

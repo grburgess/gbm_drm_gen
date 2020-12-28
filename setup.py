@@ -1,5 +1,4 @@
 from setuptools.command.build_ext import build_ext as _build_ext
-from Cython.Build import cythonize
 from setuptools import find_packages, Command # Extension
 from numpy.distutils.core import Extension # as Numpy_Extension
 from numpy.distutils.core import setup
@@ -9,19 +8,19 @@ import sys
 from shutil import rmtree
 import numpy
 
-ext1 = Extension(
-    name='ftran',
-    sources=['src/sig_ftran.pyf', 'src/ftran.f90'],
-    libraries=['m'],
-    extra_f90_compile_args=[
-        "-fimplicit-none", "-ffree-line-length-none", "-Ofast"
-    ])
+# ext1 = Extension(
+#     name='ftran',
+#     sources=['src/sig_ftran.pyf', 'src/ftran.f90'],
+#     libraries=['m'],
+#     extra_f90_compile_args=[
+#         "-fimplicit-none", "-ffree-line-length-none", "-Ofast"
+#     ])
 
-ext2 = Extension(name='at_scat',
-                 sources=['src/at_scat.pyx'],
-                 include_dirs=[numpy.get_include()])
+# ext2 = Extension(name='at_scat',
+#                  sources=['src/at_scat.pyx'],
+#                  include_dirs=[numpy.get_include()])
 
-extensions = cythonize([ext1, ext2])
+# extensions = cythonize([ext1, ext2])
 
 #extensions_cython = [ext2]
 
@@ -39,6 +38,7 @@ REQUIRED = [
     'astropy',
     'scipy',
     'h5py',
+    'numba',
     #    'threeML',
     'gbmgeometry'
 ]
@@ -143,7 +143,7 @@ setup(
     },
     license='BSD',
 
-    ext_modules=extensions,
+ #   ext_modules=extensions,
 
     cmdclass={
         'upload': UploadCommand,
