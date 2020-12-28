@@ -77,10 +77,10 @@ class DRMGen(object):
 
         self._database_nb = get_database(lu[det_number])
         self._ein = np.zeros(self._nobins_in, dtype=np.float32)
-        energ_lo = self._database.energ_lo
-        energ_hi = self._database.energ_hi
-        self._ein[: self._database.ienerg] = energ_lo
-        self._ein[self._database.ienerg] = energ_hi[-1]
+        energ_lo = self._database_nb.energ_lo
+        energ_hi = self._database_nb.energ_hi
+        self._ein[: self._database_nb.ienerg] = energ_lo
+        self._ein[self._database_nb.ienerg] = energ_hi[-1]
 
         self._out_edge = ebin_edge_out
         self._in_edge = ebin_edge_in
