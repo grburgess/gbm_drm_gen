@@ -328,7 +328,7 @@ def echan_integrator(diff_matrix, edif_edge_lo, edif_edge_hi, nhbins, ebin_edge_
         ihhigh = 0
         if total == 0:
             continue
-
+        
         for ihbin in range(1, nobins_out + 1):
 
             hlow = ebin_edge_out[ihbin - 1]
