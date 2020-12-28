@@ -102,69 +102,27 @@ class DRMGenTTE(DRMGen):
 
         self._out_edge = out_edge
 
-        # if poshist is None:
-        #
-        #     self._use_poshist = False
-        #
-        #     # Space craft stuff from TRIGDAT
-        #     with fits.open(trigdat) as f:
-        #         self._trigtime = f['EVNTRATE'].header['TRIGTIME']
-        #
-        #         self._tstart = f['EVNTRATE'].data['TIME'] - self._trigtime
-        #         self._tstop = f['EVNTRATE'].data['ENDTIME'] - self._trigtime
-        #
-        #         self._all_quats = f['EVNTRATE'].data['SCATTITD']
-        #         self._all_sc_pos = f['EVNTRATE'].data['EIC']
-        #
-
-
-
-
-        # this uses the trigger time!
-
-
-
-
-        #
-        # elif trigdat is None:
-        #
-        #     self._use_poshist = True
-        #
-        #     with fits.open(poshist) as f:
-        #
-        #         self._poshist_time = f['GLAST POS HIST'].data['SCLK_UTC']
-        #
-        #         self._q1 = f['GLAST POS HIST'].data['QSJ_1']
-        #         self._q2 = f['GLAST POS HIST'].data['QSJ_2']
-        #         self._q3 = f['GLAST POS HIST'].data['QSJ_3']
-        #         self._q4 = f['GLAST POS HIST'].data['QSJ_4']
-        #
-        #         self._pos_X = f['GLAST POS HIST'].data['POS_X']
-        #         self._pos_Y = f['GLAST POS HIST'].data['POS_Y']
-        #         self._pos_Z = f['GLAST POS HIST'].data['POS_Z']
-
-
         if trigdat is not None:
 
-            self._position_interpolator = gbmgeometry.PositionInterpolator(trigdat=trigdat)
+            self._position_interpolator = gbmgeometry.PositionInterpolator.from_trigdat(
+                trigdat_file=trigdat
+            )
 
-            self._gbm = gbmgeometry.GBM(self._position_interpolator.quaternion(time),
-                                        self._position_interpolator.sc_pos(time) * u.km)
+            self._gbm = gbmgeometry.GBM(
+                self._position_interpolator.quaternion(time),
+                self._position_interpolator.sc_pos(time) * u.km,
+            )
 
         elif poshist is not None:
 
-            self._position_interpolator = gbmgeometry.PositionInterpolator(poshist=poshist, T0=T0)
+            self._position_interpolator = gbmgeometry.PositionInterpolator.from_poshist(
+                poshist_file=poshist, T0=T0
+            )
 
-
-
-
-
-            self._gbm = gbmgeometry.GBM(self._position_interpolator.quaternion(time),
-                                        self._position_interpolator.sc_pos(time) * u.m)
-
-
-
-
+            self._gbm = gbmgeometry.GBM(
+                self._position_interpolator.quaternion(time),
+                self._position_interpolator.sc_pos(time) * u.m,
+            )
 
         else:
 
