@@ -296,12 +296,15 @@ def echan_integrator(diff_matrix, edif_edge_lo, edif_edge_hi, nhbins, ebin_edge_
     # ihover =0
     for jcdif in range(1, nobins_in + 1):
 
+        total = 0
         for ivh in range(1, nhbins + 1):
 
             edif_cent[ivh - 1] = (
                 edif_edge_lo[jcdif - 1, ivh - 1] +
                 edif_edge_hi[jcdif - 1, ivh - 1]
             ) / 2.0
+
+            total += edif_cent[ivh - 1]
             if edif_cent[ivh - 1] > 0:
 
                 diff_matrix_vec[ivh - 1] = diff_matrix[jcdif - 1, ivh - 1] / (
@@ -317,7 +320,7 @@ def echan_integrator(diff_matrix, edif_edge_lo, edif_edge_hi, nhbins, ebin_edge_
 
         ihlow = 0
         ihhigh = 0
-        if np.sum(edif_cent) == 0:
+        if total == 0:
             continue
 
         for ihbin in range(1, nobins_out + 1):
