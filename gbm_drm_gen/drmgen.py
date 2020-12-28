@@ -14,8 +14,7 @@ try:
 except:
     from responsum import InstrumentResponse
 
-import at_scat
-import ftran
+
 from gbm_drm_gen.basersp_numba import get_database
 from gbm_drm_gen.matrix_functions import (atscat_highres_ephoton_interpolator,
                                           calc_sphere_dist, echan_integrator,
