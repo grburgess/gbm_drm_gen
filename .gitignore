@@ -14,3 +14,4 @@ src/at_scat.c
 /.pytest_cache/
 /src/ftran-f2pywrappers.f
 src/at_scat.c
+examples/test_n6.rsp

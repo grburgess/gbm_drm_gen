@@ -1,10 +1,8 @@
 __author__ = "grburgess"
-import numpy as np
 import astropy.io.fits as fits
-
-import gbmgeometry
-
 import astropy.units as u
+import gbmgeometry
+import numpy as np
 
 from gbm_drm_gen.drmgen import DRMGen
 
@@ -377,41 +375,6 @@ class DRMGenTTE(DRMGen):
 
         self._out_edge = out_edge
 
-        # if poshist is None:
-        #
-        #     self._use_poshist = False
-        #
-        #     # Space craft stuff from TRIGDAT
-        #     with fits.open(trigdat) as f:
-        #         self._trigtime = f['EVNTRATE'].header['TRIGTIME']
-        #
-        #         self._tstart = f['EVNTRATE'].data['TIME'] - self._trigtime
-        #         self._tstop = f['EVNTRATE'].data['ENDTIME'] - self._trigtime
-        #
-        #         self._all_quats = f['EVNTRATE'].data['SCATTITD']
-        #         self._all_sc_pos = f['EVNTRATE'].data['EIC']
-        #
-
-        # this uses the trigger time!
-
-        #
-        # elif trigdat is None:
-        #
-        #     self._use_poshist = True
-        #
-        #     with fits.open(poshist) as f:
-        #
-        #         self._poshist_time = f['GLAST POS HIST'].data['SCLK_UTC']
-        #
-        #         self._q1 = f['GLAST POS HIST'].data['QSJ_1']
-        #         self._q2 = f['GLAST POS HIST'].data['QSJ_2']
-        #         self._q3 = f['GLAST POS HIST'].data['QSJ_3']
-        #         self._q4 = f['GLAST POS HIST'].data['QSJ_4']
-        #
-        #         self._pos_X = f['GLAST POS HIST'].data['POS_X']
-        #         self._pos_Y = f['GLAST POS HIST'].data['POS_Y']
-        #         self._pos_Z = f['GLAST POS HIST'].data['POS_Z']
-
         if trigdat is not None:
 
             self._position_interpolator = gbmgeometry.PositionInterpolator.from_trigdat(
@@ -441,26 +404,6 @@ class DRMGenTTE(DRMGen):
         self._sc_quaternions_updater()
 
     def _sc_quaternions_updater(self):
-        #
-        # if self._use_poshist:
-        #
-        #     condition = np.argmin(self._poshist_time - self._time)
-        #
-        #     quaternions = np.array([self._q1[condition],
-        #                             self._q2[condition],
-        #                             self._q3[condition],
-        #                             self._q4[condition]])
-        #
-        #     sc_pos = np.array([self._pos_X[condition],
-        #                        self._pos_Y[condition],
-        #                        self._pos_Z[condition]])
-        #
-        # else:
-        #
-        #     condition = np.logical_and(self._tstart <= self._time, self._time <= self._tstop)
-        #
-        #     quaternions = self._all_quats[condition][0]
-        #     sc_pos = self._all_sc_pos[condition][0]
 
         quaternions = self._position_interpolator.quaternion(self._time)
 
