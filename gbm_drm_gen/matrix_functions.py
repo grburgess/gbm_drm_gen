@@ -365,22 +365,15 @@ def echan_integrator(diff_matrix, edif_edge_lo, edif_edge_hi, nhbins, ebin_edge_
 
                             icdif = 1
 
-                            while icdif < (ihhigh + 1):
-
-                                if (euse > edif_cent[icdif - 1]) and (
-                                    euse <= edif_cent[icdif]
-                                ):
-                                    # interpolation
-                                    row_entry = diff_matrix_vec[icdif - 1] + (
-                                        diff_matrix_vec[icdif]
-                                        - diff_matrix_vec[icdif - 1]
-                                    ) * (euse - edif_cent[icdif - 1]) / (
-                                        edif_cent[icdif] - edif_cent[icdif - 1]
-                                    )
-                                    break
-                                icdif += (
-                                    1  # BB ADDED #########################
+                            icdif = np.searchsorted(edif_cent, euse)
+                            if icdif < (ihhigh + 1):
+                                row_entry = diff_matrix_vec[icdif - 1] + (
+                                    diff_matrix_vec[icdif]
+                                    - diff_matrix_vec[icdif - 1]
+                                ) * (euse - edif_cent[icdif - 1]) / (
+                                    edif_cent[icdif] - edif_cent[icdif - 1]
                                 )
+
                                 # sum up horizontal
                         row_tot[ihbin - 1] += row_entry
                         row_entry = 0.0
@@ -444,29 +437,23 @@ def echan_integrator(diff_matrix, edif_edge_lo, edif_edge_hi, nhbins, ebin_edge_
 
                         euse = hlow + hchunk * float(icbin - 1)
 
-                        icdif = ihlow
+                        icidf = np.searchsorted(
+                            edif_cent[ihlow:], euse) + ihlow
 
-                        while icdif < nhbins:  # again check the index
+                        if icdif < nhbins:  # again check the index
 
-                            if (euse > edif_cent[icdif - 1]) and (
-                                euse <= edif_cent[icdif]
-                            ):
-
-                                mu = (euse - edif_cent[icdif - 1]) / (
-                                    edif_cent[icdif] - edif_cent[icdif - 1]
+                            mu = (euse - edif_cent[icdif - 1]) / (
+                                edif_cent[icdif] - edif_cent[icdif - 1]
+                            )
+                            mu2 = (1 - np.cos(mu * np.pi)) / 2.0
+                            row_entry = (
+                                diff_matrix_vec[icdif - 1]
+                                + (
+                                    diff_matrix_vec[icdif]
+                                    - diff_matrix_vec[icdif - 1]
                                 )
-                                mu2 = (1 - np.cos(mu * np.pi)) / 2.0
-                                row_entry = (
-                                    diff_matrix_vec[icdif - 1]
-                                    + (
-                                        diff_matrix_vec[icdif]
-                                        - diff_matrix_vec[icdif - 1]
-                                    )
-                                    * mu2
-                                )
-
-                                break
-                            icdif += 1
+                                * mu2
+                            )
 
                         row_tot[ihbin - 1] += row_entry
                         row_entry = 0.0
@@ -522,7 +509,6 @@ def echan_integrator(diff_matrix, edif_edge_lo, edif_edge_hi, nhbins, ebin_edge_
                                     * (hhigh - edif_cent[nhbins - 1])
                                     / (edif_cent[nhbins - 1] - edif_cent[nhbins - 2])
                                 )
-                                flag = False
 
                             icdif += 1
 
