@@ -1,24 +1,16 @@
 # import at_scat
 # import ftran
 
+import numba as nb
 import numpy as np
 from threeML.utils.OGIP.response import InstrumentResponse
 
 from gbm_drm_gen.basersp import rsp_database
 from gbm_drm_gen.basersp_numba import rsp_database_nb
+from gbm_drm_gen.matrix_functions import (atscat_highres_ephoton_interpolator,
+                                          calc_sphere_dist, echan_integrator,
+                                          highres_ephoton_interpolator, trfind)
 from gbm_drm_gen.utils.geometry import ang2cart, is_occulted
-
-import numba as nb
-
-
-from gbm_drm_gen.matrix_functions import (
-    calc_sphere_dist,
-    echan_integrator,
-    trfind,
-    atscat_highres_ephoton_interpolator,
-    highres_ephoton_interpolator,
-)
-
 
 lu = [
     "n0",
@@ -79,7 +71,7 @@ class DRMGen(object):
         # If you want to use occulting
         self._occult = True
 
-        ##### Initiate database loading:
+        # Initiate database loading:
 
         self._det_number = det_number
 
@@ -137,7 +129,8 @@ class DRMGen(object):
             filename = "".join(split_filename)
 
         response.to_fits(
-            "%s_%s.rsp" % (filename, lu[self._det_number]), "GLAST", "GBM", overwrite
+            "%s_%s.rsp" % (filename, lu[self._det_number]
+                           ), "GLAST", "GBM", overwrite
         )
 
     def set_location(self, ra, dec, use_numba=False):
@@ -169,7 +162,8 @@ class DRMGen(object):
             # build the DRM
             if use_numba:
 
-                self._drm = self._make_drm_numba(az, el, self._geo_az, self._geo_el)
+                self._drm = self._make_drm_numba(
+                    az, el, self._geo_az, self._geo_el)
 
             else:
 
@@ -257,7 +251,8 @@ class DRMGen(object):
         while geo_az > 2 * np.pi:
             geo_az -= 2 * np.pi
 
-        geo_el = np.arctan2(np.sqrt(geodir[0] ** 2 + geodir[1] ** 2), geodir[2])
+        geo_el = np.arctan2(
+            np.sqrt(geodir[0] ** 2 + geodir[1] ** 2), geodir[2])
 
         self._geo_el = 90 - np.rad2deg(geo_el)
 
@@ -286,13 +281,10 @@ class DRMGen(object):
 
     def _make_drm_numba(self, src_az, src_el, geo_az, geo_el):
 
-        #### move outside loop
+        # move outside loop
 
-        
-        
         n_tmp_phot_bin = 2 * self._nobins_in + self._nobins_in % 2
-        
-        
+
         tmp_phot_bin = np.zeros(n_tmp_phot_bin)
         tmp_phot_bin[::2] = self._in_edge[:-1]
         tmp_phot_bin[1::2] = 10 ** (
@@ -330,7 +322,6 @@ class DRMGen(object):
             at_scat_data=self._database_nb.at_scat_data,
         )
 
- 
 
 @nb.njit(fastmath=True)
 def _build_drm(
@@ -366,7 +357,7 @@ def _build_drm(
 
     final_drm = np.zeros((nobins_in, nobins_out))
 
-    ## SKY Interpolation
+    # SKY Interpolation
 
     dtr = np.pi / 180.0
 
@@ -377,7 +368,8 @@ def _build_drm(
     plat = src_el * sf
     plon = src_az * sf
     P = np.array(
-        [np.cos(plat) * np.cos(plon), np.cos(plat) * np.sin(plon), np.sin(plat)]
+        [np.cos(plat) * np.cos(plon), np.cos(plat)
+         * np.sin(plon), np.sin(plat)]
     )
 
     b1, b2, b3, i1, i2, i3 = trfind(P, grid_points_list)
@@ -392,22 +384,23 @@ def _build_drm(
     mat2 = rsps[milliaz[i2 - 1] + "_" + millizen[i2 - 1]]
     mat3 = rsps[milliaz[i3 - 1] + "_" + millizen[i3 - 1]]
 
-    ## Interpolator on triangle
+    # Interpolator on triangle
 
     sum = b1 + b2 + b3
     b1n = b1 / sum
     b2n = b2 / sum
     b3n = b3 / sum
 
-    #### need to do a loop here
+    # need to do a loop here
 
     out_matrix = np.empty((mat1.shape[0], mat1.shape[1]))
 
     for i in range(mat1.shape[0]):
         for j in range(mat1.shape[1]):
-            out_matrix[i, j] = b1n * mat1[i, j] + b2n * mat2[i, j] + b3n * mat3[i, j]
+            out_matrix[i, j] = b1n * mat1[i, j] + \
+                b2n * mat2[i, j] + b3n * mat3[i, j]
 
-    #### move outside loop
+    # move outside loop
     # n_tmp_phot_bin = 2 * self._nobins_in + self._nobins_in % 2
     # tmp_phot_bin = np.zeros(n_tmp_phot_bin, dtype=np.float32)
     # tmp_phot_bin[::2] = self._in_edge[:-1]
@@ -415,7 +408,7 @@ def _build_drm(
     #     (np.log10(self._in_edge[:-1]) + np.log10(self._in_edge[1:])) / 2.0
     # )
 
-    #### Atmospheric scattering
+    # Atmospheric scattering
     if matrix_type == 1 or matrix_type == 2:
 
         # these change each time the source position is changed
@@ -424,7 +417,7 @@ def _build_drm(
         theta_source = 90 - rlat
         phi_source = rlon
 
-        ## Get new coordinates in the proper space
+        # Get new coordinates in the proper space
 
         # gx, gy, gz, sl = ftran.geocords(theta_geo, phi_geo, theta_source, phi_source)
 
@@ -503,8 +496,10 @@ def _build_drm(
                 for j in range(num_phi):
                     for k in range(1):
 
-                        xg = np.sin(theta_u[i] * dtr) * np.cos(phi_u[j, k] * dtr)
-                        yg = np.sin(theta_u[i] * dtr) * np.sin(phi_u[j, k] * dtr)
+                        xg = np.sin(theta_u[i] * dtr) * \
+                            np.cos(phi_u[j, k] * dtr)
+                        yg = np.sin(theta_u[i] * dtr) * \
+                            np.sin(phi_u[j, k] * dtr)
                         zg = np.cos(theta_u[i] * dtr)
 
                         dirx = xg * gx[0] + yg * gy[0] + zg * gz[0]
@@ -575,13 +570,15 @@ def _build_drm(
                                 for kk in range(ienerg):
 
                                     tmp_out[ii, jj] += (
-                                        at_scat_data[ii, kk, il_low, i, j] * l_frac
+                                        at_scat_data[ii, kk,
+                                                     il_low, i, j] * l_frac
                                         + at_scat_data[ii, kk, il_high, i, j]
                                         * (1 - l_frac)
                                     ) * direct_diff_matrix[kk, jj]
 
             tmp_out *= coslat_corr
-            atscat_diff_matrix = atscat_highres_ephoton_interpolator(tmp_phot_bin,  ein, tmp_out )
+            atscat_diff_matrix = atscat_highres_ephoton_interpolator(
+                tmp_phot_bin,  ein, tmp_out)
 
 #    return atscat_diff_matrix
     ###################################
@@ -590,14 +587,10 @@ def _build_drm(
         tmp_phot_bin, ein, out_matrix, epx_lo, epx_hi, 64,
     )
 
-
-
     binned_matrix = echan_integrator(
         diff_matrix, new_epx_lo, new_epx_hi, ichan, out_edge
     )
 
-
-    
     if matrix_type == 1:
         binned_matrix = atscat_diff_matrix
 
