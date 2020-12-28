@@ -20,15 +20,7 @@ from gbm_drm_gen.matrix_functions import (atscat_highres_ephoton_interpolator,
                                           calc_sphere_dist, echan_integrator,
                                           highres_ephoton_interpolator, trfind)
 
-try:
-    # from threeML.utils.response import InstrumentResponse
-    from threeML.utils.OGIP.response import InstrumentResponse
 
-
-except (ImportError):
-    from gbm_drm_gen.utils.response import InstrumentResponse
-
-from gbm_drm_gen.basersp import get_database
 from gbm_drm_gen.utils.geometry import ang2cart, is_occulted
 
 det_name_lookup = {
