@@ -212,7 +212,7 @@ def highres_ephoton_interpolator(
 
             if (ebin_edge_in[i] >= ein[j]) and ebin_edge_in[i] < ein[j + 1]:
 
-                ivfind = j
+                ivfind = j-1
 
                 mu = (np.log(ebin_edge_in[i]) - np.log(ein[ivfind])) / (
                     np.log(ein[ivfind + 1]) - np.log(ein[ivfind])
@@ -223,6 +223,7 @@ def highres_ephoton_interpolator(
                     mu = 1.0
 
                 for k in range(nhbins):
+                    print(ivfind, k)
 
                     new_epx_lo[i, k] = (
                         edif_edge_lo[ivfind, k] / ein[ivfind] * (1 - mu)
@@ -326,6 +327,14 @@ def echan_integrator(diff_matrix, edif_edge_lo, edif_edge_hi, nhbins, ebin_edge_
                 ihlfind = 1
                 if True:  # (hlow > edif_cent[0]) and (hlow <= edif_cent[-1]):
 
+                    ihlow2 = np.searchsorted(edif_cent, hlow)
+                    # ihlfind = np.searchsorted(edif_cent, hlow)
+                    # ihlow2 = ihlfind
+
+                    # #print(edif_cent[-1], hlow)
+                    # #print(ihlfind, ihlow)
+                    # ihlfind = 1
+                    
                     while ihlfind < nhbins:
                         if (hlow > edif_cent[ihlfind - 1]) and (
                             hlow <= edif_cent[ihlfind]
@@ -334,7 +343,11 @@ def echan_integrator(diff_matrix, edif_edge_lo, edif_edge_hi, nhbins, ebin_edge_
                             break
 
                         ihlfind += 1
+                    # print(ihlfind, ihlow)
 
+                    assert ihlow2 == ihlow
+                    # print("########")
+                        
             if hlow <= edif_cent[0]:
 
                 #           print('sec 1')

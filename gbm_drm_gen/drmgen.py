@@ -291,6 +291,8 @@ class DRMGen(object):
         
         
         n_tmp_phot_bin = 2 * self._nobins_in + self._nobins_in % 2
+        print(n_tmp_phot_bin)
+        
         tmp_phot_bin = np.zeros(n_tmp_phot_bin)
         tmp_phot_bin[::2] = self._in_edge[:-1]
         tmp_phot_bin[1::2] = 10 ** (
@@ -585,7 +587,7 @@ def _build_drm(
     ###################################
 
     new_epx_lo, new_epx_hi, diff_matrix = highres_ephoton_interpolator(
-        tmp_phot_bin, ein, out_matrix, epx_lo, epx_hi, n_tmp_phot_bin,
+        tmp_phot_bin, ein, out_matrix, epx_lo, epx_hi, 64,
     )
 
     binned_matrix = echan_integrator(
