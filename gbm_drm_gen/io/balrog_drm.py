@@ -2,7 +2,7 @@ try:
     from threeML.utils.OGIP.response import InstrumentResponse
 
 except:
-    from gbm_drm_gen.utils.response import InstrumentResponse
+    from responsum import InstrumentResponse
 
 import numpy as np
 from gbm_drm_gen.utils.geometry import get_ang, ang2cart

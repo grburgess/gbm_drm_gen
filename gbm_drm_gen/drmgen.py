@@ -7,7 +7,12 @@ import gbmgeometry
 import numba as nb
 import numpy as np
 from numba import prange
-from threeML.utils.OGIP.response import InstrumentResponse
+
+try:
+    from threeML.utils.OGIP.response import InstrumentResponse
+
+else:
+    from responsum import InstrumentResponse
 
 import at_scat
 import ftran
