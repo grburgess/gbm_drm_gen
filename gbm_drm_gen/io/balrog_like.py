@@ -93,7 +93,7 @@ class BALROGLike(DispersionSpectrumLike):
 
         self._rsp.set_location(ra, dec)
 
-    def get_model(self):
+    def get_model(self,precalc_fluxes=None):
 
         # Here we update the GBM drm parameters which creates and new DRM for that location
         # we should only be dealing with one source for GBM
@@ -107,7 +107,7 @@ class BALROGLike(DispersionSpectrumLike):
  
             self._rsp.set_location(ra, dec)
 
-        return super(BALROGLike, self).get_model()
+        return super(BALROGLike, self).get_model(precalc_fluxes)
 
     @classmethod
     def from_spectrumlike(cls, spectrum_like, time, drm_generator=None,free_position=True):
