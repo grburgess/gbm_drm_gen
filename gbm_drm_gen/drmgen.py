@@ -3,6 +3,7 @@
 
 import numba as nb
 import numpy as np
+from numba import prange
 from threeML.utils.OGIP.response import InstrumentResponse
 
 from gbm_drm_gen.basersp import rsp_database
@@ -323,7 +324,7 @@ class DRMGen(object):
         )
 
 
-@nb.njit(fastmath=True)
+@nb.njit(fastmath=True, parallel=False)
 def _build_drm(
     src_az,
     src_el,
@@ -489,6 +490,7 @@ def _build_drm(
             phi_u = double_phi_cent
 
             # loop over all the fucking atm matrices
+            num_loops = num_theta*num_phi*2
             tmp_out = np.zeros((ienerg, nobins_out))
 
             # itr = 0
@@ -555,26 +557,21 @@ def _build_drm(
                         dist_array = np.array([dist1, dist2, dist3])
 
                         i1 = i_array[np.argmin(dist_array)]
-
-                        tmpdrm = rsps[milliaz[i1 - 1] + "_" + millizen[i1 - 1]]
-
                         #                        print(tmpdrm.dtype)
 
                         # intergrate the new drm
-                        direct_diff_matrix = echan_integrator(
-                            tmpdrm, epx_lo, epx_hi, ichan, out_edge
-                        )
+                        #direct_diff_matrix =
 
-                        for ii in range(ienerg):
-                            for jj in range(nobins_out):
-                                for kk in range(ienerg):
-
-                                    tmp_out[ii, jj] += (
-                                        at_scat_data[ii, kk,
-                                                     il_low, i, j] * l_frac
-                                        + at_scat_data[ii, kk, il_high, i, j]
-                                        * (1 - l_frac)
-                                    ) * direct_diff_matrix[kk, jj]
+                        msum(np.ascontiguousarray(at_scat_data[..., il_low, i, j]),
+                             np.ascontiguousarray(
+                                 at_scat_data[..., il_high, i, j]),
+                             np.ascontiguousarray(echan_integrator(rsps[milliaz[i1 - 1] + "_" + millizen[i1 - 1]], epx_lo, epx_hi, ichan, out_edge
+                                                                   )),
+                             tmp_out,
+                             l_frac,
+                             ienerg,
+                             nobins_out
+                             )
 
             tmp_out *= coslat_corr
             atscat_diff_matrix = atscat_highres_ephoton_interpolator(
@@ -606,3 +603,16 @@ def _build_drm(
     ) / 2.0
 
     return final_drm
+
+
+@nb.njit(fastmath=True, parallel=True)
+def msum(this_data_lo, this_data_hi, direct_diff_matrix, tmp_out, l_frac, ienerg, nobins_out):
+    for ii in prange(ienerg):
+        for jj in prange(nobins_out):
+            for kk in prange(ienerg):
+
+                tmp_out[ii, jj] += (
+                    this_data_lo[ii, kk] * l_frac
+                    + this_data_hi[ii, kk]
+                    * (1 - l_frac)
+                ) * direct_diff_matrix[kk, jj]

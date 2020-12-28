@@ -84,9 +84,9 @@ class DetDatabase_numba(object):
                 match = re.match("^z0*(\d+)_az0*(\d+)$", key)
                 z, az = map(str, match.groups())
 
-                self._rsps["%s_%s" % (az, z)] = value[()]
+                self._rsps["%s_%s" % (az, z)] = np.ascontiguousarray(value[()])
 
-        self.at_scat_data = self._detector_group["at_scat_data"][()].astype("<f4")
+        self.at_scat_data = np.ascontiguousarray(self._detector_group["at_scat_data"][()].astype("<f4"))
         self.e_in = self._detector_group["e_in"][()]
         self.lat_edge = self._detector_group["lat_edge"][()].astype("<f4")
         self.theta_edge = self._detector_group["theta_edge"][()]

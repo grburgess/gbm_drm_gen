@@ -254,21 +254,29 @@ def atscat_highres_ephoton_interpolator(ebin_edge_in, ein, matrix):
 
     ivfind = 0
 
-    for i in range(nobins_in):
-        ivfind = np.searchsorted(ein[ivfind:] , ebin_edge_in[i]) + ivfind
-        mu = (np.log(ebin_edge_in[i]) - np.log(ein[ivfind])) / (
-            np.log(ein[ivfind + 1]) - np.log(ein[ivfind])
-        )
-        if (mu < 0.0) and (mu > -1e-5):
-            mu = 0.0
-        elif (mu > 1.0) and (mu < 1.00001):
-            mu = 1.0
+    # max_i = np.searchsorted(ebin_edge_in, ein[-1])
+    # min_i = np.searchsorted(ebin_edge_in, ein[0])
 
-        for k in range(nobins_out):
-            new_matrix[i, k] = (
-                matrix[ivfind, k] * (1 - mu) +
-                matrix[ivfind + 1, k] * mu
-            )
+    for i in range(nobins_in):
+
+        for j in range(ivfind, nvbins):
+            if (ebin_edge_in[i] >= ein[j]) and (ebin_edge_in[i] < ein[j+1]):
+
+                ivfind = j
+
+                mu = (np.log(ebin_edge_in[i]) - np.log(ein[ivfind])) / (
+                    np.log(ein[ivfind + 1]) - np.log(ein[ivfind])
+                )
+                if (mu < 0.0) and (mu > -1e-5):
+                    mu = 0.0
+                elif (mu > 1.0) and (mu < 1.00001):
+                    mu = 1.0
+
+                for k in range(nobins_out):
+                    new_matrix[i, k] = (
+                        matrix[ivfind, k] * (1 - mu) +
+                        matrix[ivfind + 1, k] * mu
+                    )
 
     return new_matrix
 
