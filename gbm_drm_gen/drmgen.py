@@ -11,7 +11,7 @@ from numba import prange
 try:
     from threeML.utils.OGIP.response import InstrumentResponse
 
-else:
+except:
     from responsum import InstrumentResponse
 
 import at_scat
