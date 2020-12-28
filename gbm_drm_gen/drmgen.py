@@ -6,8 +6,7 @@ import numpy as np
 from numba import prange
 from threeML.utils.OGIP.response import InstrumentResponse
 
-from gbm_drm_gen.basersp import rsp_database
-from gbm_drm_gen.basersp_numba import rsp_database_nb
+from gbm_drm_gen.basersp_numba import get_database
 from gbm_drm_gen.matrix_functions import (atscat_highres_ephoton_interpolator,
                                           calc_sphere_dist, echan_integrator,
                                           highres_ephoton_interpolator, trfind)
@@ -76,8 +75,7 @@ class DRMGen(object):
 
         self._det_number = det_number
 
-        self._database = rsp_database[lu[det_number]]
-        self._database_nb = rsp_database_nb[lu[det_number]]
+        self._database_nb = get_database(lu[det_number])
         self._ein = np.zeros(self._nobins_in, dtype=np.float32)
         energ_lo = self._database.energ_lo
         energ_hi = self._database.energ_hi
@@ -560,7 +558,7 @@ def _build_drm(
                         #                        print(tmpdrm.dtype)
 
                         # intergrate the new drm
-                        #direct_diff_matrix =
+                        # direct_diff_matrix =
 
                         msum(np.ascontiguousarray(at_scat_data[..., il_low, i, j]),
                              np.ascontiguousarray(

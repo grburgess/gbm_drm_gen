@@ -143,8 +143,13 @@ _all_dets = (
     "b1",
 )
 
-rsp_database_nb = collections.OrderedDict()
 
-for det in _all_dets:
+def get_database(det):
 
-    rsp_database_nb[det] = DetDatabase_numba(_h5_database[det])
+    assert det in _all_dets
+    
+    with h5py.File(path_to_balrog_db, "r") as h5_database:
+
+            db = DetDatabase_numba(h5_database[det])
+
+    return db
