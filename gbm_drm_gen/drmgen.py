@@ -1,16 +1,49 @@
 # import at_scat
 # import ftran
 
+import astropy.io.fits as fits
+import astropy.units as u
+import gbmgeometry
 import numba as nb
 import numpy as np
 from numba import prange
 from threeML.utils.OGIP.response import InstrumentResponse
 
+import at_scat
+import ftran
 from gbm_drm_gen.basersp_numba import get_database
 from gbm_drm_gen.matrix_functions import (atscat_highres_ephoton_interpolator,
                                           calc_sphere_dist, echan_integrator,
                                           highres_ephoton_interpolator, trfind)
+
+try:
+    # from threeML.utils.response import InstrumentResponse
+    from threeML.utils.OGIP.response import InstrumentResponse
+
+
+except (ImportError):
+    from gbm_drm_gen.utils.response import InstrumentResponse
+
+from gbm_drm_gen.basersp import get_database
 from gbm_drm_gen.utils.geometry import ang2cart, is_occulted
+
+det_name_lookup = {
+    "NAI_00": 0,
+    "NAI_01": 1,
+    "NAI_02": 2,
+    "NAI_03": 3,
+    "NAI_04": 4,
+    "NAI_05": 5,
+    "NAI_06": 6,
+    "NAI_07": 7,
+    "NAI_08": 8,
+    "NAI_09": 9,
+    "NAI_10": 10,
+    "NAI_11": 11,
+    "BGO_00": 12,
+    "BGO_01": 13,
+}
+
 
 lu = [
     "n0",
@@ -39,6 +72,7 @@ class DRMGen(object):
         ebin_edge_in,
         mat_type=0,
         ebin_edge_out=None,
+        occult=True,
     ):
         """
         A generic GBM DRM generator. This can be inherited for specific purposes.
@@ -69,7 +103,7 @@ class DRMGen(object):
         self._nobins_in = len(ebin_edge_in) - 1
 
         # If you want to use occulting
-        self._occult = True
+        self._occult = occult
 
         # Initiate database loading:
 
@@ -92,6 +126,9 @@ class DRMGen(object):
 
         self._compute_spacecraft_coordinates()
 
+    # @classmethod
+    # def from_tte(cls)
+
     @property
     def ebounds(self):
 
@@ -110,6 +147,16 @@ class DRMGen(object):
     def to_3ML_response(self, ra, dec):
 
         self.set_location(ra, dec, use_numba=True)
+
+        response = InstrumentResponse(
+            self.matrix, self.ebounds, self.monte_carlo_energies
+        )
+
+        return response
+
+    def to_3ML_response_direct_sat_coord(self, az, el):
+
+        self.set_location_direct_sat_coord(az, el)
 
         response = InstrumentResponse(
             self.matrix, self.ebounds, self.monte_carlo_energies
@@ -143,33 +190,45 @@ class DRMGen(object):
         self.ra = ra
         self.dec = dec
 
-        if False:  # self._occult:
+        if self._occult:
             if is_occulted(ra, dec, self._sc_pos):
                 self._drm = self._occulted_DRM
 
-            else:
-
-                # get the spacecraft coordinates
-                az, el = self._get_coords(ra, dec)
-
-                # build the DRM
-                self._drm = self._make_drm(az, el, self._geo_az, self._geo_el)
         else:
             # get the spacecraft coordinates
             az, el = self._get_coords(ra, dec)
 
-            # build the DRM
-            if use_numba:
-
-                self._drm = self._make_drm_numba(
-                    az, el, self._geo_az, self._geo_el)
-
-            else:
-
-                self._drm = self._make_drm(az, el, self._geo_az, self._geo_el)
+            self._drm = self._make_drm_numba(
+                az, el, self._geo_az, self._geo_el)
 
         # go ahead and transpose it for spectal fitting, etc.
         # self._drm_transpose = self._drm.T
+        # go ahead and transpose it for spectal fitting, etc.
+        # self._drm_transpose = self._drm.T
+
+    def set_location_direct_sat_coord(self, az, el):
+        """
+        Set the AZ and EL in satellite coordinates of the DRM to be built. This invokes DRM generation as well.
+
+        :param az: az in degrees
+        :param el: el in degrees
+        """
+
+        self.ra = az
+        self.dec = el
+
+        if self._occult:
+            if is_occulted(az, el, self._sc_pos):
+                self._drm = self._occulted_DRM
+
+            else:
+                # build the DRM
+                self._drm = self._make_drm_numba(
+                    az, el, self._geo_az, self._geo_el)
+        else:
+            # build the DRM
+            self._drm = self._make_drm_numba(
+                az, el, self._geo_az, self._geo_el)
 
     def set_time(self, time):
 

@@ -2,22 +2,24 @@ import numpy as np
 import healpy as hp
 from matplotlib.projections.geo import GeoAxes
 
+
 class ThetaFormatterShiftPi(GeoAxes.ThetaFormatter):
     """Shifts labelling by pi
     Shifts labelling from -180,180 to 0-360"""
+
     extrapi = False
 
     def __init__(self, *a, **aa):
-        if 'extrapi' in aa:
-            self.extrapi = aa['extrapi']
-        del aa['extrapi']
+        if "extrapi" in aa:
+            self.extrapi = aa["extrapi"]
+        del aa["extrapi"]
         super(ThetaFormatterShiftPi, self).__init__(*a, **aa)
 
     def __call__(self, x, pos=None):
         if self.extrapi:
             x += np.pi
 
-        #theta_shifter(x)
+        # theta_shifter(x)
         if x != 0:
             x *= -1
         if x < 0:
@@ -52,11 +54,5 @@ def sky_to_pix(ra, dec, nside):
 
 def theta_shifter(x):
 
-
-
-    x[x!=0] *= -1
-    #x[x<0] += 2*np.pi
-
-
-
-
+    x[x != 0] *= -1
+    # x[x<0] += 2*np.pi

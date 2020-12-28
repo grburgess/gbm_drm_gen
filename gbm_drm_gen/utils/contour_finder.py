@@ -3,7 +3,6 @@ from .general_utils import check_power_of_two, pix_to_sky
 import healpy as hp
 
 
-
 class ContourFinder(object):
     def __init__(self, healpix_map, nside=512):
         """
@@ -17,18 +16,17 @@ class ContourFinder(object):
         if not check_power_of_two(self._nside):
             raise RuntimeError("nside must be a power of 2.")
 
-        #hpx_orig, header = hp.read_map(healpix_map, h=True, verbose=False)
+        # hpx_orig, header = hp.read_map(healpix_map, h=True, verbose=False)
 
         # Use power=-2 so the sum is still 1
 
-
-        self._map = healpix_map#hp.read_map(healpix_map)
+        self._map = healpix_map  # hp.read_map(healpix_map)
 
         # self._map = hp.pixelfunc.ud_grade(healpix_map, nside_out=self._nside, power=-2)
 
         # Check that the total probability is still equal to the input map
 
-        #assert abs(np.sum(healpix_map) - np.sum(self._map)) < 1e-3, "Total probability after resize has not been kept!"
+        # assert abs(np.sum(healpix_map) - np.sum(self._map)) < 1e-3, "Total probability after resize has not been kept!"
 
     @property
     def map(self):
@@ -64,14 +62,15 @@ class ContourFinder(object):
 
         # Find out which pixels are within the containment level requested in the ordered "space"
 
-        idx_prime = (cumsum <= containment_level)
+        idx_prime = cumsum <= containment_level
 
         # Convert back to the "unordered space"
 
         idx = index_revsort[idx_prime]
 
-        assert abs(np.sum(self._map[
-                              idx]) - containment_level) < 1e-2, "Total prob. within containment is too far from requested value"
+        assert (
+            abs(np.sum(self._map[idx]) - containment_level) < 1e-2
+        ), "Total prob. within containment is too far from requested value"
 
         return idx
 
