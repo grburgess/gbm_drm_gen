@@ -581,7 +581,7 @@ def _build_drm(
             tmp_out *= coslat_corr
             atscat_diff_matrix = atscat_highres_ephoton_interpolator(tmp_phot_bin,  ein, tmp_out )
 
-    return atscat_diff_matrix
+#    return atscat_diff_matrix
     ###################################
 
     new_epx_lo, new_epx_hi, diff_matrix = highres_ephoton_interpolator(
