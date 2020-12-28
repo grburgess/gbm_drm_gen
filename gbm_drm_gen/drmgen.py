@@ -134,7 +134,7 @@ class DRMGen(object):
                            ), "GLAST", "GBM", overwrite
         )
 
-    def set_location(self, ra, dec, use_numba=False):
+    def set_location(self, ra, dec, use_numba=True):
         """
         Set the Ra and Dec of the DRM to be built. This invokes DRM generation as well.
 
