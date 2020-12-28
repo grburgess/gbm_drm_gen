@@ -118,7 +118,7 @@ class DRMGen(object):
 
     def to_3ML_response(self, ra, dec):
 
-        self.set_location(ra, dec)
+        self.set_location(ra, dec, use_numba=True)
 
         response = InstrumentResponse(
             self.matrix, self.ebounds, self.monte_carlo_energies
@@ -291,7 +291,7 @@ class DRMGen(object):
         
         
         n_tmp_phot_bin = 2 * self._nobins_in + self._nobins_in % 2
-        print(n_tmp_phot_bin)
+        
         
         tmp_phot_bin = np.zeros(n_tmp_phot_bin)
         tmp_phot_bin[::2] = self._in_edge[:-1]
@@ -590,10 +590,14 @@ def _build_drm(
         tmp_phot_bin, ein, out_matrix, epx_lo, epx_hi, 64,
     )
 
+
+
     binned_matrix = echan_integrator(
         diff_matrix, new_epx_lo, new_epx_hi, ichan, out_edge
     )
 
+
+    
     if matrix_type == 1:
         binned_matrix = atscat_diff_matrix
 
