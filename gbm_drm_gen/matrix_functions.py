@@ -97,7 +97,7 @@ def calc_weights_numba(p1, p2, p3, p_find):
 
 
 @nb.njit(fastmath=True)
-def geocords(theta_geo, phi_geo, theta_source, phi_source):
+def geocoords(theta_geo, phi_geo, theta_source, phi_source):
 
     gx = np.empty(3)
     gy = np.empty(3)
