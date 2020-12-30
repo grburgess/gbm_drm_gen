@@ -14,13 +14,11 @@ try:
 except:
     from responsum import InstrumentResponse
 
-
 from gbm_drm_gen.basersp_numba import get_database
 from gbm_drm_gen.matrix_functions import (atscat_highres_ephoton_interpolator,
                                           calc_sphere_dist, echan_integrator,
+                                          geocoords, geo_to_space,
                                           highres_ephoton_interpolator, trfind)
-
-
 from gbm_drm_gen.utils.geometry import ang2cart, is_occulted
 
 det_name_lookup = {
@@ -472,50 +470,7 @@ def _build_drm(
         phi_source = rlon
 
         # Get new coordinates in the proper space
-
-        # gx, gy, gz, sl = ftran.geocords(theta_geo, phi_geo, theta_source, phi_source)
-
-        gx = np.empty(3)
-        gy = np.empty(3)
-        gz = np.empty(3)
-        sl = np.empty(3)
-
-        gz[0] = np.sin(theta_geo * dtr) * np.cos(phi_geo * dtr)
-        gz[1] = np.sin(theta_geo * dtr) * np.sin(phi_geo * dtr)
-        gz[2] = np.cos(theta_geo * dtr)
-
-        gzr = np.sqrt(gz[0] * gz[0] + gz[1] * gz[1] + gz[2] * gz[2])
-        gz[0] = gz[0] / gzr
-        gz[1] = gz[1] / gzr
-        gz[2] = gz[2] / gzr
-
-        sl[0] = np.sin(theta_source * dtr) * np.cos(phi_source * dtr)
-        sl[1] = np.sin(theta_source * dtr) * np.sin(phi_source * dtr)
-        sl[2] = np.cos(theta_source * dtr)
-
-        slr = np.sqrt(sl[0] * sl[0] + sl[1] * sl[1] + sl[2] * sl[2])
-        sl[0] = sl[0] / slr
-        sl[1] = sl[1] / slr
-        sl[2] = sl[2] / slr
-
-        gy[0] = gz[1] * sl[2] - gz[2] * sl[1]
-        gy[1] = gz[2] * sl[0] - gz[0] * sl[2]
-        gy[2] = gz[0] * sl[1] - gz[1] * sl[0]
-
-        gyr = np.sqrt(gy[0] * gy[0] + gy[1] * gy[1] + gy[2] * gy[2])
-
-        gy[0] = gy[0] / gyr
-        gy[1] = gy[1] / gyr
-        gy[2] = gy[2] / gyr
-
-        gx[0] = gy[1] * gz[2] - gy[2] * gz[1]
-        gx[1] = gy[2] * gz[0] - gy[0] * gz[2]
-        gx[2] = gy[0] * gz[1] - gy[1] * gz[0]
-
-        gxr = np.sqrt(gx[0] * gx[0] + gx[1] * gx[1] + gx[2] * gx[2])
-        gx[0] = gx[0] / gxr
-        gx[1] = gx[1] / gxr
-        gx[2] = gx[2] / gxr
+        gx, gy, gz, sl = geocoords(theta_geo, phi_geo, theta_source, phi_source)
 
         lat = 180.0 - np.rad2deg(
             np.arccos(sl[0] * gz[0] + sl[1] * gz[1] + sl[2] * gz[2])
@@ -543,7 +498,7 @@ def _build_drm(
             phi_u = double_phi_cent
 
             # loop over all the fucking atm matrices
-            num_loops = num_theta*num_phi*2
+ 
             tmp_out = np.zeros((ienerg, nobins_out))
 
             # itr = 0
@@ -551,28 +506,7 @@ def _build_drm(
                 for j in range(num_phi):
                     for k in range(1):
 
-                        xg = np.sin(theta_u[i] * dtr) * \
-                            np.cos(phi_u[j, k] * dtr)
-                        yg = np.sin(theta_u[i] * dtr) * \
-                            np.sin(phi_u[j, k] * dtr)
-                        zg = np.cos(theta_u[i] * dtr)
-
-                        dirx = xg * gx[0] + yg * gy[0] + zg * gz[0]
-                        diry = xg * gx[1] + yg * gy[1] + zg * gz[1]
-                        dirz = xg * gx[2] + yg * gy[2] + zg * gz[2]
-
-                        r = np.sqrt(dirx * dirx + diry * diry + dirz * dirz)
-                        dirx = dirx / r
-                        diry = diry / r
-                        dirz = dirz / r
-
-                        az = np.arctan2(diry, dirx) / dtr
-
-                        if az < 0.0:
-                            az = az + 360.0
-
-                        el = 90.0 - np.arccos(dirz) / dtr
-
+                        dirx, diry, dirz, az, el = geo_to_space(theta_u[i], phi_u[j,k], gx, gy, gz)
                         sf = np.arctan(1.0) / 45.0
                         plat = el * sf
                         plon = az * sf

@@ -79,7 +79,7 @@ def calc_weights_numba(p1, p2, p3, p_find):
     w = np.zeros(3)
 
     w[0] = (
-        p_find[0] * (p1[1] * p2[2] - p2[1] * p1[2])
+       p_find[0] * (p1[1] * p2[2] - p2[1] * p1[2])
         - p_find[1] * (p1[0] * p2[2] - p2[0] * p1[2])
         + p_find[2] * (p1[0] * p2[1] - p2[0] * p1[1])
     )
@@ -104,18 +104,18 @@ def geocords(theta_geo, phi_geo, theta_source, phi_source):
     gz = np.empty(3)
     sl = np.empty(3)
 
-    gz[0] = np.sin(theta_geo * dtr) * np.cos(phi_geo * dtr)
-    gz[1] = np.sin(theta_geo * dtr) * np.sin(phi_geo * dtr)
-    gz[2] = np.cos(theta_geo * dtr)
+    gz[0] = np.sin(theta_geo ) * np.cos(phi_geo )
+    gz[1] = np.sin(theta_geo ) * np.sin(phi_geo )
+    gz[2] = np.cos(theta_geo )
 
     gzr = np.sqrt(gz[0] * gz[0] + gz[1] * gz[1] + gz[2] * gz[2])
     gz[0] = gz[0] / gzr
     gz[1] = gz[1] / gzr
     gz[2] = gz[2] / gzr
 
-    sl[0] = np.sin(theta_source * dtr) * np.cos(phi_source * dtr)
-    sl[1] = np.sin(theta_source * dtr) * np.sin(phi_source * dtr)
-    sl[2] = np.cos(theta_source * dtr)
+    sl[0] = np.sin(theta_source ) * np.cos(phi_source )
+    sl[1] = np.sin(theta_source ) * np.sin(phi_source )
+    sl[2] = np.cos(theta_source )
 
     slr = np.sqrt(sl[0] * sl[0] + sl[1] * sl[1] + sl[2] * sl[2])
     sl[0] = sl[0] / slr
