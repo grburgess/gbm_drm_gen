@@ -1,15 +1,21 @@
-from gbm_drm_gen import *
-from gbm_drm_gen.utils.response import OGIPResponse
-from gbm_drm_gen.utils.package_data import get_path_of_data_file
+import os
+
 import astropy.io.fits as fits
 
 
-def test_basic_generation():
+def test_basic_generation(built_drm_gen):
 
-    tte_file = get_path_of_data_file("example_data/glg_tte_n6_bn110721200_v00.fit")
-    trigdat_file = get_path_of_data_file("example_data/glg_trigdat_all_bn110721200_v01.fit")
-    cspec_file = get_path_of_data_file("example_data/glg_cspec_n6_bn110721200_v00.pha")
+    os.environ["NUMBA_DISABLE_JIT"] = "1"
 
-    n6 = DRMGenTTE(tte_file, trigdat=trigdat_file, mat_type=0, cspecfile=cspec_file)
+    built_drm_gen.to_fits(0, 10, "test", overwrite=True)
 
-    n6.to_fits(0, 0, "test", overwrite=True)
+    os.environ["NUMBA_DISABLE_JIT"] = "0"
+
+
+def test_various_options(built_drm_gen):
+
+    os.environ["NUMBA_DISABLE_JIT"] = "0"
+
+    built_drm_gen.set_location(5, 0)
+
+    built_drm_gen.set_location(10, 100)

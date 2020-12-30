@@ -437,7 +437,7 @@ def echan_integrator(diff_matrix, edif_edge_lo, edif_edge_hi, nhbins, ebin_edge_
 
                         euse = hlow + hchunk * float(icbin - 1)
 
-                        icidf = np.searchsorted(
+                        icdif = np.searchsorted(
                             edif_cent[ihlow:], euse) + ihlow
 
                         if icdif < nhbins:  # again check the index
