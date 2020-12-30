@@ -17,7 +17,7 @@ except:
 from gbm_drm_gen.basersp_numba import get_database
 from gbm_drm_gen.matrix_functions import (atscat_highres_ephoton_interpolator,
                                           calc_sphere_dist, echan_integrator,
-                                          geocoords, geo_to_space,
+                                          geo_to_space, geocoords,
                                           highres_ephoton_interpolator, trfind)
 from gbm_drm_gen.utils.geometry import ang2cart, is_occulted
 
@@ -470,7 +470,8 @@ def _build_drm(
         phi_source = rlon
 
         # Get new coordinates in the proper space
-        gx, gy, gz, sl = geocoords(theta_geo, phi_geo, theta_source, phi_source)
+        gx, gy, gz, sl = geocoords(
+            theta_geo, phi_geo, theta_source, phi_source)
 
         lat = 180.0 - np.rad2deg(
             np.arccos(sl[0] * gz[0] + sl[1] * gz[1] + sl[2] * gz[2])
@@ -498,7 +499,7 @@ def _build_drm(
             phi_u = double_phi_cent
 
             # loop over all the fucking atm matrices
- 
+
             tmp_out = np.zeros((ienerg, nobins_out))
 
             # itr = 0
@@ -506,7 +507,8 @@ def _build_drm(
                 for j in range(num_phi):
                     for k in range(1):
 
-                        dirx, diry, dirz, az, el = geo_to_space(theta_u[i], phi_u[j,k], gx, gy, gz)
+                        dirx, diry, dirz, az, el = geo_to_space(
+                            theta_u[i], phi_u[j, k], gx, gy, gz)
                         sf = np.arctan(1.0) / 45.0
                         plat = el * sf
                         plon = az * sf
@@ -552,7 +554,11 @@ def _build_drm(
                         msum(np.ascontiguousarray(at_scat_data[..., il_low, i, j]),
                              np.ascontiguousarray(
                                  at_scat_data[..., il_high, i, j]),
-                             np.ascontiguousarray(echan_integrator(rsps[milliaz[i1 - 1] + "_" + millizen[i1 - 1]], epx_lo, epx_hi, ichan, out_edge
+                             np.ascontiguousarray(echan_integrator(rsps[milliaz[i1 - 1] + "_" + millizen[i1 - 1]],
+                                                                   epx_lo,
+                                                                   epx_hi,
+                                                                   ichan,
+                                                                   out_edge
                                                                    )),
                              tmp_out,
                              l_frac,
