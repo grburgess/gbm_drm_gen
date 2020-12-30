@@ -79,7 +79,7 @@ def calc_weights_numba(p1, p2, p3, p_find):
     w = np.zeros(3)
 
     w[0] = (
-       p_find[0] * (p1[1] * p2[2] - p2[1] * p1[2])
+        p_find[0] * (p1[1] * p2[2] - p2[1] * p1[2])
         - p_find[1] * (p1[0] * p2[2] - p2[0] * p1[2])
         + p_find[2] * (p1[0] * p2[1] - p2[0] * p1[1])
     )
@@ -104,18 +104,18 @@ def geocoords(theta_geo, phi_geo, theta_source, phi_source):
     gz = np.empty(3)
     sl = np.empty(3)
 
-    gz[0] = np.sin(theta_geo ) * np.cos(phi_geo )
-    gz[1] = np.sin(theta_geo ) * np.sin(phi_geo )
-    gz[2] = np.cos(theta_geo )
+    gz[0] = np.sin(theta_geo) * np.cos(phi_geo)
+    gz[1] = np.sin(theta_geo) * np.sin(phi_geo)
+    gz[2] = np.cos(theta_geo)
 
     gzr = np.sqrt(gz[0] * gz[0] + gz[1] * gz[1] + gz[2] * gz[2])
     gz[0] = gz[0] / gzr
     gz[1] = gz[1] / gzr
     gz[2] = gz[2] / gzr
 
-    sl[0] = np.sin(theta_source ) * np.cos(phi_source )
-    sl[1] = np.sin(theta_source ) * np.sin(phi_source )
-    sl[2] = np.cos(theta_source )
+    sl[0] = np.sin(theta_source) * np.cos(phi_source)
+    sl[1] = np.sin(theta_source) * np.sin(phi_source)
+    sl[2] = np.cos(theta_source)
 
     slr = np.sqrt(sl[0] * sl[0] + sl[1] * sl[1] + sl[2] * sl[2])
     sl[0] = sl[0] / slr
@@ -179,7 +179,8 @@ def calc_sphere_dist(ra1, dec1, ra2, dec2, dtr):
         (np.cos(dec2 * dtr) * np.sin((ra1 - ra2) * dtr)) ** 2
         + (
             np.cos(dec1 * dtr) * np.sin(dec2 * dtr)
-            - np.sin(dec1 * dtr) * np.cos(dec2 * dtr) * np.cos((ra1 - ra2) * dtr)
+            - np.sin(dec1 * dtr) * np.cos(dec2 * dtr) *
+            np.cos((ra1 - ra2) * dtr)
         )
         ** 2
     )
@@ -225,17 +226,20 @@ def highres_ephoton_interpolator(
                     # print(ivfind, k)
 
                     new_epx_lo[i, k] = (
-                        edif_edge_lo[ivfind - 1, k] / ein[ivfind - 1] * (1 - mu)
+                        edif_edge_lo[ivfind - 1, k] /
+                        ein[ivfind - 1] * (1 - mu)
                         + edif_edge_lo[ivfind, k] / ein[ivfind] * mu
                     ) * ebin_edge_in[i]
 
                     new_epx_hi[i, k] = (
-                        edif_edge_hi[ivfind - 1, k] / ein[ivfind - 1] * (1 - mu)
+                        edif_edge_hi[ivfind - 1, k] /
+                        ein[ivfind - 1] * (1 - mu)
                         + edif_edge_hi[ivfind, k] / ein[ivfind] * mu
                     ) * ebin_edge_in[i]
 
                     diff_matrix[i, k] = (
-                        matrix[ivfind - 1, k] * (1 - mu) + matrix[ivfind, k] * mu
+                        matrix[ivfind - 1, k] *
+                        (1 - mu) + matrix[ivfind, k] * mu
                     )
 
     return new_epx_lo, new_epx_hi, diff_matrix
@@ -272,7 +276,8 @@ def atscat_highres_ephoton_interpolator(ebin_edge_in, ein, matrix):
 
                 for k in range(nobins_out):
                     new_matrix[i, k] = (
-                        matrix[ivfind, k] * (1 - mu) + matrix[ivfind + 1, k] * mu
+                        matrix[ivfind, k] * (1 - mu) +
+                        matrix[ivfind + 1, k] * mu
                     )
 
     return new_matrix
@@ -303,14 +308,16 @@ def echan_integrator(diff_matrix, edif_edge_lo, edif_edge_hi, nhbins, ebin_edge_
         for ivh in range(1, nhbins + 1):
 
             edif_cent[ivh - 1] = (
-                edif_edge_lo[jcdif - 1, ivh - 1] + edif_edge_hi[jcdif - 1, ivh - 1]
+                edif_edge_lo[jcdif - 1, ivh - 1] +
+                edif_edge_hi[jcdif - 1, ivh - 1]
             ) / 2.0
 
             total += edif_cent[ivh - 1]
             if edif_cent[ivh - 1] > 0:
 
                 diff_matrix_vec[ivh - 1] = diff_matrix[jcdif - 1, ivh - 1] / (
-                    edif_edge_hi[jcdif - 1, ivh - 1] - edif_edge_lo[jcdif - 1, ivh - 1]
+                    edif_edge_hi[jcdif - 1, ivh - 1] -
+                    edif_edge_lo[jcdif - 1, ivh - 1]
                 )
                 edif_edgeh[ivh - 1] = edif_edge_hi[jcdif - 1, ivh - 1]
 
@@ -354,7 +361,8 @@ def echan_integrator(diff_matrix, edif_edge_lo, edif_edge_hi, nhbins, ebin_edge_
                         if euse <= edif_cent[0]:
                             #                    print('sec 1 a')
 
-                            row_entry = diff_matrix_vec[0] * euse / edif_cent[0]
+                            row_entry = diff_matrix_vec[0] * \
+                                euse / edif_cent[0]
 
                         else:
 
@@ -365,7 +373,8 @@ def echan_integrator(diff_matrix, edif_edge_lo, edif_edge_hi, nhbins, ebin_edge_
                             icdif = np.searchsorted(edif_cent, euse)
                             if icdif < (ihhigh + 1):
                                 row_entry = diff_matrix_vec[icdif - 1] + (
-                                    diff_matrix_vec[icdif] - diff_matrix_vec[icdif - 1]
+                                    diff_matrix_vec[icdif] -
+                                    diff_matrix_vec[icdif - 1]
                                 ) * (euse - edif_cent[icdif - 1]) / (
                                     edif_cent[icdif] - edif_cent[icdif - 1]
                                 )
@@ -433,7 +442,8 @@ def echan_integrator(diff_matrix, edif_edge_lo, edif_edge_hi, nhbins, ebin_edge_
 
                         euse = hlow + hchunk * float(icbin - 1)
 
-                        icdif = np.searchsorted(edif_cent[ihlow:], euse) + ihlow
+                        icdif = np.searchsorted(
+                            edif_cent[ihlow:], euse) + ihlow
 
                         if icdif < nhbins:  # again check the index
 
@@ -443,7 +453,8 @@ def echan_integrator(diff_matrix, edif_edge_lo, edif_edge_hi, nhbins, ebin_edge_
                             mu2 = (1 - np.cos(mu * np.pi)) / 2.0
                             row_entry = (
                                 diff_matrix_vec[icdif - 1]
-                                + (diff_matrix_vec[icdif] - diff_matrix_vec[icdif - 1])
+                                + (diff_matrix_vec[icdif] -
+                                   diff_matrix_vec[icdif - 1])
                                 * mu2
                             )
 
@@ -460,7 +471,8 @@ def echan_integrator(diff_matrix, edif_edge_lo, edif_edge_hi, nhbins, ebin_edge_
                         ihhigh = nhbins
 
                     else:
-                        ihhigh = np.searchsorted(edif_cent[ihlow:], hhigh) + ihlow
+                        ihhigh = np.searchsorted(
+                            edif_cent[ihlow:], hhigh) + ihlow
 
                     nhpoints = ihhigh - ihlow + 2
 
