@@ -94,7 +94,9 @@ jobs:
     - uses: actions/setup-python@v2
       with:
         python-version: 3.8
-
+    - name: Run sdist
+      run: |
+        python setup.py sdist
     - uses: pypa/gh-action-pypi-publish@master
       with:
         user: __token__
