@@ -79,30 +79,12 @@ jobs:
       - name: List result
         run: ls -l dist
       - name: Check long_description
-        run: python -m twine check dist/*
-
-        
-
-
-  publish:
-#    needs: test
-    runs-on: ubuntu-latest
-    name: Publish package
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
-    - name: Run sdist
-      run: |
-        pip install -U pip
-        pip install numpy
-        python setup.py install
-        python setup.py sdist
-    - uses: pypa/gh-action-pypi-publish@master
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_UPLOAD_TOKEN }}
-        skip_existing: true
+        run: python -m twine check dist/*  
+      - name: upload
+      - uses: pypa/gh-action-pypi-publish@master
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_UPLOAD_TOKEN }}
+          skip_existing: true
 
