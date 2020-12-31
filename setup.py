@@ -5,28 +5,9 @@ import os
 import versioneer
 
 
-# Create list of data files
-def find_data_files(directory):
 
-    paths = []
+extra_files = ["gbm_drm_gen/data/balrog_db.h5"]
 
-    for (path, directories, filenames) in os.walk(directory):
-
-        for filename in filenames:
-
-            paths.append(os.path.join('..', path, filename))
-
-    print(paths)
-
-    return paths
-
-
-extra_files = find_data_files("gbm_drm_gen/data")
-
-# setup(
-
-#     ext_modules=cythonize(extensions_cython), requires=['numpy']
-# )
 setup(
     version=versioneer.get_version(),
     include_package_data=True,
