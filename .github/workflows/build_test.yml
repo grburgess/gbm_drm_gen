@@ -96,6 +96,7 @@ jobs:
         python-version: 3.8
     - name: Run sdist
       run: |
+        python setup install
         python setup.py sdist
     - uses: pypa/gh-action-pypi-publish@master
       with:
