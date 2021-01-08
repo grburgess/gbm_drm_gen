@@ -26,7 +26,6 @@ det_name_lookup = {
 
 
 class DRMGenTTE(DRMGen):
- 
     def __init__(
         self,
         tte_file=None,
@@ -39,18 +38,18 @@ class DRMGenTTE(DRMGen):
         mat_type=0,
         occult=False,
     ):
-    """
+        """
         A TTE/CSPEC specific drmgen already incorporating the standard input edges. Output edges are obtained
-    from lib import funs the input cspec file. Spacecraft position is read from the TTE file. For further details see the 
-    generic reader (DRMGen).
+        from lib import funs the input cspec file. Spacecraft position is read from the TTE file. For further details see the 
+        generic reader (DRMGen).
 
-    :param trigdat: the path to a trigdat file
-    :param det: the number (0-13) of the detector to be used
-    :param mat_type: 0=direct 1=scattered 2=direct+scattered
-    :param time: time relative to trigger to pull spacecraft position or MET if using a poshist file
-    :param cspecfile: the cspecfile to pull energy output edges from
-    :param poshist: read a poshist file
-    """
+        :param trigdat: the path to a trigdat file
+        :param det: the number (0-13) of the detector to be used
+        :param mat_type: 0=direct 1=scattered 2=direct+scattered
+        :param time: time relative to trigger to pull spacecraft position or MET if using a poshist file
+        :param cspecfile: the cspecfile to pull energy output edges from
+        :param poshist: read a poshist file
+        """
 
         self._occult = occult
 
@@ -97,9 +96,7 @@ class DRMGenTTE(DRMGen):
                 self._position_interpolator = gbmgeometry.PositionInterpolator.from_trigdat_hdf5(
                     trigdat_file=trigdat
                 )
-                
 
-                
             self._gbm = gbmgeometry.GBM(
                 self._position_interpolator.quaternion(time),
                 self._position_interpolator.sc_pos(time) * u.km,
@@ -107,9 +104,8 @@ class DRMGenTTE(DRMGen):
 
         elif poshist is not None:
 
-
             try:
-            
+
                 self._position_interpolator = gbmgeometry.PositionInterpolator.from_poshist(
                     poshist_file=poshist, T0=T0
                 )
@@ -119,7 +115,6 @@ class DRMGenTTE(DRMGen):
                 self._position_interpolator = gbmgeometry.PositionInterpolator.from_poshist_hdf5(
                     poshist_file=poshist, T0=T0
                 )
-                
 
             self._gbm = gbmgeometry.GBM(
                 self._position_interpolator.quaternion(time),
