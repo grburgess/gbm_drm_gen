@@ -3,6 +3,28 @@ import numpy as np
 
 
 @nb.njit(fastmath=False, parallel=False)
+def closest(point_assume_f, grid_points_list_f):
+
+    N = grid_points_list_f.shape[0]
+
+    i1 = 0
+
+    maxi = 11.0
+
+    for i in range(N):
+
+        distance = np.arccos(
+            grid_points_list_f[i, 0] * point_assume_f[0]
+            + grid_points_list_f[i, 1] * point_assume_f[1]
+            + grid_points_list_f[i, 2] * point_assume_f[2]
+        )
+        if distance < maxi:
+            i1 = i
+            maxi = distance
+
+    return i1
+
+@nb.njit(fastmath=False, parallel=False)
 def trfind(point_assume_f, grid_points_list_f):
 
     N = grid_points_list_f.shape[0]
@@ -50,7 +72,8 @@ def trfind(point_assume_f, grid_points_list_f):
         grid_points_list_f[i3],
         point_assume_f,
     )
-    return weights[0], weights[1], weights[2], i1, i2, i3
+    weights.sort()
+    return weights[2], weights[1], weights[0], i1, i2, i3
 
 
 @nb.njit(fastmath=True)
