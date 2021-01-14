@@ -64,15 +64,14 @@ class BALROG_DRM(InstrumentResponse):
         :param dec: 
         :return: 
         """
-
         if not cache:
 
             self._drm_generator.set_location(ra, dec)
 
             self._matrix = self._drm_generator.matrix
+            self._matrix_transpose = self._matrix.T
 
         else:
-
             self._matrix  = self._check_cache(ra, dec)
 
             
