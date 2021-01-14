@@ -8,17 +8,22 @@ import numba as nb
 import numpy as np
 from numba import prange
 
+# TODO Remove this 
+from numba.typed import Dict
+from numba import types
+
 try:
     from threeML.utils.OGIP.response import InstrumentResponse
 
 except:
     from responsum import InstrumentResponse
 
-from gbm_drm_gen.basersp_numba import get_database
+from gbm_drm_gen.basersp_numba import get_database, get_trigdat_precalc_database
 from gbm_drm_gen.matrix_functions import (atscat_highres_ephoton_interpolator,
                                           calc_sphere_dist, echan_integrator,
                                           geo_to_space, geocoords,
-                                          highres_ephoton_interpolator, trfind)
+                                          highres_ephoton_interpolator, trfind,
+                                          closest)
 from gbm_drm_gen.utils.geometry import ang2cart, is_occulted
 
 det_name_lookup = {
@@ -104,6 +109,33 @@ class DRMGen(object):
         self._det_number = det_number
 
         self._database_nb = get_database(lu[det_number])
+        #######################################################################################
+
+        self._trigdat = True
+        self._trigdat_mask = np.array([], dtype=int)
+        if det_number < 12:
+            trigdat_edges = np.array([3.4,10.,22.,44.,95.,300.,500.,800.,2000.])
+        else:
+            trigdat_edges = np.array([150.,400.,850.,1500.,3000.,5500.,10000.,20000.,50000.])
+        for i, (e_l, e_h) in enumerate(zip(ebin_edge_out[:-1], ebin_edge_out[1:])):
+            elow_index = np.argwhere(np.isclose(e_l,
+                                                trigdat_edges,
+                                                rtol=0.01))
+            if len(elow_index)==0:
+                    self._trigdat = False
+            elif np.isclose(e_h, trigdat_edges[elow_index[0,0]+1], rtol=0.01):
+                self._trigdat_mask = np.append(self._trigdat_mask,
+                                                   elow_index[0,0])
+            else:
+                self._trigdat = False
+
+        if self._trigdat:
+            self._database_precalc_trigdat = get_trigdat_precalc_database(lu[det_number], self._trigdat_mask)
+        else:
+            # dummy
+            self._database_precalc_trigdat = self._database_precalc_trigdat = get_trigdat_precalc_database(lu[det_number])
+            self._trigdat_mask = None
+        #######################################################################################
         self._ein = np.zeros(self._nobins_in, dtype=np.float32)
         energ_lo = self._database_nb.energ_lo
         energ_hi = self._database_nb.energ_hi
@@ -342,7 +374,6 @@ class DRMGen(object):
         tmp_phot_bin[1::2] = 10 ** (
             (np.log10(self._in_edge[:-1]) + np.log10(self._in_edge[1:])) / 2.0
         )
-
         return _build_drm(
             src_az,
             src_el,
@@ -372,6 +403,9 @@ class DRMGen(object):
             n_tmp_phot_bin=n_tmp_phot_bin,
             tmp_phot_bin=tmp_phot_bin,
             at_scat_data=self._database_nb.at_scat_data,
+            trigdat_precalc_rsps=self._database_precalc_trigdat.rsps,
+            trigdat=self._trigdat,
+            trigdat_mask=self._trigdat_mask
         )
 
 
@@ -405,6 +439,9 @@ def _build_drm(
     n_tmp_phot_bin,
     tmp_phot_bin,
     at_scat_data,
+    trigdat_precalc_rsps,
+    trigdat,
+    trigdat_mask,
 ):
 
     final_drm = np.zeros((nobins_in, nobins_out))
@@ -429,7 +466,7 @@ def _build_drm(
     i1 += 1
     i2 += 1
     i3 += 1
-
+    
     # mod here
 
     mat1 = rsps[milliaz[i1 - 1] + "_" + millizen[i1 - 1]]
@@ -442,7 +479,6 @@ def _build_drm(
     b1n = b1 / sum
     b2n = b2 / sum
     b3n = b3 / sum
-
     # need to do a loop here
 
     out_matrix = np.empty((mat1.shape[0], mat1.shape[1]))
@@ -463,6 +499,64 @@ def _build_drm(
     # Atmospheric scattering
     if matrix_type == 1 or matrix_type == 2:
 
+        ################
+        theta_geo = 90.0 - geo_el
+        phi_geo = geo_az
+        theta_source = 90 - rlat
+        phi_source = rlon
+
+        # Get new coordinates in the proper space
+        #TODO: the np.rad2deg were missing!
+        gx, gy, gz, sl = geocoords(
+            np.deg2rad(theta_geo), np.deg2rad(phi_geo), np.deg2rad(theta_source), np.deg2rad(phi_source))
+
+        lat = 180.0 - np.rad2deg(
+            np.arccos(sl[0] * gz[0] + sl[1] * gz[1] + sl[2] * gz[2])
+        )
+        atscat_diff_matrix = np.zeros((n_tmp_phot_bin - 1, nobins_out))
+        if lat <= lat_edge[-1] and (lat < lat_cent[-1]):
+            coslat_corr = np.abs(np.cos(np.deg2rad(lat)))
+
+            if lat <= lat_cent[0]:
+                il_low = 0
+                il_high = 1
+                l_frac = 1.0 #TODO Not 1?
+            else:
+                idx = np.where(lat_cent < lat)[0][-1]
+                #TODO Check this. This was il_low = idx -1 and il_high = idx
+                il_low = idx #idx
+                il_high = idx + 1 #idx+1
+                l_frac = 1.0 - (lat - lat_cent[idx]) / (
+                    lat_cent[idx + 1] - lat_cent[idx]
+                )
+
+            num_theta = len(theta_cent)
+            num_phi = len(double_phi_cent)
+
+            theta_u = theta_cent
+            phi_u = double_phi_cent
+
+            # loop over all the fucking atm matrices
+
+            tmp_out = np.zeros((num_theta, num_phi, 2, ienerg, nobins_out))
+            sf = np.arctan(1.0) / 45.0
+
+            at_scat(tmp_out, num_theta, num_phi, theta_u, phi_u, gx, gy, gz,
+            sf, grid_points_list, trigdat_precalc_rsps, rsps, milliaz, millizen, epx_lo, epx_hi, ichan, out_edge,
+                    at_scat_data, il_low, il_high, l_frac, trigdat)
+            tmp_out2 = np.zeros((ienerg, nobins_out))
+            for i in range(num_theta):
+                for j in range(num_phi):
+                    for k in range(2):
+                        tmp_out2 += tmp_out[i, j, k]
+
+            tmp_out2 *= coslat_corr
+
+            atscat_diff_matrix = atscat_highres_ephoton_interpolator(
+                tmp_phot_bin,  ein, tmp_out2)
+
+        ##############
+        """
         # these change each time the source position is changed
         theta_geo = 90.0 - geo_el
         phi_geo = geo_az
@@ -483,11 +577,12 @@ def _build_drm(
             if lat <= lat_cent[0]:
                 il_low = 0
                 il_high = 1
-                l_frac = 0.0
+                l_frac = 0.0 #TODO Not 1?
             else:
                 idx = np.where(lat_cent < lat)[0][-1]
-                il_low = idx - 1
-                il_high = idx
+                #TODO Check this. This was il_low = idx -1 and il_high = idx
+                il_low = idx
+                il_high = idx + 1
                 l_frac = 1.0 - (lat - lat_cent[idx]) / (
                     lat_cent[idx + 1] - lat_cent[idx]
                 )
@@ -501,15 +596,16 @@ def _build_drm(
             # loop over all the fucking atm matrices
 
             tmp_out = np.zeros((ienerg, nobins_out))
+            sf = np.arctan(1.0) / 45.0
 
-            # itr = 0
-            for i in range(num_theta):
-                for j in range(num_phi):
-                    for k in range(1):
+            for i in prange(num_theta):
+                for j in prange(num_phi):
+                    #TODO: Check this, this was range(1), but I think 2 is needed to also cover
+                    # the negative phi values
+                    for k in prange(2):
 
                         dirx, diry, dirz, az, el = geo_to_space(
                             theta_u[i], phi_u[j, k], gx, gy, gz)
-                        sf = np.arctan(1.0) / 45.0
                         plat = el * sf
                         plon = az * sf
                         P = np.array(
@@ -520,55 +616,56 @@ def _build_drm(
                             ]
                         )
 
-                        # Find a new interpolated matrix
-                        ist = 0
+                        # Find the closest direct matrix grid point and use it. No interpolation... should be accurate enough
+                        i1 = closest(P, grid_points_list)
 
-                        b1, b2, b3, i1, i2, i3 = trfind(P, grid_points_list)
+                        if new:
+                            if trigdat:
+                                #TODO why i1-1? makes no sense to me...
+                                rsps_echan_integrator = trigdat_precalc_rsps[milliaz[i1] + "_" + millizen[i1]]
 
-                        i1 += 1
-                        i2 += 1
-                        i3 += 1
+                            else:
+                                rsps_echan_integrator = echan_integrator(rsps[milliaz[i1] + "_" + millizen[i1]],
+                                                                         epx_lo,
+                                                                         epx_hi,
+                                                                         ichan,
+                                                                         out_edge
+                                )
 
-                        #                        N = len(LEND)
+                            msum(at_scat_data[..., il_low, i, j],
+                                 at_scat_data[..., il_high, i, j],
+                                 np.ascontiguousarray(rsps_echan_integrator),
+                                 tmp_out,
+                                 l_frac,
+                            )
+                            #msum(np.ascontiguousarray(at_scat_data[..., il_low, i, j]),
+                            #     np.ascontiguousarray(
+                            #         at_scat_data[..., il_high, i, j]),
+                            #     np.ascontiguousarray(rsps_echan_integrator),
+                            #     tmp_out,
+                            #     l_frac,
+                            #     ienerg,
+                            #     nobins_out
+                            #)
 
-                        i_array = [i1, i2, i3]
-
-                        dist1 = calc_sphere_dist(
-                            az, 90.0 - el, Azimuth[i1 - 1], Zenith[i1 - 1], dtr
-                        )
-                        dist2 = calc_sphere_dist(
-                            az, 90.0 - el, Azimuth[i2 - 1], Zenith[i2 - 1], dtr
-                        )
-                        dist3 = calc_sphere_dist(
-                            az, 90.0 - el, Azimuth[i3 - 1], Zenith[i3 - 1], dtr
-                        )
-
-                        dist_array = np.array([dist1, dist2, dist3])
-
-                        i1 = i_array[np.argmin(dist_array)]
-                        #                        print(tmpdrm.dtype)
-
-                        # intergrate the new drm
-                        # direct_diff_matrix =
-
-                        msum(np.ascontiguousarray(at_scat_data[..., il_low, i, j]),
-                             np.ascontiguousarray(
-                                 at_scat_data[..., il_high, i, j]),
-                             np.ascontiguousarray(echan_integrator(rsps[milliaz[i1 - 1] + "_" + millizen[i1 - 1]],
-                                                                   epx_lo,
-                                                                   epx_hi,
-                                                                   ichan,
-                                                                   out_edge
-                                                                   )),
-                             tmp_out,
-                             l_frac,
-                             ienerg,
-                             nobins_out
-                             )
+                        else:
+                            msum(np.ascontiguousarray(at_scat_data[..., il_low, i, j]),
+                                 np.ascontiguousarray(
+                                     at_scat_data[..., il_high, i, j]),
+                                 np.ascontiguousarray(echan_integrator(rsps[milliaz[i1] + "_" + millizen[i1]],
+                                                                       epx_lo,
+                                                                       epx_hi,
+                                                                       ichan,
+                                                                       out_edge
+                                 )),
+                                 tmp_out,
+                                 l_frac,
+                            )
 
             tmp_out *= coslat_corr
             atscat_diff_matrix = atscat_highres_ephoton_interpolator(
                 tmp_phot_bin,  ein, tmp_out)
+        """
 
 #    return atscat_diff_matrix
     ###################################
@@ -576,36 +673,74 @@ def _build_drm(
     new_epx_lo, new_epx_hi, diff_matrix = highres_ephoton_interpolator(
         tmp_phot_bin, ein, out_matrix, epx_lo, epx_hi, 64,
     )
-
     binned_matrix = echan_integrator(
         diff_matrix, new_epx_lo, new_epx_hi, ichan, out_edge
     )
-
     if matrix_type == 1:
         binned_matrix = atscat_diff_matrix
-
     if matrix_type == 2:
+        # TODO: Why :-1 ?
         binned_matrix[:-1, :] += atscat_diff_matrix
 
     # Integrate photon edge with trapazoid
-
     final_drm[:-1, :] = (
         binned_matrix[::2, :][:-1, :] / 2.0
         + binned_matrix[1::2, :][:-1, :]
         + binned_matrix[2::2, :] / 2.0
     ) / 2.0
-
     return final_drm
 
+@nb.njit(parallel=True, fastmath=False)
+def at_scat(tmp_out, num_theta, num_phi, theta_u, phi_u, gx, gy, gz,
+            sf, grid_points_list, trigdat_precalc_rsps, rsps, milliaz, millizen, epx_lo, epx_hi, ichan, out_edge,
+            at_scat_data, il_low, il_high, l_frac, trigdat):
+    for i in prange(num_theta):
+        for j in prange(num_phi):
+            #TODO: Check this, this was range(1), but I think 2 is needed to also cover
+            # the negative phi values
+            for k in prange(2):#2
+                
+                dirx, diry, dirz, az, el = geo_to_space(
+                    theta_u[i], phi_u[j, k], gx, gy, gz)
+                plat = el * sf
+                plon = az * sf
+                P = np.array(
+                    [
+                        np.cos(plat) * np.cos(plon),
+                        np.cos(plat) * np.sin(plon),
+                        np.sin(plat),
+                    ]
+                )
 
-@nb.njit(fastmath=True, parallel=True)
-def msum(this_data_lo, this_data_hi, direct_diff_matrix, tmp_out, l_frac, ienerg, nobins_out):
-    for ii in prange(ienerg):
-        for jj in prange(nobins_out):
-            for kk in prange(ienerg):
+                # Find the closest direct matrix grid point and use it. No interpolation... should be accurate enough
+                i1 = closest(P, grid_points_list)
+                if trigdat:
+                    #TODO why i1-1? makes no sense to me...
+                    rsps_echan_integrator = trigdat_precalc_rsps[milliaz[i1] + "_" + millizen[i1]]#i1
 
-                tmp_out[ii, jj] += (
-                    this_data_lo[ii, kk] * l_frac
-                    + this_data_hi[ii, kk]
-                    * (1 - l_frac)
-                ) * direct_diff_matrix[kk, jj]
+                else:
+                    rsps_echan_integrator = echan_integrator(rsps[milliaz[i1] + "_" + millizen[i1]],#i1
+                                                             epx_lo,
+                                                             epx_hi,
+                                                             ichan,
+                                                             out_edge
+                    )
+                msum(at_scat_data[..., il_low, i, j],
+                     at_scat_data[..., il_high, i, j],
+                     np.ascontiguousarray(rsps_echan_integrator),
+                     tmp_out[i,j,k],
+                     l_frac,
+                )
+                
+@nb.njit(fastmath=True, parallel=False)
+def msum(this_data_lo, this_data_hi, direct_diff_matrix, tmp_out, l_frac):
+    tmp = this_data_lo*l_frac+this_data_hi*(1-l_frac)
+    tmp_out += np.dot(tmp, direct_diff_matrix)
+    #for ii in prange(ienerg):
+    #    for jj in prange(nobins_out):
+    #        for kk in prange(ienerg):
+    #            tmp_out[ii, jj] += (
+    #                this_data_lo[ii, kk] * l_frac
+    #                + this_data_hi[ii, kk]
+    #                * (1 - l_frac)
+    #            ) * direct_diff_matrix[kk, jj]
