@@ -219,13 +219,13 @@ class DRMGen(object):
         if self._occult:
             if is_occulted(ra, dec, self._sc_pos):
                 self._drm = self._occulted_DRM
+                return None
+                
+        # get the spacecraft coordinates
+        az, el = self._get_coords(ra, dec)
 
-        else:
-            # get the spacecraft coordinates
-            az, el = self._get_coords(ra, dec)
-
-            self._drm = self._make_drm_numba(
-                az, el, self._geo_az, self._geo_el)
+        self._drm = self._make_drm_numba(
+            az, el, self._geo_az, self._geo_el)
 
         # go ahead and transpose it for spectal fitting, etc.
         # self._drm_transpose = self._drm.T
