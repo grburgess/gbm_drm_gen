@@ -133,7 +133,7 @@ class DRMGen(object):
             self._database_precalc_trigdat = get_trigdat_precalc_database(lu[det_number], self._trigdat_mask)
         else:
             # dummy
-            self._database_precalc_trigdat = self._database_precalc_trigdat = get_trigdat_precalc_database(lu[det_number])
+            self._database_precalc_trigdat = get_trigdat_precalc_database(lu[det_number], [0])
             self._trigdat_mask = None
         #######################################################################################
         self._ein = np.zeros(self._nobins_in, dtype=np.float32)
