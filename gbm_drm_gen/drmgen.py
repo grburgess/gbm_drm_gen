@@ -409,7 +409,7 @@ class DRMGen(object):
         )
 
 
-@nb.njit(fastmath=True, parallel=False)
+@nb.njit(fastmath=False, parallel=False)
 def _build_drm(
     src_az,
     src_el,
@@ -506,7 +506,7 @@ def _build_drm(
         phi_source = rlon
 
         # Get new coordinates in the proper space
-        #TODO: the np.rad2deg were missing!
+        # the np.rad2deg were missing!
         gx, gy, gz, sl = geocoords(
             np.deg2rad(theta_geo), np.deg2rad(phi_geo), np.deg2rad(theta_source), np.deg2rad(phi_source))
 
@@ -520,12 +520,13 @@ def _build_drm(
             if lat <= lat_cent[0]:
                 il_low = 0
                 il_high = 1
-                l_frac = 1.0 #TODO Not 1?
+                #TODO Changes this. Was 0.
+                l_frac = 1.0
             else:
                 idx = np.where(lat_cent < lat)[0][-1]
-                #TODO Check this. This was il_low = idx -1 and il_high = idx
-                il_low = idx #idx
-                il_high = idx + 1 #idx+1
+                #TODO Changed this. This was il_low = idx -1 and il_high = idx
+                il_low = idx
+                il_high = idx+1
                 l_frac = 1.0 - (lat - lat_cent[idx]) / (
                     lat_cent[idx + 1] - lat_cent[idx]
                 )
@@ -669,7 +670,6 @@ def _build_drm(
 
 #    return atscat_diff_matrix
     ###################################
-
     new_epx_lo, new_epx_hi, diff_matrix = highres_ephoton_interpolator(
         tmp_phot_bin, ein, out_matrix, epx_lo, epx_hi, 64,
     )
@@ -681,7 +681,6 @@ def _build_drm(
     if matrix_type == 2:
         # TODO: Why :-1 ?
         binned_matrix[:-1, :] += atscat_diff_matrix
-
     # Integrate photon edge with trapazoid
     final_drm[:-1, :] = (
         binned_matrix[::2, :][:-1, :] / 2.0
@@ -696,10 +695,9 @@ def at_scat(tmp_out, num_theta, num_phi, theta_u, phi_u, gx, gy, gz,
             at_scat_data, il_low, il_high, l_frac, trigdat):
     for i in prange(num_theta):
         for j in prange(num_phi):
-            #TODO: Check this, this was range(1), but I think 2 is needed to also cover
+            #TODO: Changed this. This was range(1), but I think 2 is needed to also cover
             # the negative phi values
-            for k in prange(2):#2
-                
+            for k in prange(2):
                 dirx, diry, dirz, az, el = geo_to_space(
                     theta_u[i], phi_u[j, k], gx, gy, gz)
                 plat = el * sf
@@ -713,9 +711,13 @@ def at_scat(tmp_out, num_theta, num_phi, theta_u, phi_u, gx, gy, gz,
                 )
 
                 # Find the closest direct matrix grid point and use it. No interpolation... should be accurate enough
+
+                # TODO: Difference, this was wrong in the old way. calc_sphere_dist(az, 90.-el, database.Azimuth[...], database.Zenith[...])
+                # must be calc_sphere_dist(az, el, database.Azimuth[...], 90-database.Zenith[...]. Gave wrong grid point
+                # as closest grid point (gave angles>100 degree)
                 i1 = closest(P, grid_points_list)
-                if trigdat:
-                    #TODO why i1-1? makes no sense to me...
+
+                if not trigdat:
                     rsps_echan_integrator = trigdat_precalc_rsps[milliaz[i1] + "_" + millizen[i1]]#i1
 
                 else:
@@ -725,14 +727,16 @@ def at_scat(tmp_out, num_theta, num_phi, theta_u, phi_u, gx, gy, gz,
                                                              ichan,
                                                              out_edge
                     )
+
                 msum(at_scat_data[..., il_low, i, j],
                      at_scat_data[..., il_high, i, j],
                      np.ascontiguousarray(rsps_echan_integrator),
                      tmp_out[i,j,k],
                      l_frac,
                 )
+
                 
-@nb.njit(fastmath=True, parallel=False)
+@nb.njit(fastmath=False, parallel=False)
 def msum(this_data_lo, this_data_hi, direct_diff_matrix, tmp_out, l_frac):
     tmp = this_data_lo*l_frac+this_data_hi*(1-l_frac)
     tmp_out += np.dot(tmp, direct_diff_matrix)
