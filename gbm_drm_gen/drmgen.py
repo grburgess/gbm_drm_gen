@@ -366,7 +366,6 @@ class DRMGen(object):
     def _make_drm_numba(self, src_az, src_el, geo_az, geo_el):
 
         # move outside loop
-
         n_tmp_phot_bin = 2 * self._nobins_in + self._nobins_in % 2
 
         tmp_phot_bin = np.zeros(n_tmp_phot_bin)
@@ -409,7 +408,7 @@ class DRMGen(object):
         )
 
 
-@nb.njit(fastmath=False, parallel=False)
+@nb.njit(fastmath=True, parallel=False)
 def _build_drm(
     src_az,
     src_el,
@@ -498,7 +497,6 @@ def _build_drm(
 
     # Atmospheric scattering
     if matrix_type == 1 or matrix_type == 2:
-
         ################
         theta_geo = 90.0 - geo_el
         phi_geo = geo_az
@@ -689,7 +687,7 @@ def _build_drm(
     ) / 2.0
     return final_drm
 
-@nb.njit(parallel=True, fastmath=False)
+@nb.njit(parallel=True, fastmath=True)
 def at_scat(tmp_out, num_theta, num_phi, theta_u, phi_u, gx, gy, gz,
             sf, grid_points_list, trigdat_precalc_rsps, rsps, milliaz, millizen, epx_lo, epx_hi, ichan, out_edge,
             at_scat_data, il_low, il_high, l_frac, trigdat):
@@ -714,10 +712,10 @@ def at_scat(tmp_out, num_theta, num_phi, theta_u, phi_u, gx, gy, gz,
 
                 # TODO: Difference, this was wrong in the old way. calc_sphere_dist(az, 90.-el, database.Azimuth[...], database.Zenith[...])
                 # must be calc_sphere_dist(az, el, database.Azimuth[...], 90-database.Zenith[...]. Gave wrong grid point
-                # as closest grid point (gave angles>100 degree)
+                # as closest grid point (gave angles>20 degree)
                 i1 = closest(P, grid_points_list)
 
-                if not trigdat:
+                if trigdat:
                     rsps_echan_integrator = trigdat_precalc_rsps[milliaz[i1] + "_" + millizen[i1]]#i1
 
                 else:
@@ -736,7 +734,7 @@ def at_scat(tmp_out, num_theta, num_phi, theta_u, phi_u, gx, gy, gz,
                 )
 
                 
-@nb.njit(fastmath=False, parallel=False)
+@nb.njit(fastmath=True, parallel=False)
 def msum(this_data_lo, this_data_hi, direct_diff_matrix, tmp_out, l_frac):
     tmp = this_data_lo*l_frac+this_data_hi*(1-l_frac)
     tmp_out += np.dot(tmp, direct_diff_matrix)

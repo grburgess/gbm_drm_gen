@@ -21,7 +21,6 @@ def closest(point_assume_f, grid_points_list_f):
         if distance < maxi:
             i1 = i
             maxi = distance
-
     return i1
 
 @nb.njit(fastmath=False, parallel=False)
