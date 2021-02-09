@@ -1,4 +1,5 @@
 include versioneer.py
 include gbm_drm_gen/_version.py
 include gbm_drm_gen/data/balrog_db.h5
+include gbm_drm_gen/data/example_data/*
 include gbm_drm_gen/data/trigdat_precalc.h5
