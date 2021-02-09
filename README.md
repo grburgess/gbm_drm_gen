@@ -1,6 +1,6 @@
 ![CI](https://github.com/grburgess/gbm_drm_gen/workflows/CI/badge.svg)
 [![codecov](https://codecov.io/gh/grburgess/gbm_drm_gen/branch/master/graph/badge.svg?token=vdaYSD8vdx)](https://codecov.io/gh/grburgess/gbm_drm_gen)
-[![PyPI version fury.io](https://badge.fury.io/py/gbm_drm_gen.svg)](https://pypi.python.org/pypi/gbm_drm_gen/)
+[![PyPI version shields.io](https://img.shields.io/pypi/v/gbm_drm_gen.svg)](https://pypi.python.org/pypi/gbm_drm_gen/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2590555.svg)](https://doi.org/10.5281/zenodo.2590555)
 ![GitHub contributors](https://img.shields.io/github/contributors/grburgess/gbm_drm_gen)
 # GBM Response Generator
