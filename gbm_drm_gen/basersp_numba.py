@@ -40,7 +40,7 @@ def get_path_of_data_file(data_file):
 
 
 path_to_balrog_db = get_path_of_data_file("balrog_db.h5")
-
+path_to_trigdat_precalc_db = get_path_of_data_file("trigdat_precalc.h5")
 
 class DetDatabase_numba(object):
     def __init__(self, detector_group):
@@ -151,5 +151,78 @@ def get_database(det):
     with h5py.File(path_to_balrog_db, "r") as h5_database:
 
             db = DetDatabase_numba(h5_database[det])
+
+    return db
+
+
+class TrigdatPrecalcDetDatabase_numba(object):
+    def __init__(self, detector_group, mask):
+        """
+        :param detector_group:
+        """
+
+        self._detector_group = detector_group
+
+        self._load_variables(mask)
+
+    def get_rsp(self, z, az):
+        """
+
+        :param z:
+        :param az:
+        :return:
+        """
+        # z = str(z)
+        # az = str(az)
+
+        return self._rsps["%d_%d" % (az, z)]
+
+        # return self._detector_group["z%s_az%s" %
+        #                            (z.zfill(6), az.zfill(6))]  #.value
+
+    @property
+    def rsps(self):
+        return self._rsps
+
+    def _load_variables(self, mask):
+
+        self._rsps = Dict.empty(
+            key_type=types.unicode_type, value_type=types.float64[:, :]
+        )
+
+        for key, value in self._detector_group.items():
+
+            if key[0] == "z":
+
+                match = re.match("^z0*(\d+)_az0*(\d+)$", key)
+                z, az = map(str, match.groups())
+
+                self._rsps["%s_%s" % (az, z)] = np.ascontiguousarray(value[()][:,mask])
+
+_all_dets = (
+    "n0",
+    "n1",
+    "n2",
+    "n3",
+    "n4",
+    "n5",
+    "n6",
+    "n7",
+    "n8",
+    "n9",
+    "na",
+    "nb",
+    "b0",
+    "b1",
+)
+
+
+def get_trigdat_precalc_database(det, mask):
+
+    assert det in _all_dets
+
+    with h5py.File(path_to_trigdat_precalc_db, "r") as h5_database:
+
+            db = TrigdatPrecalcDetDatabase_numba(h5_database[det], mask)
 
     return db
