@@ -17,4 +17,7 @@ If you find this code useful or use it please cite the following works:
 
 
 ## Install
+```bash
+pip install gbm_drm_gen
 
+```
