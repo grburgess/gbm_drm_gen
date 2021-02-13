@@ -7,6 +7,7 @@ import gbmgeometry
 import astropy.units as u
 
 from gbm_drm_gen.drmgen import DRMGen
+from gbm_drm_gen.input_edges import trigdat_edges
 
 det_name_lookup = {
     "NAI_00": 0,
@@ -72,18 +73,10 @@ class DRMGenCTIME(DRMGen):
         self._det_number = det_name_lookup[det_name]
 
         if self._det_number > 11:
-            # BGO
-            # TODO: FIX BGO
-            self._in_edge = np.array(
-                [],
-                dtype=np.float32,
-            )
+            self._in_edge = trigdat_edges["bgo"]
 
         else:
-            self._in_edge = np.array(
-                np.logspace(0.5, 3.7, 301),
-                dtype=np.float32,
-            )
+            self._in_edge = trigdat_edges["nai"]
 
         # Create the out edge energies
         with fits.open(ctime_file) as f:
