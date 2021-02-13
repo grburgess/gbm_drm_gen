@@ -28,9 +28,8 @@ det_name_lookup = {
 
 class DRMGenCTIME(DRMGen):
     """
-    TODO: Fix docstring
-    A TTE/CSPEC specific drmgen already incorporating the standard input edges. Output edges are obtained
-    from the input cspec file. Spacecraft position is read from the TTE file. For further details see the 
+    A CTIME specific drmgen already incorporating the standard input edges. Output edges are obtained
+    from the input CTIME file. Spacecraft position is read from the poshist file. For further details see the
     generic reader (DRMGen).
 
     :param trigdat: the path to a trigdat file
@@ -76,8 +75,7 @@ class DRMGenCTIME(DRMGen):
             # BGO
             # TODO: FIX BGO
             self._in_edge = np.array(
-                [
-                ],
+                [],
                 dtype=np.float32,
             )
 
@@ -98,9 +96,18 @@ class DRMGenCTIME(DRMGen):
 
         if trigdat is not None:
 
-            self._position_interpolator = gbmgeometry.PositionInterpolator.from_trigdat(
-                trigdat_file=trigdat
-            )
+            try:
+                self._position_interpolator = (
+                    gbmgeometry.PositionInterpolator.from_trigdat(trigdat_file=trigdat)
+                )
+
+            except:
+
+                self._position_interpolator = (
+                    gbmgeometry.PositionInterpolator.from_trigdat_hdf5(
+                        trigdat_file=trigdat
+                    )
+                )
 
             self._gbm = gbmgeometry.GBM(
                 self._position_interpolator.quaternion(time),
@@ -109,9 +116,21 @@ class DRMGenCTIME(DRMGen):
 
         elif poshist is not None:
 
-            self._position_interpolator = gbmgeometry.PositionInterpolator.from_poshist(
-                poshist_file=poshist, T0=T0
-            )
+            try:
+
+                self._position_interpolator = (
+                    gbmgeometry.PositionInterpolator.from_poshist(
+                        poshist_file=poshist, T0=T0
+                    )
+                )
+
+            except:
+
+                self._position_interpolator = (
+                    gbmgeometry.PositionInterpolator.from_poshist_hdf5(
+                        poshist_file=poshist, T0=T0
+                    )
+                )
 
             self._gbm = gbmgeometry.GBM(
                 self._position_interpolator.quaternion(time),
