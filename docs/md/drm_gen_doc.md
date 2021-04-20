@@ -62,7 +62,7 @@ gbm_n6_generator = DRMGenTTE(det_name= "n6",
 We can set the location of the source directly. The first run can be a bit slow as ```numba``` is used in the background to be very fast. 
 
 ```python
-gbm_n6_generator.set_location(ra=0,dec = 0)
+gbm_n6_generator.set_location(ra=329,dec = -38.2)
 ```
 
 We can now checkout the matrix object created in the background:
@@ -74,7 +74,7 @@ gbm_n6_generator.matrix
 Or we can input RA and DEC to create a 3ML style OGIP response directly:
 
 ```python
-response = gbm_n6_generator.to_3ML_response(ra=10, dec=-20)
+response = gbm_n6_generator.to_3ML_response(ra=329,dec = -38.2)
 ```
 
 ```python
@@ -90,11 +90,11 @@ bounds = np.vstack((gbm_n6_generator.monte_carlo_energies[:-1],gbm_n6_generator.
 de = np.diff(bounds)
 ene = np.mean(bounds,axis=1)
 
-for angle in np.linspace(0, 60, 10):
+for ra in np.linspace(260, 350, 10):
     
-    gbm_n6_generator.set_location(angle,0)
+    gbm_n6_generator.set_location(ra=ra,dec = -38.2)
 
-    ax.loglog(ene,gbm_n6_generator.matrix.sum(axis=0),label=r'%d$^{\circ}$'%angle)
+    ax.loglog(ene,gbm_n6_generator.matrix.sum(axis=0),label=r'%d$^{\circ}$'%ra)
 
 ax.set_ylim(1)
 ax.legend()
@@ -154,7 +154,7 @@ gbm_n6_generator = DRMGenTTE(det_name= "n6",
                             )
 
 
-response = gbm_n6_generator.to_3ML_response(ra=10, dec=-20)
+response = gbm_n6_generator.to_3ML_response(ra=329,dec = -38.2)
 
 fig = response.plot_matrix()
 ```
@@ -175,7 +175,7 @@ gbm_n6_generator = DRMGenTTE(det_name= "n6",
                             )
 
 
-response = gbm_n6_generator.to_3ML_response(ra=10, dec=-20)
+response = gbm_n6_generator.to_3ML_response(ra=329,dec = -38.2)
 
 fig = response.plot_matrix()
 ```
@@ -195,7 +195,7 @@ gbm_n6_generator = DRMGenTTE(det_name= "n6",
                             
                             )
 
-gbm_n6_generator.set_location(0,0)
+gbm_n6_generator.set_location(ra=329,dec = -38.2)
 
 
 plt.matshow(gbm_n6_generator.matrix.T)
@@ -212,7 +212,7 @@ gbm_n6_generator = DRMGenTTE(det_name= "n6",
                             
                             )
 
-gbm_n6_generator.set_location(0,0)
+gbm_n6_generator.set_location(ra=329,dec = -38.2)
 
 
 plt.matshow(gbm_n6_generator.matrix.T)
@@ -231,7 +231,7 @@ gbm_n6_generator = DRMGenTTE(det_name= "n6",
                             
                             )
 
-gbm_n6_generator.set_location(0,0)
+gbm_n6_generator.set_location(ra=329,dec = -38.2)
 
 
 plt.matshow(gbm_n6_generator.matrix.T)
@@ -258,7 +258,11 @@ gbm_n6_generator = DRMGenTTE(det_name= "n6",
                             )
 
 
-response = gbm_n6_generator.to_3ML_response(ra=10, dec=-20)
+response = gbm_n6_generator.to_3ML_response(ra=329,dec = -38.2)
 
 fig = response.plot_matrix()
+```
+
+```python
+
 ```
