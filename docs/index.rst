@@ -10,11 +10,4 @@ Welcome to gbm_drm_gen's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   notebooks/drm_gen_doc.ipynb	     
