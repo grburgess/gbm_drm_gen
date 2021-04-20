@@ -18,3 +18,4 @@ examples/test_n6.rsp
 /at_scat.cpython-38-darwin.so
 /logo.key
 /ftran.cpython-38-darwin.so
+/docs/md/.ipynb_checkpoints/*.ipynb
