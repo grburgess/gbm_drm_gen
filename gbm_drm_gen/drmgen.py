@@ -177,15 +177,16 @@ class DRMGen(object):
 
         self.set_location(ra, dec)
 
+        out = self.matrix
 
-        if not np.all(np.isfinite(self.matrix)):
+        if not np.all(np.isfinite(out)):
 
-            self.set_location(ra, dec)
-            
-        
-        
+            for i, j in zip(np.where(np.isnan(out))[0], np.where(np.isnan(out))[1]):
+
+                out[i, j] = 0.
+
         response = InstrumentResponse(
-            self.matrix, self.ebounds, self.monte_carlo_energies
+            out, self.ebounds, self.monte_carlo_energies
         )
 
         return response
