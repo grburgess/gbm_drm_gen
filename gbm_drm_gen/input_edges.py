@@ -63,7 +63,7 @@ class InputEdges(object):
 
             edges = np.append(edges, cls._emax)
 
-        elif edges.max() > cls._emax():
+        elif edges.max() > cls._emax:
 
             edges = np.append(edges[edges <= cls._emax], cls._emax)
 
