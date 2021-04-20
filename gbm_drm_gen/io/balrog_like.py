@@ -3,7 +3,6 @@ try:
 
 except:
 
-    print('You do not have threeML installed')
 
     raise ImportError()
 
