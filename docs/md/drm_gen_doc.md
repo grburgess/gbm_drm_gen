@@ -40,50 +40,62 @@ from gbm_drm_gen.utils.package_data import get_path_of_data_file
 
 ```
 
+<!-- #region heading_collapsed=true -->
 ## quick start
+<!-- #endregion -->
 
-
+<!-- #region hidden=true -->
 To create a DRM generator for TTE data, we need the TTE, CSPEC, and the TRIGDAT data files.
 * The CSPEC data contains the output side of the DRM's energy bounds. 
 * The TRIGDAT data contains the spacecraft orientation data.
+<!-- #endregion -->
 
-```python
+```python hidden=true
 trigdat_file = get_path_of_data_file('example_data/glg_trigdat_all_bn110721200_v01.fit')
 cspec_file = get_path_of_data_file('example_data/glg_cspec_n6_bn110721200_v00.pha')
 
 
 # create the generator
 gbm_n6_generator = DRMGenTTE(det_name= "n6",
+                             time=0, # time relative to T0 or trigger time.
                              trigdat = trigdat_file,
                              mat_type = 2, # direct response + atmospheric scattering
                              cspecfile = cspec_file)
 ```
 
+<!-- #region hidden=true -->
 We can set the location of the source directly. The first run can be a bit slow as ```numba``` is used in the background to be very fast. 
+<!-- #endregion -->
 
-```python
+```python hidden=true
 gbm_n6_generator.set_location(ra=329,dec = -38.2)
 ```
 
+<!-- #region hidden=true -->
 We can now checkout the matrix object created in the background:
+<!-- #endregion -->
 
-```python
+```python hidden=true
 gbm_n6_generator.matrix
 ```
 
+<!-- #region hidden=true -->
 Or we can input RA and DEC to create a 3ML style OGIP response directly:
+<!-- #endregion -->
 
-```python
+```python hidden=true
 response = gbm_n6_generator.to_3ML_response(ra=329,dec = -38.2)
 ```
 
-```python
+```python hidden=true
 fig = response.plot_matrix()
 ```
 
+<!-- #region hidden=true -->
 To see how the effective area varies with location, we can loop through various angles.
+<!-- #endregion -->
 
-```python
+```python hidden=true
 fig, ax = plt.subplots()
 
 bounds = np.vstack((gbm_n6_generator.monte_carlo_energies[:-1],gbm_n6_generator.monte_carlo_energies[1:])).T
@@ -115,7 +127,9 @@ First, the generator needs to know:
 * The channel to PHA reconstructed energy from the CSPEC files. 
 
 
-For the first, one can get the current spacecraft from the 
+For the first, one can get the current spacecraft from the either the triggers trigdat file, or for non-trggered data, one can obtain the position history file. These are available at the [NASA database](https://heasarc.gsfc.nasa.gov/FTP/fermi/data/gbm/). If using a position history file. You need to specify ```T0=<Fermi MET>``` in the constructor so that the time coordinate will be relative to this MET.
+
+Internally, the class uses [gbmgeometry](https://gbmgeometry.readthedocs.io/en/latest/) to convert RA,Dec to the approriate spacecraft coordinates. However, one can also create DRMs in spacecraft coordinates directly. 
 
 <!-- #endregion -->
 
