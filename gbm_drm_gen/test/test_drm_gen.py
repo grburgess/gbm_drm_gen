@@ -43,7 +43,7 @@ def test_custom_edges():
     n6 = DRMGenTTE(tte_file, trigdat=trigdat_file, mat_type=2,
                    cspecfile=cspec_file, custom_input_edges=edges)
 
-    xx = np.geomspace(5., 50000., 31)
+    xx = np.geomspace(5., 50000., 83)
 
     edges = NaiTTEEdges.from_custom_array(xx)
 
