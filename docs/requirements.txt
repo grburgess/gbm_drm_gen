@@ -14,6 +14,8 @@ pandas
 astropy
 cython
 betagen
+astromodels
+threeml
 tqdm
 numba
 better_apidoc
