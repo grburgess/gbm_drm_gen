@@ -141,7 +141,7 @@ First we will try with **VERY** fine log spaced binning above the typical 140 in
 
 
 ```python
-custom_edges = NaiTTEEdges.from_log_bins(n_bins=1355)
+custom_edges = NaiTTEEdges.from_log_bins(n_bins=531)
 
 
 gbm_n6_generator = DRMGenTTE(det_name= "n6",
