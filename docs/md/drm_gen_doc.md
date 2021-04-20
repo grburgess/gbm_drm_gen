@@ -112,7 +112,10 @@ First, the generator needs to know:
 
 * The current location and oreintation of GBM for the data of interest.
 
-* The channel to PHA 
+* The channel to PHA reconstructed energy from the CSPEC files. 
+
+
+For the first, one can get the current spacecraft from the 
 
 <!-- #endregion -->
 
