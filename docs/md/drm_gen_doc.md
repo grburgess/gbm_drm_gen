@@ -32,7 +32,7 @@ import numpy as np
 
 %matplotlib notebook
 
-from gbm_drm_gen import DRMGenTrig
+from gbm_drm_gen import DRMGenTTE
 from gbm_drm_gen.utils.package_data import get_path_of_data_file
 
 
