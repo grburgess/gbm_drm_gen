@@ -1,6 +1,75 @@
 import numpy as np
 
 
+class InputEdges(object):
+
+    _emax = None
+    _emin = None
+
+    def __init__(self, edges: np.array):
+
+        # check that the edges are monotonic
+
+        diff = np.diff(edges)
+
+        if not np.all(diff > 0.):
+
+            raise RuntimeError(
+                "The input edges are not monotonically increasing")
+
+        if len(edges) % 2 == 0:
+
+            raise RuntimeError(
+                "The edges must have an odd length with the end points closed")
+
+        self._edges = edges
+
+    @property
+    def edges(self):
+
+        return self._edges
+
+    @classmethod
+    def from_log_bins(cls, n_bins: int):
+
+        if n_bins % 2 == 0:
+
+            n_bins += 1
+
+        edges = np.geomspace(cls._emin, cls._emax, n_bins)
+
+        return cls(edges)
+
+    @classmethod
+    def from_custom_array(cls, edges: np.array):
+        """
+        create edges from a custom set of energies.
+
+        The end points must be those of the original edges.
+
+        This will be corrected if not done... but might cause errors
+
+        """
+
+        if edges.min() > cls._emin:
+
+            edges = np.insert(edges, 0, cls._min)
+
+        elif edges.min() < cls._emin:
+
+            edges = np.append(edges[edges <= cls._emin], 0, cls._emin)
+
+        if edges.max() < cls._emax:
+
+            edges = np.append(edges, cls._emax)
+
+        elif edges.max() > cls._emax():
+
+            edges = np.append(edges[edges <= cls._emax], cls._emax)
+
+        return cls(edges)
+
+
 tte_edges = {}
 tte_edges["nai"] = np.array(
     [
@@ -295,6 +364,24 @@ tte_edges["bgo"] = np.array(
     ],
     dtype=np.float32,
 )
+
+
+class NaiTTEEdges(InputEdges):
+    _emin = 5.0
+    _emax = 50000.
+
+    def __init__(self, edges):
+
+        super(NaiTTEEdges, self).__init__(edges)
+
+
+class BgoTTEEdges(InputEdges):
+    _emin = 100.
+    _emax = 200000.
+
+    def __init__(self, edges):
+
+        super(BgoTTEEdges, self).__init__(edges)
 
 
 trigdat_edges = {}
@@ -602,6 +689,6 @@ trigdat_out_edge["nai"] = np.array(
 
 
 trigdat_out_edge["bgo"] = np.array(
-    [150.0, 400.0, 850.0, 1500.0, 3000.0, 5500.0, 10000.0, 20000.0, 50000.0,],
+    [150.0, 400.0, 850.0, 1500.0, 3000.0, 5500.0, 10000.0, 20000.0, 50000.0, ],
     dtype=np.float32,
 )

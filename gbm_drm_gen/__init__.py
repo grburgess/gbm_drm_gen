@@ -1,5 +1,9 @@
 #from .drmgen import DRMGen
 from .drmgen_tte import DRMGenTTE
+from .drmgen_trig import DRMGenTrig
+
+from .input_edges import NaiTTEEdges, BgoTTEEdges
+
 from gbm_drm_gen.io.palantir import Palantir
 try:
     
@@ -16,8 +20,10 @@ except:
 
 
 __all__ = [
- 
     "DRMGenTTE",
+    "DRMGenTrig",
+    "NaiTTEEdges",
+    "BgoTTEEdges",
     "BALROG_DRM",
     "BALROGLike",
     "BALROGHealpixMap",

@@ -1,11 +1,14 @@
 __author__ = "grburgess"
+from typing import Any, Dict, List, Optional
+
 import astropy.io.fits as fits
 import astropy.units as u
 import gbmgeometry
 import numpy as np
 
 from gbm_drm_gen.drmgen import DRMGen
-from gbm_drm_gen.input_edges import tte_edges
+from gbm_drm_gen.input_edges import (BgoTTEEdges, InputEdges, NaiTTEEdges,
+                                     tte_edges)
 
 det_name_lookup = {
     "NAI_00": 0,
@@ -24,27 +27,45 @@ det_name_lookup = {
     "BGO_01": 13,
 }
 
+det_name_lookup2 = {
+    "n0": "NAI_00",
+    "n1": "NAI_01",
+    "n2": "NAI_02",
+    "n3": "NAI_03",
+    "n4": "NAI_04",
+    "n5": "NAI_05",
+    "n6": "NAI_06",
+    "n7": "NAI_07",
+    "n8": "NAI_08",
+    "n9": "NAI_09",
+    "na": "NAI_10",
+    "nb": "NAI_11",
+    "b0": "BGO_00",
+    "b1": "BGO_01"}
+
 
 class DRMGenTTE(DRMGen):
     def __init__(
         self,
-        tte_file=None,
-        det_name=None,
-        time=0.0,
-        cspecfile=None,
-        trigdat=None,
-        poshist=None,
-        T0=None,
-        mat_type=0,
-        occult=False,
+        tte_file: Optional[str] = None,
+        det_name: Optional[str] = None,
+        time: float = 0.0,
+        cspecfile: Optional[str] = None,
+        trigdat: Optional[str] = None,
+        poshist: Optional[str] = None,
+        T0: Optional[float] = None,
+        mat_type: int = 0,
+        custom_input_edges: Optional[InputEdges] = None,
+        occult: bool = False,
     ):
         """
         A TTE/CSPEC specific drmgen already incorporating the standard input edges. Output edges are obtained
         from lib import funs the input cspec file. Spacecraft position is read from the TTE file. For further details see the 
         generic reader (DRMGen).
 
+        :param tte_file: the TTE file the data are associated to (used if det name NOT given)
+        :param det_name: either NAI_{**} or BGO_{**} or n* b*
         :param trigdat: the path to a trigdat file
-        :param det: the number (0-13) of the detector to be used
         :param mat_type: 0=direct 1=scattered 2=direct+scattered
         :param time: time relative to trigger to pull spacecraft position or MET if using a poshist file
         :param cspecfile: the cspecfile to pull energy output edges from
@@ -66,15 +87,47 @@ class DRMGenTTE(DRMGen):
                 det_name = f["PRIMARY"].header["DETNAM"]
 
         else:
-            assert det_name in det_name_lookup, "must use a valid detector name"
+
+            # check the dector name lookups
+
+            if det_name not in det_name_lookup:
+
+                if det_name not in det_name_lookup2:
+
+                    raise RuntimeError(f"{det_name} is not valid")
+
+                else:
+
+                    det_name = det_name_lookup2[det_name]
 
         self._det_number = det_name_lookup[det_name]
 
         if self._det_number > 11:
             # BGO
-            self._in_edge = tte_edges["bgo"]
+
+            if custom_input_edges is None:
+
+                self._in_edge = tte_edges["bgo"]
+
+            else:
+
+                assert isinstance(
+                    custom_input_edges, BgoTTEEdges), f"custom edges are not an instance of BgoTTEEdges!"
+
+                self._in_edge = custom_input_edges.edges
+
         else:
-            self._in_edge = tte_edges["nai"]
+
+            if custom_input_edges is None:
+
+                self._in_edge = tte_edges["nai"]
+
+            else:
+
+                assert isinstance(
+                    custom_input_edges, NaiTTEEdges), f"custom edges are not an instance of NaiTTEEdges!"
+
+                self._in_edge = custom_input_edges.edges
 
         # Create the out edge energies
         with fits.open(cspecfile) as f:
