@@ -6,11 +6,9 @@ import astropy.units as u
 import gbmgeometry
 import numba as nb
 import numpy as np
-from numba import prange
-
-# TODO Remove this 
+from numba import prange, types
+# TODO Remove this
 from numba.typed import Dict
-from numba import types
 
 try:
     from threeML.utils.OGIP.response import InstrumentResponse
@@ -18,12 +16,13 @@ try:
 except:
     from responsum import InstrumentResponse
 
-from gbm_drm_gen.basersp_numba import get_database, get_trigdat_precalc_database
+from gbm_drm_gen.basersp_numba import (get_database,
+                                       get_trigdat_precalc_database)
 from gbm_drm_gen.matrix_functions import (atscat_highres_ephoton_interpolator,
-                                          calc_sphere_dist, echan_integrator,
-                                          geo_to_space, geocoords,
-                                          highres_ephoton_interpolator, trfind,
-                                          closest)
+                                          calc_sphere_dist, closest,
+                                          echan_integrator, geo_to_space,
+                                          geocoords,
+                                          highres_ephoton_interpolator, trfind)
 from gbm_drm_gen.utils.geometry import ang2cart, is_occulted
 
 det_name_lookup = {
@@ -114,26 +113,30 @@ class DRMGen(object):
         self._trigdat = True
         self._trigdat_mask = np.array([], dtype=int)
         if det_number < 12:
-            trigdat_edges = np.array([3.4,10.,22.,44.,95.,300.,500.,800.,2000.])
+            trigdat_edges = np.array(
+                [3.4, 10., 22., 44., 95., 300., 500., 800., 2000.])
         else:
-            trigdat_edges = np.array([150.,400.,850.,1500.,3000.,5500.,10000.,20000.,50000.])
+            trigdat_edges = np.array(
+                [150., 400., 850., 1500., 3000., 5500., 10000., 20000., 50000.])
         for i, (e_l, e_h) in enumerate(zip(ebin_edge_out[:-1], ebin_edge_out[1:])):
             elow_index = np.argwhere(np.isclose(e_l,
                                                 trigdat_edges,
                                                 rtol=0.01))
-            if len(elow_index)==0:
-                    self._trigdat = False
-            elif np.isclose(e_h, trigdat_edges[elow_index[0,0]+1], rtol=0.01):
+            if len(elow_index) == 0:
+                self._trigdat = False
+            elif np.isclose(e_h, trigdat_edges[elow_index[0, 0]+1], rtol=0.01):
                 self._trigdat_mask = np.append(self._trigdat_mask,
-                                                   elow_index[0,0])
+                                               elow_index[0, 0])
             else:
                 self._trigdat = False
 
         if self._trigdat:
-            self._database_precalc_trigdat = get_trigdat_precalc_database(lu[det_number], self._trigdat_mask)
+            self._database_precalc_trigdat = get_trigdat_precalc_database(
+                lu[det_number], self._trigdat_mask)
         else:
             # dummy
-            self._database_precalc_trigdat = get_trigdat_precalc_database(lu[det_number], [0])
+            self._database_precalc_trigdat = get_trigdat_precalc_database(lu[det_number], [
+                                                                          0])
             self._trigdat_mask = None
         #######################################################################################
         self._ein = np.zeros(self._nobins_in, dtype=np.float32)
@@ -172,8 +175,15 @@ class DRMGen(object):
 
     def to_3ML_response(self, ra, dec):
 
-        self.set_location(ra, dec, use_numba=True)
+        self.set_location(ra, dec)
 
+
+        if not np.all(np.isfinite(self.matrix)):
+
+            self.set_location(ra, dec)
+            
+        
+        
         response = InstrumentResponse(
             self.matrix, self.ebounds, self.monte_carlo_energies
         )
@@ -205,7 +215,7 @@ class DRMGen(object):
                            ), "GLAST", "GBM", overwrite
         )
 
-    def set_location(self, ra, dec, use_numba=True):
+    def set_location(self, ra, dec) -> None:
         """
         Set the Ra and Dec of the DRM to be built. This invokes DRM generation as well.
 
@@ -219,8 +229,7 @@ class DRMGen(object):
         if self._occult:
             if is_occulted(ra, dec, self._sc_pos):
                 self._drm = self._occulted_DRM
-                return None
-                
+
         # get the spacecraft coordinates
         az, el = self._get_coords(ra, dec)
 
@@ -465,7 +474,7 @@ def _build_drm(
     i1 += 1
     i2 += 1
     i3 += 1
-    
+
     # mod here
 
     mat1 = rsps[milliaz[i1 - 1] + "_" + millizen[i1 - 1]]
@@ -518,11 +527,11 @@ def _build_drm(
             if lat <= lat_cent[0]:
                 il_low = 0
                 il_high = 1
-                #TODO Changes this. Was 0.
+                # TODO Changes this. Was 0.
                 l_frac = 1.0
             else:
                 idx = np.where(lat_cent < lat)[0][-1]
-                #TODO Changed this. This was il_low = idx -1 and il_high = idx
+                # TODO Changed this. This was il_low = idx -1 and il_high = idx
                 il_low = idx
                 il_high = idx+1
                 l_frac = 1.0 - (lat - lat_cent[idx]) / (
@@ -541,7 +550,7 @@ def _build_drm(
             sf = np.arctan(1.0) / 45.0
 
             at_scat(tmp_out, num_theta, num_phi, theta_u, phi_u, gx, gy, gz,
-            sf, grid_points_list, trigdat_precalc_rsps, rsps, milliaz, millizen, epx_lo, epx_hi, ichan, out_edge,
+                    sf, grid_points_list, trigdat_precalc_rsps, rsps, milliaz, millizen, epx_lo, epx_hi, ichan, out_edge,
                     at_scat_data, il_low, il_high, l_frac, trigdat)
             tmp_out2 = np.zeros((ienerg, nobins_out))
             for i in range(num_theta):
@@ -687,13 +696,14 @@ def _build_drm(
     ) / 2.0
     return final_drm
 
+
 @nb.njit(parallel=True, fastmath=True)
 def at_scat(tmp_out, num_theta, num_phi, theta_u, phi_u, gx, gy, gz,
             sf, grid_points_list, trigdat_precalc_rsps, rsps, milliaz, millizen, epx_lo, epx_hi, ichan, out_edge,
             at_scat_data, il_low, il_high, l_frac, trigdat):
     for i in prange(num_theta):
         for j in prange(num_phi):
-            #TODO: Changed this. This was range(1), but I think 2 is needed to also cover
+            # TODO: Changed this. This was range(1), but I think 2 is needed to also cover
             # the negative phi values
             for k in prange(2):
                 dirx, diry, dirz, az, el = geo_to_space(
@@ -716,29 +726,31 @@ def at_scat(tmp_out, num_theta, num_phi, theta_u, phi_u, gx, gy, gz,
                 i1 = closest(P, grid_points_list)
 
                 if trigdat:
-                    rsps_echan_integrator = trigdat_precalc_rsps[milliaz[i1] + "_" + millizen[i1]]#i1
+                    # i1
+                    rsps_echan_integrator = trigdat_precalc_rsps[milliaz[i1] +
+                                                                 "_" + millizen[i1]]
 
                 else:
-                    rsps_echan_integrator = echan_integrator(rsps[milliaz[i1] + "_" + millizen[i1]],#i1
+                    rsps_echan_integrator = echan_integrator(rsps[milliaz[i1] + "_" + millizen[i1]],  # i1
                                                              epx_lo,
                                                              epx_hi,
                                                              ichan,
                                                              out_edge
-                    )
+                                                             )
 
                 msum(at_scat_data[..., il_low, i, j],
                      at_scat_data[..., il_high, i, j],
                      np.ascontiguousarray(rsps_echan_integrator),
-                     tmp_out[i,j,k],
+                     tmp_out[i, j, k],
                      l_frac,
-                )
+                     )
 
-                
+
 @nb.njit(fastmath=True, parallel=False)
 def msum(this_data_lo, this_data_hi, direct_diff_matrix, tmp_out, l_frac):
     tmp = this_data_lo*l_frac+this_data_hi*(1-l_frac)
     tmp_out += np.dot(tmp, direct_diff_matrix)
-    #for ii in prange(ienerg):
+    # for ii in prange(ienerg):
     #    for jj in prange(nobins_out):
     #        for kk in prange(ienerg):
     #            tmp_out[ii, jj] += (
