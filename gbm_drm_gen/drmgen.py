@@ -230,19 +230,23 @@ class DRMGen(object):
         if self._occult:
             if is_occulted(ra, dec, self._sc_pos):
                 self._drm = self._occulted_DRM
+            else:
+                az, el = self._get_coords(ra, dec)
+                self._drm = self._make_drm_numba(
+                    az, el, self._geo_az, self._geo_el)
+        else:
+            # get the spacecraft coordinates
+            az, el = self._get_coords(ra, dec)
 
-        # get the spacecraft coordinates
-        az, el = self._get_coords(ra, dec)
-
-        self._drm = self._make_drm_numba(
-            az, el, self._geo_az, self._geo_el)
+            self._drm = self._make_drm_numba(
+                az, el, self._geo_az, self._geo_el)
 
         # go ahead and transpose it for spectal fitting, etc.
         # self._drm_transpose = self._drm.T
         # go ahead and transpose it for spectal fitting, etc.
         # self._drm_transpose = self._drm.T
 
-    def set_location_direct_sat_coord(self, az, el):
+    def set_location_direct_sat_coord(self, az, el) -> None:
         """
         Set the AZ and EL in satellite coordinates of the DRM to be built. This invokes DRM generation as well.
 
