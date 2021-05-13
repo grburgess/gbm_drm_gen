@@ -12,15 +12,15 @@ class InputEdges(object):
 
         diff = np.diff(edges)
 
-        if not np.all(diff > 0.):
+        if not np.all(diff > 0.0):
 
-            raise RuntimeError(
-                "The input edges are not monotonically increasing")
+            raise RuntimeError("The input edges are not monotonically increasing")
 
         if len(edges) % 2 == 0:
 
             raise RuntimeError(
-                "The edges must have an odd length with the end points closed")
+                "The edges must have an odd length with the end points closed"
+            )
 
         self._edges = edges
 
@@ -368,7 +368,7 @@ tte_edges["bgo"] = np.array(
 
 class NaiTTEEdges(InputEdges):
     _emin = 5.0
-    _emax = 50000.
+    _emax = 50000.0
 
     def __init__(self, edges):
 
@@ -376,8 +376,8 @@ class NaiTTEEdges(InputEdges):
 
 
 class BgoTTEEdges(InputEdges):
-    _emin = 100.
-    _emax = 200000.
+    _emin = 100.0
+    _emax = 200000.0
 
     def __init__(self, edges):
 
@@ -684,11 +684,15 @@ trigdat_edges["bgo"] = np.array(
 
 trigdat_out_edge = {}
 trigdat_out_edge["nai"] = np.array(
-    [3.4, 10.0, 22.0, 44.0, 95.0, 300.0, 500.0, 800.0, 2000.0], dtype=np.float32,
+    [3.4, 10.0, 22.0, 44.0, 95.0, 300.0, 500.0, 800.0, 2000.0],
+    dtype=np.float32,
 )
 
 
 trigdat_out_edge["bgo"] = np.array(
-    [150.0, 400.0, 850.0, 1500.0, 3000.0, 5500.0, 10000.0, 20000.0, 50000.0, ],
+    [150.0, 400.0, 850.0, 1500.0, 3000.0, 5500.0, 10000.0, 20000.0, 50000.0],
     dtype=np.float32,
 )
+
+# For CTIME data we use the same in edges as for trigdat data
+ctime_edges = trigdat_edges
