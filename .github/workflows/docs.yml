@@ -1,0 +1,51 @@
+name: Docs
+on: [push, release]
+
+jobs:
+  notebooks:
+    name: "Build the notebooks for the docs"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip wheel
+          pip install black
+          pip install --upgrade numba numpy ipython jupyter ipyvolume scipy h5py matplotlib astropy
+          pip install jupytext jupyterthemes
+          python setup.py install
+          
+          
+      - name: Execute the notebooks
+        shell: bash -l {0}
+        run: |
+          set -e
+          
+          jupytext --to ipynb --execute docs/md/*.md
+
+          mv docs/md/*.ipynb docs/notebooks/
+          ls docs/notebooks
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: notebooks-for-${{ github.sha }}
+          path: docs/notebooks
+
+      - name: Sleep for 1 minutes
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '1m'
+          
+      - name: Trigger RTDs build
+        uses: dfm/rtds-action@v1
+        with:
+          webhook_url: ${{ secrets.RTDS_WEBHOOK_URL }}
+          webhook_token: ${{ secrets.RTDS_WEBHOOK_TOKEN }}
+          commit_ref: ${{ github.ref }}
