@@ -36,7 +36,7 @@ from jupyterthemes import jtplot
 
 jtplot.style(context="talk", grid=False)
 
-from gbm_drm_gen import DRMGenTTE
+from gbm_drm_gen import DRMGen
 from gbm_drm_gen.utils.package_data import get_path_of_data_file
 
 
@@ -44,62 +44,51 @@ from gbm_drm_gen.utils.package_data import get_path_of_data_file
 
 ```
 
-<!-- #region heading_collapsed=true -->
 ## quick start
-<!-- #endregion -->
 
-<!-- #region hidden=true -->
+
 To create a DRM generator for TTE data, we need the TTE, CSPEC, and the TRIGDAT data files.
 * The CSPEC data contains the output side of the DRM's energy bounds. 
 * The TRIGDAT data contains the spacecraft orientation data.
-<!-- #endregion -->
 
-```python hidden=true
+```python
 trigdat_file = get_path_of_data_file('example_data/glg_trigdat_all_bn110721200_v01.fit')
 cspec_file = get_path_of_data_file('example_data/glg_cspec_n6_bn110721200_v00.pha')
 
 
 # create the generator
-gbm_n6_generator = DRMGenTTE(det_name= "n6",
+gbm_n6_generator = DRMGen.from_128_bin_data(det_name= "n6",
                              time=0, # time relative to T0 or trigger time.
                              trigdat = trigdat_file,
                              mat_type = 2, # direct response + atmospheric scattering
                              cspecfile = cspec_file)
 ```
 
-<!-- #region hidden=true -->
 We can set the location of the source directly. The first run can be a bit slow as ```numba``` is used in the background to be very fast. 
-<!-- #endregion -->
 
-```python hidden=true
+```python
 gbm_n6_generator.set_location(ra=329,dec = -38.2)
 ```
 
-<!-- #region hidden=true -->
 We can now checkout the matrix object created in the background:
-<!-- #endregion -->
 
-```python hidden=true
+```python
 gbm_n6_generator.matrix
 ```
 
-<!-- #region hidden=true -->
 Or we can input RA and DEC to create a 3ML style OGIP response directly:
-<!-- #endregion -->
 
-```python hidden=true
+```python
 response = gbm_n6_generator.to_3ML_response(ra=329,dec = -38.2)
 ```
 
-```python hidden=true
+```python
 fig = response.plot_matrix()
 ```
 
-<!-- #region hidden=true -->
 To see how the effective area varies with location, we can loop through various angles.
-<!-- #endregion -->
 
-```python hidden=true
+```python
 fig, ax = plt.subplots()
 
 bounds = np.vstack((gbm_n6_generator.monte_carlo_energies[:-1],gbm_n6_generator.monte_carlo_energies[1:])).T
@@ -165,7 +154,7 @@ First we will try with **VERY** fine log spaced binning above the typical 140 in
 custom_edges = NaiTTEEdges.from_log_bins(n_bins=531)
 
 
-gbm_n6_generator = DRMGenTTE(det_name= "n6",
+gbm_n6_generator = DRMGen.from_128_bin_data(det_name= "n6",
                              trigdat = trigdat_file,
                              mat_type = 2, # direct response + atmospheric scattering
                              cspecfile = cspec_file,
@@ -186,7 +175,7 @@ And now with a much coarser input binning:
 custom_edges = NaiTTEEdges.from_log_bins(n_bins=73)
 
 
-gbm_n6_generator = DRMGenTTE(det_name= "n6",
+gbm_n6_generator =  DRMGen.from_128_bin_data(det_name= "n6",
                              trigdat = trigdat_file,
                              mat_type = 2, # direct response + atmospheric scattering
                              cspecfile = cspec_file,
@@ -207,7 +196,7 @@ It is easier to see the difference with simple matrix plotting:
 custom_edges = NaiTTEEdges.from_log_bins(n_bins=91)
 
 
-gbm_n6_generator = DRMGenTTE(det_name= "n6",
+gbm_n6_generator =  DRMGen.from_128_bin_data(det_name= "n6",
                              trigdat = trigdat_file,
                              mat_type = 2, # direct response + atmospheric scattering
                              cspecfile = cspec_file,
@@ -224,7 +213,7 @@ plt.matshow(gbm_n6_generator.matrix.T)
 custom_edges = NaiTTEEdges.from_log_bins(n_bins=141)
 
 
-gbm_n6_generator = DRMGenTTE(det_name= "n6",
+gbm_n6_generator =  DRMGen.from_128_bin_data(det_name= "n6",
                              trigdat = trigdat_file,
                              mat_type = 2, # direct response + atmospheric scattering
                              cspecfile = cspec_file,
@@ -243,7 +232,7 @@ plt.matshow(gbm_n6_generator.matrix.T)
 custom_edges = NaiTTEEdges.from_log_bins(n_bins=1541)
 
 
-gbm_n6_generator = DRMGenTTE(det_name= "n6",
+gbm_n6_generator =  DRMGen.from_128_bin_data(det_name= "n6",
                              trigdat = trigdat_file,
                              mat_type = 2, # direct response + atmospheric scattering
                              cspecfile = cspec_file,
@@ -269,7 +258,7 @@ edges = np.linspace(5., 50000., 1001)
 custom_edges = NaiTTEEdges.from_custom_array(edges)
 
 
-gbm_n6_generator = DRMGenTTE(det_name= "n6",
+gbm_n6_generator =  DRMGen.from_128_bin_data(det_name= "n6",
                              trigdat = trigdat_file,
                              mat_type = 2, # direct response + atmospheric scattering
                              cspecfile = cspec_file,
@@ -282,6 +271,35 @@ gbm_n6_generator = DRMGenTTE(det_name= "n6",
 response = gbm_n6_generator.to_3ML_response(ra=329,dec = -38.2)
 
 fig = response.plot_matrix()
+```
+
+## Creating RSP2 files
+
+```python
+from gbm_drm_gen import create_rsp2
+```
+
+```python
+# create the generator
+gbm_n6_generator = DRMGen.from_128_bin_data(det_name= "n6",
+                             time=0, # time relative to T0 or trigger time.
+                             trigdat = trigdat_file,
+                             mat_type = 2, # direct response + atmospheric scattering
+                             cspecfile = cspec_file)
+```
+
+```python
+output_file_name = "my_new_rsp.rsp2" # you must call it an RSP2 file!
+```
+
+```python
+create_rsp2(output_file_name,
+            response_generator=gbm_n6_generator,
+            ra=0,
+            dec=0,
+            tstart=0,
+            tstop=10,
+            delta_time=2)
 ```
 
 ```python
