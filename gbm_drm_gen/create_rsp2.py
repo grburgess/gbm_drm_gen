@@ -19,8 +19,12 @@ def create_rsp2(file_name: str,
     """
     
     
-    time_bins = np.arange(tstart, tstop, delta_time)
+    time_bins = np.arange(tstart, tstop, delta_time).tolist()
 
+    time_bins.append(time_bins[-1] + delta_time)
+
+    time_bins = np.array(time_bins)
+    
     start = time_bins[:-1]
 
     stop = time_bins[1:]
