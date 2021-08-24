@@ -21,7 +21,7 @@ import sys
 from pathlib import Path
 
 project = 'gbm_drm_gen'
-copyright = '2017, J. Michael Burgess, Bjoern Biltzinger and Felix Kunzweiler'
+copyright = '2017-2021, J. Michael Burgess, Bjoern Biltzinger and Felix Kunzweiler'
 author = 'J. Michael Burgess'
 
 
@@ -29,24 +29,6 @@ sys.path.insert(0, os.path.abspath("../"))
 
 DOCS = Path(__file__).parent
 
-
-# -- Generate API documentation ------------------------------------------------
-def run_apidoc(app):
-    """Generage API documentation"""
-    import better_apidoc
-
-    better_apidoc.APP = app
-    better_apidoc.main([
-        "better-apidoc",
-        # "-t",
-        # str(docs / "_templates"),
-        "--force",
-        "--no-toc",
-        "--separate",
-        "-o",
-        str(DOCS / "api"),
-        str(DOCS / ".." / "gbm_drm_gen"),
-    ])
 
 
 # -- General configuration ---------------------------------------------------
@@ -63,27 +45,41 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
-    'rtds_action'
+    #'rtds_action'
 ]
 
+
 napoleon_google_docstring = True
-napoleon_use_param = False
-
-# # The name of your GitHub repository
-rtds_action_github_repo = "grburgess/gbm_drm_gen"
-
-# The path where the artifact should be extracted
-# Note: this is relative to the conf.py file!
-rtds_action_path = "notebooks"
-
-# The "prefix" used in the `upload-artifact` step of the action
-rtds_action_artifact_prefix = "notebooks-for-"
-
-# A GitHub personal access token is required, more info below
-rtds_action_github_token = os.environ["GITHUB_TOKEN"]
+napoleon_use_param = True
+napoleon_include_private_with_doc = True
+napoleon_include_init_with_doc = True
 
 
-rtds_action_error_if_missing = True
+autodoc_default_options = {
+    'members': 'var1, var2',
+    'member-order': 'bysource',
+    'special-members': '__init__',
+    'undoc-members': True,
+    'exclude-members': '__weakref__'
+}
+
+
+
+# # # The name of your GitHub repository
+# rtds_action_github_repo = "grburgess/gbm_drm_gen"
+
+# # The path where the artifact should be extracted
+# # Note: this is relative to the conf.py file!
+# rtds_action_path = "notebooks"
+
+# # The "prefix" used in the `upload-artifact` step of the action
+# rtds_action_artifact_prefix = "notebooks-for-"
+
+# # A GitHub personal access token is required, more info below
+# rtds_action_github_token = os.environ["GITHUB_TOKEN"]
+
+
+# rtds_action_error_if_missing = True
 
 
 # Add any paths that contain templates here, relative to this directory.
@@ -199,5 +195,3 @@ texinfo_documents = [
      'One line description of project.', 'Miscellaneous'),
 ]
 
-def setup(app):
-    app.connect("builder-inited", run_apidoc)

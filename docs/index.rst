@@ -11,3 +11,4 @@ Welcome to gbm_drm_gen's documentation!
    :caption: Contents:
 
    notebooks/drm_gen_doc.ipynb	     
+   api/API
