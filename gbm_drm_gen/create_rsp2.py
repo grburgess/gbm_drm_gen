@@ -37,7 +37,7 @@ def create_rsp2(file_name: str,
 
         rsp = response_generator.to_3ML_response(ra, dec, coverage_interval=coverage_interval)
 
-        list_of_matrices.append(rsp)
+        list_of_matrices.append(rsp.matrix)
         
     rsp2 = RSP2(rsp.monte_carlo_energies, rsp.ebounds, list_of_matrices, "Fermi", "GBM", start, stop)
 

@@ -56,12 +56,7 @@ def test_custom_edges():
 
 def test_time_change(built_drm_gen_new):
 
-    os.environ["NUMBA_DISABLE_JIT"] = "1"
-
     built_drm_gen_new.set_time(10)
-
-    os.environ["NUMBA_DISABLE_JIT"] = "0"
-
     
 
 def test_rsp2_gen(built_drm_gen_new):
