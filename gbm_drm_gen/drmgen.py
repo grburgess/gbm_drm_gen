@@ -43,6 +43,23 @@ det_name_lookup = {
     "BGO_01": 13,
 }
 
+det_name_lookup2 = {
+    "n0": "NAI_00",
+    "n1": "NAI_01",
+    "n2": "NAI_02",
+    "n3": "NAI_03",
+    "n4": "NAI_04",
+    "n5": "NAI_05",
+    "n6": "NAI_06",
+    "n7": "NAI_07",
+    "n8": "NAI_08",
+    "n9": "NAI_09",
+    "na": "NAI_10",
+    "nb": "NAI_11",
+    "b0": "BGO_00",
+    "b1": "BGO_01"}
+
+
 
 lu = [
     "n0",
