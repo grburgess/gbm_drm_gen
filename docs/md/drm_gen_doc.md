@@ -299,6 +299,62 @@ create_rsp2(output_file_name,
             dec=0,
             tstart=0,
             tstop=10,
+            delta_time=2,
+            overwrite=True
+           )
+```
+
+```python
+with fits.open(output_file_name) as f:
+    
+    f.info()
+    
+    print(f[0].header['DRM_NUM'])
+    print(f[2].header['TSTART'])
+    print(f[2].header['TSTOP'])
+    
+   
+```
+
+```python
+from threeML import TimeSeriesBuilder
+```
+
+```python
+tsb = TimeSeriesBuilder.from_gbm_cspec_or_ctime("cspec", cspec_or_ctime_file=cspec_file, rsp_file="my_new_rsp.rsp2")
+
+tsb.view_lightcurve();
+
+```
+
+```python
+tsb.set_active_time_interval('1-5')
+```
+
+```python
+from gbm_drm_gen import create_rsp2
+```
+
+```python
+# create the generator
+gbm_n6_generator = DRMGen.from_128_bin_data(det_name= "n6",
+                             time=0, # time relative to T0 or trigger time.
+                             trigdat = trigdat_file,
+                             mat_type = 2, # direct response + atmospheric scattering
+                             cspecfile = cspec_file)
+```
+
+```python
+output_file_name = "my_new_rsp.rsp2" # you must call it an RSP2 file!
+```
+
+```python
+create_rsp2(output_file_name,
+            response_generator=gbm_n6_generator,
+            ra=0,
+            dec=0,
+            tstart=0,
+            tstop=10,
             delta_time=2)
 ```
 
