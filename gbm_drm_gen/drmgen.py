@@ -13,6 +13,7 @@ from responsum import InstrumentResponse
 from gbm_drm_gen.basersp_numba import (get_database,
                                        get_trigdat_precalc_database)
 from gbm_drm_gen.input_edges import (BgoTTEEdges, InputEdges, NaiTTEEdges,
+                                     trigdat_edges, trigdat_out_edge,
                                      tte_edges)
 from gbm_drm_gen.matrix_functions import (atscat_highres_ephoton_interpolator,
                                           calc_sphere_dist, closest,
