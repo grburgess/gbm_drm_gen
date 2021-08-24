@@ -159,7 +159,7 @@ html_theme_options = {
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'gbm_drm_gendoc'
 
-source_suffix = ['.rst', '.ipynb']
+source_suffix = ['.rst']
 
 html_logo = 'media/logo.png'
 
