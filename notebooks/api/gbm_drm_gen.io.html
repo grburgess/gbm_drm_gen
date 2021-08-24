@@ -1,0 +1,473 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>gbm_drm_gen.io package &mdash; gbm_drm_gen  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <link rel="stylesheet" href="../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> gbm_drm_gen
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">gbm_drm_gen.io package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.io.balrog_drm">gbm_drm_gen.io.balrog_drm module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.io.balrog_healpix_map">gbm_drm_gen.io.balrog_healpix_map module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.io.balrog_like">gbm_drm_gen.io.balrog_like module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.io.palantir">gbm_drm_gen.io.palantir module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.io.response_generator">gbm_drm_gen.io.response_generator module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.io">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">gbm_drm_gen</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>gbm_drm_gen.io package</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="gbm-drm-gen-io-package">
+<h1>gbm_drm_gen.io package<a class="headerlink" href="#gbm-drm-gen-io-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-gbm_drm_gen.io.balrog_drm">
+<span id="gbm-drm-gen-io-balrog-drm-module"></span><h2>gbm_drm_gen.io.balrog_drm module<a class="headerlink" href="#module-gbm_drm_gen.io.balrog_drm" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.balrog_drm.BALROG_DRM">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.io.balrog_drm.</span></span><span class="sig-name descname"><span class="pre">BALROG_DRM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drm_generator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_drm.html#BALROG_DRM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.io.balrog_drm.BALROG_DRM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">threeML.utils.OGIP.response.InstrumentResponse</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.balrog_drm.BALROG_DRM.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drm_generator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_drm.html#BALROG_DRM.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.io.balrog_drm.BALROG_DRM.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>drm_generator</strong> – BALROG DRM generator</p></li>
+<li><p><strong>ra</strong> – RA of the source</p></li>
+<li><p><strong>dec</strong> – DEC of the source</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.balrog_drm.BALROG_DRM.set_location">
+<span class="sig-name descname"><span class="pre">set_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_drm.html#BALROG_DRM.set_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.io.balrog_drm.BALROG_DRM.set_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the source location
+:param ra:
+:param dec:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.balrog_drm.BALROG_DRM.set_time">
+<span class="sig-name descname"><span class="pre">set_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_drm.html#BALROG_DRM.set_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.io.balrog_drm.BALROG_DRM.set_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>set the time of the source
+:param time:
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gbm_drm_gen.io.balrog_healpix_map">
+<span id="gbm-drm-gen-io-balrog-healpix-map-module"></span><h2>gbm_drm_gen.io.balrog_healpix_map module<a class="headerlink" href="#module-gbm_drm_gen.io.balrog_healpix_map" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.balrog_healpix_map.BALROGHealpixMap">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.io.balrog_healpix_map.</span></span><span class="sig-name descname"><span class="pre">BALROGHealpixMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">analysis_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_healpix_map.html#BALROGHealpixMap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.io.balrog_healpix_map.BALROGHealpixMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.balrog_healpix_map.BALROGHealpixMap.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">analysis_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_healpix_map.html#BALROGHealpixMap.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.io.balrog_healpix_map.BALROGHealpixMap.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.balrog_healpix_map.BALROGHealpixMap.write_map">
+<span class="sig-name descname"><span class="pre">write_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_healpix_map.html#BALROGHealpixMap.write_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.io.balrog_healpix_map.BALROGHealpixMap.write_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.balrog_healpix_map.BALROGHealpixMap.map">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">map</span></span><a class="headerlink" href="#gbm_drm_gen.io.balrog_healpix_map.BALROGHealpixMap.map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.balrog_healpix_map.BALROGHealpixMap.ra">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ra</span></span><a class="headerlink" href="#gbm_drm_gen.io.balrog_healpix_map.BALROGHealpixMap.ra" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.balrog_healpix_map.BALROGHealpixMap.ra_healpix">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ra_healpix</span></span><a class="headerlink" href="#gbm_drm_gen.io.balrog_healpix_map.BALROGHealpixMap.ra_healpix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.balrog_healpix_map.BALROGHealpixMap.dec">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dec</span></span><a class="headerlink" href="#gbm_drm_gen.io.balrog_healpix_map.BALROGHealpixMap.dec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gbm_drm_gen.io.balrog_like">
+<span id="gbm-drm-gen-io-balrog-like-module"></span><h2>gbm_drm_gen.io.balrog_like module<a class="headerlink" href="#module-gbm_drm_gen.io.balrog_like" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.balrog_like.BALROGLike">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.io.balrog_like.</span></span><span class="sig-name descname"><span class="pre">BALROGLike</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drm_generator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_like.html#BALROGLike"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.io.balrog_like.BALROGLike" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">threeML.plugins.DispersionSpectrumLike.DispersionSpectrumLike</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.balrog_like.BALROGLike.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drm_generator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_like.html#BALROGLike.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.io.balrog_like.BALROGLike.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>BALROGLike is a general plugin for fitting GBM spectra and locations at the same time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – plugin name</p></li>
+<li><p><strong>observation</strong> – observed spectrum</p></li>
+<li><p><strong>drm_generator</strong> – the drm generator for this</p></li>
+<li><p><strong>background</strong> – background spectrum</p></li>
+<li><p><strong>time</strong> – time of the observation</p></li>
+<li><p><strong>free_position</strong> – keep the position free</p></li>
+<li><p><strong>verbose</strong> – the verbosity level of the plugin</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.balrog_like.BALROGLike.set_model">
+<span class="sig-name descname"><span class="pre">set_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">likelihoodModel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_like.html#BALROGLike.set_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.io.balrog_like.BALROGLike.set_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the model and free the location parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>likelihoodModel</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.balrog_like.BALROGLike.get_model">
+<span class="sig-name descname"><span class="pre">get_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">precalc_fluxes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_like.html#BALROGLike.get_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.io.balrog_like.BALROGLike.get_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>The model integrated over the energy bins. Note that it only returns the  model for the
+currently active channels/measurements</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>array of folded model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.balrog_like.BALROGLike.from_spectrumlike">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_spectrumlike</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum_like</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drm_generator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_like.html#BALROGLike.from_spectrumlike"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.io.balrog_like.BALROGLike.from_spectrumlike" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a BALROGlike from an existing SpectrumLike child</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spectrum_like</strong> – the existing spectrumlike</p></li>
+<li><p><strong>time</strong> – the time to generate the RSPs at</p></li>
+<li><p><strong>drm_generator</strong> – optional BALROG DRM generator</p></li>
+<li><p><strong>free_position</strong> – if the position should be free</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gbm_drm_gen.io.palantir">
+<span id="gbm-drm-gen-io-palantir-module"></span><h2>gbm_drm_gen.io.palantir module<a class="headerlink" href="#module-gbm_drm_gen.io.palantir" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.palantir.Palantir">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.io.palantir.</span></span><span class="sig-name descname"><span class="pre">Palantir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trigdat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poshist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/palantir.html#Palantir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.io.palantir.Palantir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.palantir.Palantir.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trigdat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poshist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/palantir.html#Palantir.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.io.palantir.Palantir.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>View the 3ML BALROG results</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> – 3ML BALROG result</p></li>
+<li><p><strong>nside</strong> – power of 2</p></li>
+<li><p><strong>trigdat</strong> – optional trigdat files</p></li>
+<li><p><strong>time</strong> – time of observation</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.palantir.Palantir.add_healpix_map">
+<span class="sig-name descname"><span class="pre">add_healpix_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">healpix_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/palantir.html#Palantir.add_healpix_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.io.palantir.Palantir.add_healpix_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.palantir.Palantir.skymap">
+<span class="sig-name descname"><span class="pre">skymap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">dets</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/palantir.html#Palantir.skymap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.io.palantir.Palantir.skymap" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dets</strong> – optional detectors</p></li>
+<li><p><strong>cmap</strong> – colormap for location</p></li>
+<li><p><strong>show_earth</strong> – show the earth points</p></li>
+<li><p><strong>width</strong> – no idea</p></li>
+<li><p><strong>fov</strong> – FOV of GBM detectors</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.palantir.Palantir.get_flux_upper_bound">
+<span class="sig-name descname"><span class="pre">get_flux_upper_bound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ene_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ene_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">95.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/palantir.html#Palantir.get_flux_upper_bound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.io.palantir.Palantir.get_flux_upper_bound" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.palantir.Palantir.healpix_map">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">healpix_map</span></span><a class="headerlink" href="#gbm_drm_gen.io.palantir.Palantir.healpix_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.io.palantir.Palantir.balrog_map">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">balrog_map</span></span><a class="headerlink" href="#gbm_drm_gen.io.palantir.Palantir.balrog_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gbm_drm_gen.io.response_generator">
+<span id="gbm-drm-gen-io-response-generator-module"></span><h2>gbm_drm_gen.io.response_generator module<a class="headerlink" href="#module-gbm_drm_gen.io.response_generator" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-gbm_drm_gen.io">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gbm_drm_gen.io" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017-2021, J. Michael Burgess, Bjoern Biltzinger and Felix Kunzweiler.
+
+    </p>
+  </div> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

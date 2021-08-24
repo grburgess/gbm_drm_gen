@@ -1,0 +1,505 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>jupyter: jupytext: formats: ipynb,md text_representation: extension: .md format_name: markdown format_version: ‘1.3’ jupytext_version: 1.11.1 kernelspec: display_name: Python 3 language: python name: python3 &mdash; gbm_drm_gen  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <link rel="stylesheet" href="../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> gbm_drm_gen
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">jupyter:
+jupytext:
+formats: ipynb,md
+text_representation:
+extension: .md
+format_name: markdown
+format_version: ‘1.3’
+jupytext_version: 1.11.1
+kernelspec:
+display_name: Python 3
+language: python
+name: python3</a></li>
+<li><a class="reference internal" href="#generating-drms-for-gbm-detectors">Generating DRMs for GBM detectors</a><ul>
+<li><a class="reference internal" href="#quick-start">quick start</a></li>
+<li><a class="reference internal" href="#into-the-details">Into the details</a></li>
+<li><a class="reference internal" href="#custom-energy-binning">custom energy binning</a><ul>
+<li><a class="reference internal" href="#log-spaced-energies">Log-spaced energies</a></li>
+<li><a class="reference internal" href="#a-custom-array">a custom array</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">gbm_drm_gen</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>jupyter:
+jupytext:
+formats: ipynb,md
+text_representation:
+extension: .md
+format_name: markdown
+format_version: ‘1.3’
+jupytext_version: 1.11.1
+kernelspec:
+display_name: Python 3
+language: python
+name: python3</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<hr class="docutils" />
+<div class="section" id="jupyter-jupytext-formats-ipynb-md-text-representation-extension-md-format-name-markdown-format-version-1-3-jupytext-version-1-11-1-kernelspec-display-name-python-3-language-python-name-python3">
+<h1>jupyter:
+jupytext:
+formats: ipynb,md
+text_representation:
+extension: .md
+format_name: markdown
+format_version: ‘1.3’
+jupytext_version: 1.11.1
+kernelspec:
+display_name: Python 3
+language: python
+name: python3<a class="headerlink" href="#jupyter-jupytext-formats-ipynb-md-text-representation-extension-md-format-name-markdown-format-version-1-3-jupytext-version-1-11-1-kernelspec-display-name-python-3-language-python-name-python3" title="Permalink to this headline">¶</a></h1>
+<!-- #region --></div>
+<div class="section" id="generating-drms-for-gbm-detectors">
+<h1>Generating DRMs for GBM detectors<a class="headerlink" href="#generating-drms-for-gbm-detectors" title="Permalink to this headline">¶</a></h1>
+<p>The main purpose for <code class="docutils literal notranslate"><span class="pre">gbm_drm_gen</span></code> is a fast and easy way to generate detector response matrices for the Fermi-GBM detectors in a pythonic way.</p>
+<p>When we want to generate DRMS for GBM detectors, we simply need to obtain the proper data</p>
+<!-- #endregion --><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+
+<span class="kn">from</span> <span class="nn">jupyterthemes</span> <span class="kn">import</span> <span class="n">jtplot</span>
+
+<span class="n">jtplot</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="s2">&quot;talk&quot;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">gbm_drm_gen</span> <span class="kn">import</span> <span class="n">DRMGenTTE</span>
+<span class="kn">from</span> <span class="nn">gbm_drm_gen.utils.package_data</span> <span class="kn">import</span> <span class="n">get_path_of_data_file</span>
+
+
+
+</pre></div>
+</div>
+<!-- #region heading_collapsed=true --><div class="section" id="quick-start">
+<h2>quick start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h2>
+<!-- #endregion --><!-- #region hidden=true --><p>To create a DRM generator for TTE data, we need the TTE, CSPEC, and the TRIGDAT data files.</p>
+<ul class="simple">
+<li><p>The CSPEC data contains the output side of the DRM’s energy bounds.</p></li>
+<li><p>The TRIGDAT data contains the spacecraft orientation data.</p></li>
+</ul>
+<!-- #endregion --><div class="highlight-python hidden=true notranslate"><div class="highlight"><pre><span></span>trigdat_file = get_path_of_data_file(&#39;example_data/glg_trigdat_all_bn110721200_v01.fit&#39;)
+cspec_file = get_path_of_data_file(&#39;example_data/glg_cspec_n6_bn110721200_v00.pha&#39;)
+
+
+# create the generator
+gbm_n6_generator = DRMGenTTE(det_name= &quot;n6&quot;,
+                             time=0, # time relative to T0 or trigger time.
+                             trigdat = trigdat_file,
+                             mat_type = 2, # direct response + atmospheric scattering
+                             cspecfile = cspec_file)
+</pre></div>
+</div>
+<!-- #region hidden=true --><p>We can set the location of the source directly. The first run can be a bit slow as <code class="docutils literal notranslate"><span class="pre">numba</span></code> is used in the background to be very fast.</p>
+<!-- #endregion --><div class="highlight-python hidden=true notranslate"><div class="highlight"><pre><span></span>gbm_n6_generator.set_location(ra=329,dec = -38.2)
+</pre></div>
+</div>
+<!-- #region hidden=true --><p>We can now checkout the matrix object created in the background:</p>
+<!-- #endregion --><div class="highlight-python hidden=true notranslate"><div class="highlight"><pre><span></span>gbm_n6_generator.matrix
+</pre></div>
+</div>
+<!-- #region hidden=true --><p>Or we can input RA and DEC to create a 3ML style OGIP response directly:</p>
+<!-- #endregion --><div class="highlight-python hidden=true notranslate"><div class="highlight"><pre><span></span>response = gbm_n6_generator.to_3ML_response(ra=329,dec = -38.2)
+</pre></div>
+</div>
+<div class="highlight-python hidden=true notranslate"><div class="highlight"><pre><span></span>fig = response.plot_matrix()
+</pre></div>
+</div>
+<!-- #region hidden=true --><p>To see how the effective area varies with location, we can loop through various angles.</p>
+<!-- #endregion --><div class="highlight-python hidden=true notranslate"><div class="highlight"><pre><span></span>fig, ax = plt.subplots()
+
+bounds = np.vstack((gbm_n6_generator.monte_carlo_energies[:-1],gbm_n6_generator.monte_carlo_energies[1:])).T
+de = np.diff(bounds)
+ene = np.mean(bounds,axis=1)
+
+for ra in np.linspace(260, 350, 10):
+    
+    gbm_n6_generator.set_location(ra=ra,dec = -38.2)
+
+    ax.loglog(ene,gbm_n6_generator.matrix.sum(axis=0),label=r&#39;%d$^{\circ}$&#39;%ra)
+
+ax.set_ylim(1)
+ax.legend()
+ax.set_xlabel(r&#39;Effective Area (cm$^2$)&#39;);
+ax.set_xlabel(&#39;MC Energies&#39;);
+</pre></div>
+</div>
+<!-- #region --></div>
+<div class="section" id="into-the-details">
+<h2>Into the details<a class="headerlink" href="#into-the-details" title="Permalink to this headline">¶</a></h2>
+<p>Ok, now let’s go through the various specifics of the DRM generator constructor.</p>
+<p>First, the generator needs to know:</p>
+<ul class="simple">
+<li><p>The current location and oreintation of GBM for the data of interest.</p></li>
+<li><p>The channel to PHA reconstructed energy from the CSPEC files.</p></li>
+</ul>
+<p>For the first, one can get the current spacecraft from the either the triggers trigdat file, or for non-trggered data, one can obtain the position history file. These are available at the <a class="reference external" href="https://heasarc.gsfc.nasa.gov/FTP/fermi/data/gbm/">NASA database</a>. If using a position history file. You need to specify <code class="docutils literal notranslate"><span class="pre">T0=&lt;Fermi</span> <span class="pre">MET&gt;</span></code> in the constructor so that the time coordinate will be relative to this MET.</p>
+<p>Internally, the class uses <a class="reference external" href="https://gbmgeometry.readthedocs.io/en/latest/">gbmgeometry</a> to convert RA,Dec to the approriate spacecraft coordinates. However, one can also create DRMs in spacecraft coordinates directly.</p>
+<!-- #endregion --></div>
+<div class="section" id="custom-energy-binning">
+<h2>custom energy binning<a class="headerlink" href="#custom-energy-binning" title="Permalink to this headline">¶</a></h2>
+<p>Maybe you are a curious person and want to investigate a response with finer input energies to model line features in solar flares?</p>
+<p>It is possible to add a custom array of input energies. To do this we need to import the <code class="docutils literal notranslate"><span class="pre">NaITTEEdges</span></code> and <code class="docutils literal notranslate"><span class="pre">BgoTTEEdges</span></code> classes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gbm_drm_gen</span> <span class="kn">import</span>  <span class="n">NaiTTEEdges</span><span class="p">,</span> <span class="n">BgoTTEEdges</span>
+</pre></div>
+</div>
+<p>These objects allow you to specify input (monte carlo) energies either from an array or in log spaced binning.</p>
+<div class="alert alert-info"><p><strong>Note:</strong> The number of energies must be off and include the low and high end points which are specific to the NaI [5.0, 50000.0] and BGO [100., 200000.0] detectors.</p>
+</div><div class="section" id="log-spaced-energies">
+<h3>Log-spaced energies<a class="headerlink" href="#log-spaced-energies" title="Permalink to this headline">¶</a></h3>
+<p>First we will try with <strong>VERY</strong> fine log spaced binning above the typical 140 input energies</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_log_bins</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">531</span><span class="p">)</span>
+
+
+<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+                             <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
+                             <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
+                             <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
+                             <span class="c1"># pass the custom edges</span>
+                             <span class="n">custom_input_edges</span><span class="o">=</span><span class="n">custom_edges</span>
+                            
+                            <span class="p">)</span>
+
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">gbm_n6_generator</span><span class="o">.</span><span class="n">to_3ML_response</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mi">329</span><span class="p">,</span><span class="n">dec</span> <span class="o">=</span> <span class="o">-</span><span class="mf">38.2</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">plot_matrix</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>And now with a much coarser input binning:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_log_bins</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">73</span><span class="p">)</span>
+
+
+<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+                             <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
+                             <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
+                             <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
+                             <span class="c1"># pass the custom edges</span>
+                             <span class="n">custom_input_edges</span><span class="o">=</span><span class="n">custom_edges</span>
+                            
+                            <span class="p">)</span>
+
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">gbm_n6_generator</span><span class="o">.</span><span class="n">to_3ML_response</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mi">329</span><span class="p">,</span><span class="n">dec</span> <span class="o">=</span> <span class="o">-</span><span class="mf">38.2</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">plot_matrix</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>It is easier to see the difference with simple matrix plotting:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_log_bins</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">91</span><span class="p">)</span>
+
+
+<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+                             <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
+                             <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
+                             <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
+                             <span class="c1"># pass the custom edges</span>
+                             <span class="n">custom_input_edges</span><span class="o">=</span><span class="n">custom_edges</span>
+                            
+                            <span class="p">)</span>
+
+<span class="n">gbm_n6_generator</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mi">329</span><span class="p">,</span><span class="n">dec</span> <span class="o">=</span> <span class="o">-</span><span class="mf">38.2</span><span class="p">)</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">gbm_n6_generator</span><span class="o">.</span><span class="n">matrix</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_log_bins</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">141</span><span class="p">)</span>
+
+
+<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+                             <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
+                             <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
+                             <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
+                             <span class="c1"># pass the custom edges</span>
+                             <span class="n">custom_input_edges</span><span class="o">=</span><span class="n">custom_edges</span>
+                            
+                            <span class="p">)</span>
+
+<span class="n">gbm_n6_generator</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mi">329</span><span class="p">,</span><span class="n">dec</span> <span class="o">=</span> <span class="o">-</span><span class="mf">38.2</span><span class="p">)</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">gbm_n6_generator</span><span class="o">.</span><span class="n">matrix</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+
+
+<span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_log_bins</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">1541</span><span class="p">)</span>
+
+
+<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+                             <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
+                             <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
+                             <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
+                             <span class="c1"># pass the custom edges</span>
+                             <span class="n">custom_input_edges</span><span class="o">=</span><span class="n">custom_edges</span>
+                            
+                            <span class="p">)</span>
+
+<span class="n">gbm_n6_generator</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mi">329</span><span class="p">,</span><span class="n">dec</span> <span class="o">=</span> <span class="o">-</span><span class="mf">38.2</span><span class="p">)</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">gbm_n6_generator</span><span class="o">.</span><span class="n">matrix</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="a-custom-array">
+<h3>a custom array<a class="headerlink" href="#a-custom-array" title="Permalink to this headline">¶</a></h3>
+<p>And we can even supply and entirely custom array of energies:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">50000.</span><span class="p">,</span> <span class="mi">1001</span><span class="p">)</span>
+
+
+<span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_custom_array</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+
+
+<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+                             <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
+                             <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
+                             <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
+                             <span class="c1"># pass the custom edges</span>
+                             <span class="n">custom_input_edges</span><span class="o">=</span><span class="n">custom_edges</span>
+                            
+                            <span class="p">)</span>
+
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">gbm_n6_generator</span><span class="o">.</span><span class="n">to_3ML_response</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mi">329</span><span class="p">,</span><span class="n">dec</span> <span class="o">=</span> <span class="o">-</span><span class="mf">38.2</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">plot_matrix</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017-2021, J. Michael Burgess, Bjoern Biltzinger and Felix Kunzweiler.
+
+    </p>
+  </div> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

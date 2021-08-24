@@ -1,0 +1,86 @@
+gbm\_drm\_gen package
+=====================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   gbm_drm_gen.io
+   gbm_drm_gen.utils
+
+Submodules
+----------
+
+gbm\_drm\_gen.basersp module
+----------------------------
+
+.. automodule:: gbm_drm_gen.basersp
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gbm\_drm\_gen.basersp\_numba module
+-----------------------------------
+
+.. automodule:: gbm_drm_gen.basersp_numba
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gbm\_drm\_gen.detdatabase module
+--------------------------------
+
+.. automodule:: gbm_drm_gen.detdatabase
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gbm\_drm\_gen.drmgen module
+---------------------------
+
+.. automodule:: gbm_drm_gen.drmgen
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gbm\_drm\_gen.drmgen\_trig module
+---------------------------------
+
+.. automodule:: gbm_drm_gen.drmgen_trig
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gbm\_drm\_gen.drmgen\_tte module
+--------------------------------
+
+.. automodule:: gbm_drm_gen.drmgen_tte
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gbm\_drm\_gen.input\_edges module
+---------------------------------
+
+.. automodule:: gbm_drm_gen.input_edges
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gbm\_drm\_gen.matrix\_functions module
+--------------------------------------
+
+.. automodule:: gbm_drm_gen.matrix_functions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: gbm_drm_gen
+   :members:
+   :undoc-members:
+   :show-inheritance:

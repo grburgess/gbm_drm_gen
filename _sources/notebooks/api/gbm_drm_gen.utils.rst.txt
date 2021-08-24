@@ -1,0 +1,61 @@
+gbm\_drm\_gen.utils package
+===========================
+
+Submodules
+----------
+
+gbm\_drm\_gen.utils.contour\_finder module
+------------------------------------------
+
+.. automodule:: gbm_drm_gen.utils.contour_finder
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gbm\_drm\_gen.utils.file\_utils module
+--------------------------------------
+
+.. automodule:: gbm_drm_gen.utils.file_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gbm\_drm\_gen.utils.general\_utils module
+-----------------------------------------
+
+.. automodule:: gbm_drm_gen.utils.general_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gbm\_drm\_gen.utils.geometry module
+-----------------------------------
+
+.. automodule:: gbm_drm_gen.utils.geometry
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gbm\_drm\_gen.utils.package\_data module
+----------------------------------------
+
+.. automodule:: gbm_drm_gen.utils.package_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gbm\_drm\_gen.utils.response module
+-----------------------------------
+
+.. automodule:: gbm_drm_gen.utils.response
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: gbm_drm_gen.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

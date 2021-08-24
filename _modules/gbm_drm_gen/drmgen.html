@@ -1,0 +1,975 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>gbm_drm_gen.drmgen &mdash; gbm_drm_gen  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <link rel="stylesheet" href="../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> gbm_drm_gen
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">gbm_drm_gen</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>gbm_drm_gen.drmgen</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  <h1>Source code for gbm_drm_gen.drmgen</h1><div class="highlight"><pre>
+<span></span><span class="c1"># import at_scat</span>
+<span class="c1"># import ftran</span>
+
+<span class="kn">import</span> <span class="nn">astropy.io.fits</span> <span class="k">as</span> <span class="nn">fits</span>
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+<span class="kn">import</span> <span class="nn">gbmgeometry</span>
+<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">prange</span><span class="p">,</span> <span class="n">types</span>
+<span class="c1"># TODO Remove this</span>
+<span class="kn">from</span> <span class="nn">numba.typed</span> <span class="kn">import</span> <span class="n">Dict</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">threeML.utils.OGIP.response</span> <span class="kn">import</span> <span class="n">InstrumentResponse</span>
+
+<span class="k">except</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">responsum</span> <span class="kn">import</span> <span class="n">InstrumentResponse</span>
+
+<span class="kn">from</span> <span class="nn">gbm_drm_gen.basersp_numba</span> <span class="kn">import</span> <span class="p">(</span><span class="n">get_database</span><span class="p">,</span>
+                                       <span class="n">get_trigdat_precalc_database</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">gbm_drm_gen.matrix_functions</span> <span class="kn">import</span> <span class="p">(</span><span class="n">atscat_highres_ephoton_interpolator</span><span class="p">,</span>
+                                          <span class="n">calc_sphere_dist</span><span class="p">,</span> <span class="n">closest</span><span class="p">,</span>
+                                          <span class="n">echan_integrator</span><span class="p">,</span> <span class="n">geo_to_space</span><span class="p">,</span>
+                                          <span class="n">geocoords</span><span class="p">,</span>
+                                          <span class="n">highres_ephoton_interpolator</span><span class="p">,</span> <span class="n">trfind</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">gbm_drm_gen.utils.geometry</span> <span class="kn">import</span> <span class="n">ang2cart</span><span class="p">,</span> <span class="n">is_occulted</span>
+
+<span class="n">det_name_lookup</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;NAI_00&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;NAI_01&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;NAI_02&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;NAI_03&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s2">&quot;NAI_04&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="s2">&quot;NAI_05&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s2">&quot;NAI_06&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="s2">&quot;NAI_07&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+    <span class="s2">&quot;NAI_08&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="s2">&quot;NAI_09&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+    <span class="s2">&quot;NAI_10&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="s2">&quot;NAI_11&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+    <span class="s2">&quot;BGO_00&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="s2">&quot;BGO_01&quot;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="n">lu</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;n0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n4&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n5&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n7&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n8&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n9&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;na&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nb&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;b0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;b1&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="DRMGen"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen">[docs]</a><span class="k">class</span> <span class="nc">DRMGen</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="DRMGen.__init__"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">quaternions</span><span class="p">,</span>
+        <span class="n">sc_pos</span><span class="p">,</span>
+        <span class="n">det_number</span><span class="p">,</span>
+        <span class="n">ebin_edge_in</span><span class="p">,</span>
+        <span class="n">mat_type</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">ebin_edge_out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">occult</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A generic GBM DRM generator. This can be inherited for specific purposes.</span>
+<span class="sd">        It takes as input various spacecraft files to figure out geometry. The user can</span>
+<span class="sd">        either supply custom output energy edges or they can be read from a cspec file.</span>
+
+<span class="sd">        The great benefit here is the ability to make custom input edges if desired. The</span>
+<span class="sd">        user needs to have the GBM database pointed at by the environment variable:</span>
+<span class="sd">        BALROG_DB</span>
+
+<span class="sd">        Additionally, matrix folding routines are supplied for spectral fitting. One can also</span>
+<span class="sd">        simulate Poisson rates from supplied spectral models.</span>
+
+<span class="sd">        :param trigdat: the path to a trigdat file</span>
+<span class="sd">        :param det_number: the number (0-13) of the detector to be used</span>
+<span class="sd">        :param ebin_edge_in: an array of energy **edges** lenght 1 longer than the num of bins</span>
+<span class="sd">        :param mat_type: 0=direct 1=scattered 2=direct+scattered</span>
+<span class="sd">        :param time: time relative to trigger to pull spacecraft position</span>
+<span class="sd">        :param cspecfile: the cspecfile to pull energy output edges from</span>
+<span class="sd">        :param ebin_edge_out: an array of output edges</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Attach inputs to object</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_matrix_type</span> <span class="o">=</span> <span class="n">mat_type</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nobins_in</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ebin_edge_in</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># If you want to use occulting</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_occult</span> <span class="o">=</span> <span class="n">occult</span>
+
+        <span class="c1"># Initiate database loading:</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_det_number</span> <span class="o">=</span> <span class="n">det_number</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span> <span class="o">=</span> <span class="n">get_database</span><span class="p">(</span><span class="n">lu</span><span class="p">[</span><span class="n">det_number</span><span class="p">])</span>
+        <span class="c1">#######################################################################################</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_trigdat</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_trigdat_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">det_number</span> <span class="o">&lt;</span> <span class="mi">12</span><span class="p">:</span>
+            <span class="n">trigdat_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span><span class="mf">3.4</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">22.</span><span class="p">,</span> <span class="mf">44.</span><span class="p">,</span> <span class="mf">95.</span><span class="p">,</span> <span class="mf">300.</span><span class="p">,</span> <span class="mf">500.</span><span class="p">,</span> <span class="mf">800.</span><span class="p">,</span> <span class="mf">2000.</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">trigdat_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span><span class="mf">150.</span><span class="p">,</span> <span class="mf">400.</span><span class="p">,</span> <span class="mf">850.</span><span class="p">,</span> <span class="mf">1500.</span><span class="p">,</span> <span class="mf">3000.</span><span class="p">,</span> <span class="mf">5500.</span><span class="p">,</span> <span class="mf">10000.</span><span class="p">,</span> <span class="mf">20000.</span><span class="p">,</span> <span class="mf">50000.</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">e_l</span><span class="p">,</span> <span class="n">e_h</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ebin_edge_out</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">ebin_edge_out</span><span class="p">[</span><span class="mi">1</span><span class="p">:])):</span>
+            <span class="n">elow_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">e_l</span><span class="p">,</span>
+                                                <span class="n">trigdat_edges</span><span class="p">,</span>
+                                                <span class="n">rtol</span><span class="o">=</span><span class="mf">0.01</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">elow_index</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_trigdat</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">e_h</span><span class="p">,</span> <span class="n">trigdat_edges</span><span class="p">[</span><span class="n">elow_index</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_trigdat_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trigdat_mask</span><span class="p">,</span>
+                                               <span class="n">elow_index</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_trigdat</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trigdat</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_database_precalc_trigdat</span> <span class="o">=</span> <span class="n">get_trigdat_precalc_database</span><span class="p">(</span>
+                <span class="n">lu</span><span class="p">[</span><span class="n">det_number</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trigdat_mask</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># dummy</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_database_precalc_trigdat</span> <span class="o">=</span> <span class="n">get_trigdat_precalc_database</span><span class="p">(</span><span class="n">lu</span><span class="p">[</span><span class="n">det_number</span><span class="p">],</span> <span class="p">[</span>
+                                                                          <span class="mi">0</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_trigdat_mask</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1">#######################################################################################</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ein</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nobins_in</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="n">energ_lo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">energ_lo</span>
+        <span class="n">energ_hi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">energ_hi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ein</span><span class="p">[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">ienerg</span><span class="p">]</span> <span class="o">=</span> <span class="n">energ_lo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ein</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">ienerg</span><span class="p">]</span> <span class="o">=</span> <span class="n">energ_hi</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_edge</span> <span class="o">=</span> <span class="n">ebin_edge_out</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_in_edge</span> <span class="o">=</span> <span class="n">ebin_edge_in</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nobins_out</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_out_edge</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span> <span class="o">=</span> <span class="n">quaternions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sc_pos</span> <span class="o">=</span> <span class="n">sc_pos</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_compute_spacecraft_coordinates</span><span class="p">()</span></div>
+
+    <span class="c1"># @classmethod</span>
+    <span class="c1"># def from_tte(cls)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ebounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_edge</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">monte_carlo_energies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_edge</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_drm</span><span class="o">.</span><span class="n">T</span>
+
+<div class="viewcode-block" id="DRMGen.to_3ML_response"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.to_3ML_response">[docs]</a>    <span class="k">def</span> <span class="nf">to_3ML_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">out</span><span class="p">)):</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">out</span><span class="p">))[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">out</span><span class="p">))[</span><span class="mi">1</span><span class="p">]):</span>
+
+                <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">InstrumentResponse</span><span class="p">(</span>
+            <span class="n">out</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ebounds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">monte_carlo_energies</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="DRMGen.to_3ML_response_direct_sat_coord"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.to_3ML_response_direct_sat_coord">[docs]</a>    <span class="k">def</span> <span class="nf">to_3ML_response_direct_sat_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_location_direct_sat_coord</span><span class="p">(</span><span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">InstrumentResponse</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ebounds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">monte_carlo_energies</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span></div>
+
+<div class="viewcode-block" id="DRMGen.to_fits"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.to_fits">[docs]</a>    <span class="k">def</span> <span class="nf">to_fits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">):</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_3ML_response</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
+
+        <span class="n">split_filename</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_filename</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+
+            <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split_filename</span><span class="p">)</span>
+
+        <span class="n">response</span><span class="o">.</span><span class="n">to_fits</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">.rsp&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">lu</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_det_number</span><span class="p">]</span>
+                           <span class="p">),</span> <span class="s2">&quot;GLAST&quot;</span><span class="p">,</span> <span class="s2">&quot;GBM&quot;</span><span class="p">,</span> <span class="n">overwrite</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="DRMGen.set_location"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.set_location">[docs]</a>    <span class="k">def</span> <span class="nf">set_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the Ra and Dec of the DRM to be built. This invokes DRM generation as well.</span>
+
+<span class="sd">        :param ra: ra in degrees</span>
+<span class="sd">        :param dec: dec in degrees</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ra</span> <span class="o">=</span> <span class="n">ra</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dec</span> <span class="o">=</span> <span class="n">dec</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_occult</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">is_occulted</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sc_pos</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_drm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_occulted_DRM</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">az</span><span class="p">,</span> <span class="n">el</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_coords</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_drm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_drm_numba</span><span class="p">(</span>
+                    <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geo_az</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geo_el</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># get the spacecraft coordinates</span>
+            <span class="n">az</span><span class="p">,</span> <span class="n">el</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_coords</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_drm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_drm_numba</span><span class="p">(</span>
+                <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geo_az</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geo_el</span><span class="p">)</span></div>
+
+        <span class="c1"># go ahead and transpose it for spectal fitting, etc.</span>
+        <span class="c1"># self._drm_transpose = self._drm.T</span>
+        <span class="c1"># go ahead and transpose it for spectal fitting, etc.</span>
+        <span class="c1"># self._drm_transpose = self._drm.T</span>
+
+<div class="viewcode-block" id="DRMGen.set_location_direct_sat_coord"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.set_location_direct_sat_coord">[docs]</a>    <span class="k">def</span> <span class="nf">set_location_direct_sat_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the AZ and EL in satellite coordinates of the DRM to be built. This invokes DRM generation as well.</span>
+
+<span class="sd">        :param az: az in degrees</span>
+<span class="sd">        :param el: el in degrees</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ra</span> <span class="o">=</span> <span class="n">az</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dec</span> <span class="o">=</span> <span class="n">el</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_occult</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">is_occulted</span><span class="p">(</span><span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sc_pos</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_drm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_occulted_DRM</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># build the DRM</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_drm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_drm_numba</span><span class="p">(</span>
+                    <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geo_az</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geo_el</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># build the DRM</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_drm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_drm_numba</span><span class="p">(</span>
+                <span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geo_az</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geo_el</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DRMGen.set_time"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.set_time">[docs]</a>    <span class="k">def</span> <span class="nf">set_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_time</span> <span class="o">=</span> <span class="n">time</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sc_quaternions_updater</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_sc_quaternions_updater</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;implemented in subclass&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DRMGen._compute_spacecraft_coordinates"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen._compute_spacecraft_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">_compute_spacecraft_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        GBM geometry calculations</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="n">geodir</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scx</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scy</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scy</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scz</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="p">)</span>
+
+        <span class="n">geodir</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_scx</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sc_pos</span><span class="p">)</span>
+        <span class="n">geodir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_scy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sc_pos</span><span class="p">)</span>
+        <span class="n">geodir</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_scz</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sc_pos</span><span class="p">)</span>
+
+        <span class="n">denom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">geodir</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">geodir</span><span class="p">))</span>
+
+        <span class="n">geodir</span> <span class="o">/=</span> <span class="n">denom</span>
+
+        <span class="n">geo_az</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">geodir</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">geodir</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">geo_az</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">geo_az</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+        <span class="k">while</span> <span class="n">geo_az</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
+            <span class="n">geo_az</span> <span class="o">-=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+
+        <span class="n">geo_el</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">geodir</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">geodir</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">),</span> <span class="n">geodir</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_geo_el</span> <span class="o">=</span> <span class="mi">90</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">geo_el</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_geo_az</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">geo_az</span><span class="p">)</span>
+
+        <span class="c1"># Also setup the occulted matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_occulted_DRM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_nobins_in</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nobins_out</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_coords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">):</span>
+        <span class="n">source_pos_sc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">source_pos</span> <span class="o">=</span> <span class="n">ang2cart</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
+
+        <span class="n">source_pos_sc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scx</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">source_pos</span><span class="p">)</span>
+        <span class="n">source_pos_sc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">source_pos</span><span class="p">)</span>
+        <span class="n">source_pos_sc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scz</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">source_pos</span><span class="p">)</span>
+
+        <span class="n">el</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">source_pos_sc</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">az</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">source_pos_sc</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">source_pos_sc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">az</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">az</span> <span class="o">+=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+        <span class="n">el</span> <span class="o">=</span> <span class="mi">90</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+        <span class="n">az</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="mf">0.0</span> <span class="o">+</span> <span class="n">az</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">az</span><span class="p">,</span> <span class="n">el</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_make_drm_numba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_az</span><span class="p">,</span> <span class="n">src_el</span><span class="p">,</span> <span class="n">geo_az</span><span class="p">,</span> <span class="n">geo_el</span><span class="p">):</span>
+
+        <span class="c1"># move outside loop</span>
+        <span class="n">n_tmp_phot_bin</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nobins_in</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nobins_in</span> <span class="o">%</span> <span class="mi">2</span>
+
+        <span class="n">tmp_phot_bin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_tmp_phot_bin</span><span class="p">)</span>
+        <span class="n">tmp_phot_bin</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_edge</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">tmp_phot_bin</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_edge</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_edge</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">_build_drm</span><span class="p">(</span>
+            <span class="n">src_az</span><span class="p">,</span>
+            <span class="n">src_el</span><span class="p">,</span>
+            <span class="n">geo_az</span><span class="p">,</span>
+            <span class="n">geo_el</span><span class="p">,</span>
+            <span class="n">nobins_in</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_nobins_in</span><span class="p">,</span>
+            <span class="n">nobins_out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_nobins_out</span><span class="p">,</span>
+            <span class="n">Azimuth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">Azimuth</span><span class="p">,</span>
+            <span class="n">Zenith</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">Zenith</span><span class="p">,</span>
+            <span class="n">grid_points_list</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">grid_points_list</span><span class="p">,</span>
+            <span class="n">milliaz</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">milliaz</span><span class="p">,</span>
+            <span class="n">millizen</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">millizen</span><span class="p">,</span>
+            <span class="n">in_edge</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_edge</span><span class="p">,</span>
+            <span class="n">lat_edge</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">lat_edge</span><span class="p">,</span>
+            <span class="n">lat_cent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">lat_cent</span><span class="p">,</span>
+            <span class="n">theta_cent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">theta_cent</span><span class="p">,</span>
+            <span class="n">phi_cent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">phi_cent</span><span class="p">,</span>
+            <span class="n">double_phi_cent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">double_phi_cent</span><span class="p">,</span>
+            <span class="n">ienerg</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">ienerg</span><span class="p">,</span>
+            <span class="n">out_edge</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_out_edge</span><span class="p">,</span>
+            <span class="n">ein</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ein</span><span class="p">,</span>
+            <span class="n">epx_lo</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">epx_lo</span><span class="p">,</span>
+            <span class="n">epx_hi</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">epx_hi</span><span class="p">,</span>
+            <span class="n">ichan</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">ichan</span><span class="p">,</span>
+            <span class="n">matrix_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_matrix_type</span><span class="p">,</span>
+            <span class="n">rsps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">rsps</span><span class="p">,</span>
+            <span class="n">n_tmp_phot_bin</span><span class="o">=</span><span class="n">n_tmp_phot_bin</span><span class="p">,</span>
+            <span class="n">tmp_phot_bin</span><span class="o">=</span><span class="n">tmp_phot_bin</span><span class="p">,</span>
+            <span class="n">at_scat_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">at_scat_data</span><span class="p">,</span>
+            <span class="n">trigdat_precalc_rsps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_precalc_trigdat</span><span class="o">.</span><span class="n">rsps</span><span class="p">,</span>
+            <span class="n">trigdat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_trigdat</span><span class="p">,</span>
+            <span class="n">trigdat_mask</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_trigdat_mask</span>
+        <span class="p">)</span></div>
+
+
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_build_drm</span><span class="p">(</span>
+    <span class="n">src_az</span><span class="p">,</span>
+    <span class="n">src_el</span><span class="p">,</span>
+    <span class="n">geo_az</span><span class="p">,</span>
+    <span class="n">geo_el</span><span class="p">,</span>
+    <span class="n">nobins_in</span><span class="p">,</span>
+    <span class="n">nobins_out</span><span class="p">,</span>
+    <span class="n">Azimuth</span><span class="p">,</span>
+    <span class="n">Zenith</span><span class="p">,</span>
+    <span class="n">grid_points_list</span><span class="p">,</span>
+    <span class="n">milliaz</span><span class="p">,</span>
+    <span class="n">millizen</span><span class="p">,</span>
+    <span class="n">in_edge</span><span class="p">,</span>
+    <span class="n">lat_edge</span><span class="p">,</span>
+    <span class="n">lat_cent</span><span class="p">,</span>
+    <span class="n">theta_cent</span><span class="p">,</span>
+    <span class="n">phi_cent</span><span class="p">,</span>
+    <span class="n">double_phi_cent</span><span class="p">,</span>
+    <span class="n">ienerg</span><span class="p">,</span>
+    <span class="n">out_edge</span><span class="p">,</span>
+    <span class="n">ein</span><span class="p">,</span>
+    <span class="n">epx_lo</span><span class="p">,</span>
+    <span class="n">epx_hi</span><span class="p">,</span>
+    <span class="n">ichan</span><span class="p">,</span>
+    <span class="n">matrix_type</span><span class="p">,</span>
+    <span class="n">rsps</span><span class="p">,</span>
+    <span class="n">n_tmp_phot_bin</span><span class="p">,</span>
+    <span class="n">tmp_phot_bin</span><span class="p">,</span>
+    <span class="n">at_scat_data</span><span class="p">,</span>
+    <span class="n">trigdat_precalc_rsps</span><span class="p">,</span>
+    <span class="n">trigdat</span><span class="p">,</span>
+    <span class="n">trigdat_mask</span><span class="p">,</span>
+<span class="p">):</span>
+
+    <span class="n">final_drm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nobins_in</span><span class="p">,</span> <span class="n">nobins_out</span><span class="p">))</span>
+
+    <span class="c1"># SKY Interpolation</span>
+
+    <span class="n">dtr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span>
+
+    <span class="n">rlon</span> <span class="o">=</span> <span class="n">src_az</span>
+    <span class="n">rlat</span> <span class="o">=</span> <span class="n">src_el</span>
+
+    <span class="n">sf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">45.0</span>
+    <span class="n">plat</span> <span class="o">=</span> <span class="n">src_el</span> <span class="o">*</span> <span class="n">sf</span>
+    <span class="n">plon</span> <span class="o">=</span> <span class="n">src_az</span> <span class="o">*</span> <span class="n">sf</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">plat</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">plon</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">plat</span><span class="p">)</span>
+         <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">plon</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">plat</span><span class="p">)]</span>
+    <span class="p">)</span>
+
+    <span class="n">b1</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="n">b3</span><span class="p">,</span> <span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">,</span> <span class="n">i3</span> <span class="o">=</span> <span class="n">trfind</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">grid_points_list</span><span class="p">)</span>
+
+    <span class="n">i1</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">i2</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">i3</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1"># mod here</span>
+
+    <span class="n">mat1</span> <span class="o">=</span> <span class="n">rsps</span><span class="p">[</span><span class="n">milliaz</span><span class="p">[</span><span class="n">i1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">millizen</span><span class="p">[</span><span class="n">i1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]]</span>
+    <span class="n">mat2</span> <span class="o">=</span> <span class="n">rsps</span><span class="p">[</span><span class="n">milliaz</span><span class="p">[</span><span class="n">i2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">millizen</span><span class="p">[</span><span class="n">i2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]]</span>
+    <span class="n">mat3</span> <span class="o">=</span> <span class="n">rsps</span><span class="p">[</span><span class="n">milliaz</span><span class="p">[</span><span class="n">i3</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">millizen</span><span class="p">[</span><span class="n">i3</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]]</span>
+
+    <span class="c1"># Interpolator on triangle</span>
+
+    <span class="nb">sum</span> <span class="o">=</span> <span class="n">b1</span> <span class="o">+</span> <span class="n">b2</span> <span class="o">+</span> <span class="n">b3</span>
+    <span class="n">b1n</span> <span class="o">=</span> <span class="n">b1</span> <span class="o">/</span> <span class="nb">sum</span>
+    <span class="n">b2n</span> <span class="o">=</span> <span class="n">b2</span> <span class="o">/</span> <span class="nb">sum</span>
+    <span class="n">b3n</span> <span class="o">=</span> <span class="n">b3</span> <span class="o">/</span> <span class="nb">sum</span>
+    <span class="c1"># need to do a loop here</span>
+
+    <span class="n">out_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">mat1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mat1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mat1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mat1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">out_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">b1n</span> <span class="o">*</span> <span class="n">mat1</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> \
+                <span class="n">b2n</span> <span class="o">*</span> <span class="n">mat2</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">b3n</span> <span class="o">*</span> <span class="n">mat3</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+
+    <span class="c1"># move outside loop</span>
+    <span class="c1"># n_tmp_phot_bin = 2 * self._nobins_in + self._nobins_in % 2</span>
+    <span class="c1"># tmp_phot_bin = np.zeros(n_tmp_phot_bin, dtype=np.float32)</span>
+    <span class="c1"># tmp_phot_bin[::2] = self._in_edge[:-1]</span>
+    <span class="c1"># tmp_phot_bin[1::2] = 10 ** (</span>
+    <span class="c1">#     (np.log10(self._in_edge[:-1]) + np.log10(self._in_edge[1:])) / 2.0</span>
+    <span class="c1"># )</span>
+
+    <span class="c1"># Atmospheric scattering</span>
+    <span class="k">if</span> <span class="n">matrix_type</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">matrix_type</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c1">################</span>
+        <span class="n">theta_geo</span> <span class="o">=</span> <span class="mf">90.0</span> <span class="o">-</span> <span class="n">geo_el</span>
+        <span class="n">phi_geo</span> <span class="o">=</span> <span class="n">geo_az</span>
+        <span class="n">theta_source</span> <span class="o">=</span> <span class="mi">90</span> <span class="o">-</span> <span class="n">rlat</span>
+        <span class="n">phi_source</span> <span class="o">=</span> <span class="n">rlon</span>
+
+        <span class="c1"># Get new coordinates in the proper space</span>
+        <span class="c1"># the np.rad2deg were missing!</span>
+        <span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">gz</span><span class="p">,</span> <span class="n">sl</span> <span class="o">=</span> <span class="n">geocoords</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">theta_geo</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">phi_geo</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">theta_source</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">phi_source</span><span class="p">))</span>
+
+        <span class="n">lat</span> <span class="o">=</span> <span class="mf">180.0</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">sl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">gz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">sl</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">gz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">sl</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">gz</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">atscat_diff_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_tmp_phot_bin</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nobins_out</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">lat</span> <span class="o">&lt;=</span> <span class="n">lat_edge</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span><span class="n">lat</span> <span class="o">&lt;</span> <span class="n">lat_cent</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">coslat_corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">lat</span><span class="p">)))</span>
+
+            <span class="k">if</span> <span class="n">lat</span> <span class="o">&lt;=</span> <span class="n">lat_cent</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">il_low</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">il_high</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="c1"># TODO Changes this. Was 0.</span>
+                <span class="n">l_frac</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lat_cent</span> <span class="o">&lt;</span> <span class="n">lat</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="c1"># TODO Changed this. This was il_low = idx -1 and il_high = idx</span>
+                <span class="n">il_low</span> <span class="o">=</span> <span class="n">idx</span>
+                <span class="n">il_high</span> <span class="o">=</span> <span class="n">idx</span><span class="o">+</span><span class="mi">1</span>
+                <span class="n">l_frac</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">lat</span> <span class="o">-</span> <span class="n">lat_cent</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span>
+                    <span class="n">lat_cent</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">lat_cent</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="p">)</span>
+
+            <span class="n">num_theta</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">theta_cent</span><span class="p">)</span>
+            <span class="n">num_phi</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">double_phi_cent</span><span class="p">)</span>
+
+            <span class="n">theta_u</span> <span class="o">=</span> <span class="n">theta_cent</span>
+            <span class="n">phi_u</span> <span class="o">=</span> <span class="n">double_phi_cent</span>
+
+            <span class="c1"># loop over all the fucking atm matrices</span>
+
+            <span class="n">tmp_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_theta</span><span class="p">,</span> <span class="n">num_phi</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ienerg</span><span class="p">,</span> <span class="n">nobins_out</span><span class="p">))</span>
+            <span class="n">sf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">45.0</span>
+
+            <span class="n">at_scat</span><span class="p">(</span><span class="n">tmp_out</span><span class="p">,</span> <span class="n">num_theta</span><span class="p">,</span> <span class="n">num_phi</span><span class="p">,</span> <span class="n">theta_u</span><span class="p">,</span> <span class="n">phi_u</span><span class="p">,</span> <span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">gz</span><span class="p">,</span>
+                    <span class="n">sf</span><span class="p">,</span> <span class="n">grid_points_list</span><span class="p">,</span> <span class="n">trigdat_precalc_rsps</span><span class="p">,</span> <span class="n">rsps</span><span class="p">,</span> <span class="n">milliaz</span><span class="p">,</span> <span class="n">millizen</span><span class="p">,</span> <span class="n">epx_lo</span><span class="p">,</span> <span class="n">epx_hi</span><span class="p">,</span> <span class="n">ichan</span><span class="p">,</span> <span class="n">out_edge</span><span class="p">,</span>
+                    <span class="n">at_scat_data</span><span class="p">,</span> <span class="n">il_low</span><span class="p">,</span> <span class="n">il_high</span><span class="p">,</span> <span class="n">l_frac</span><span class="p">,</span> <span class="n">trigdat</span><span class="p">)</span>
+            <span class="n">tmp_out2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">ienerg</span><span class="p">,</span> <span class="n">nobins_out</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_theta</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_phi</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+                        <span class="n">tmp_out2</span> <span class="o">+=</span> <span class="n">tmp_out</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
+
+            <span class="n">tmp_out2</span> <span class="o">*=</span> <span class="n">coslat_corr</span>
+
+            <span class="n">atscat_diff_matrix</span> <span class="o">=</span> <span class="n">atscat_highres_ephoton_interpolator</span><span class="p">(</span>
+                <span class="n">tmp_phot_bin</span><span class="p">,</span>  <span class="n">ein</span><span class="p">,</span> <span class="n">tmp_out2</span><span class="p">)</span>
+
+        <span class="c1">##############</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        # these change each time the source position is changed</span>
+<span class="sd">        theta_geo = 90.0 - geo_el</span>
+<span class="sd">        phi_geo = geo_az</span>
+<span class="sd">        theta_source = 90 - rlat</span>
+<span class="sd">        phi_source = rlon</span>
+
+<span class="sd">        # Get new coordinates in the proper space</span>
+<span class="sd">        gx, gy, gz, sl = geocoords(</span>
+<span class="sd">            theta_geo, phi_geo, theta_source, phi_source)</span>
+
+<span class="sd">        lat = 180.0 - np.rad2deg(</span>
+<span class="sd">            np.arccos(sl[0] * gz[0] + sl[1] * gz[1] + sl[2] * gz[2])</span>
+<span class="sd">        )</span>
+<span class="sd">        atscat_diff_matrix = np.zeros((n_tmp_phot_bin - 1, nobins_out))</span>
+<span class="sd">        if lat &lt;= lat_edge[-1] and (lat &lt; lat_cent[-1]):</span>
+<span class="sd">            coslat_corr = np.abs(np.cos(np.deg2rad(lat)))</span>
+
+<span class="sd">            if lat &lt;= lat_cent[0]:</span>
+<span class="sd">                il_low = 0</span>
+<span class="sd">                il_high = 1</span>
+<span class="sd">                l_frac = 0.0 #TODO Not 1?</span>
+<span class="sd">            else:</span>
+<span class="sd">                idx = np.where(lat_cent &lt; lat)[0][-1]</span>
+<span class="sd">                #TODO Check this. This was il_low = idx -1 and il_high = idx</span>
+<span class="sd">                il_low = idx</span>
+<span class="sd">                il_high = idx + 1</span>
+<span class="sd">                l_frac = 1.0 - (lat - lat_cent[idx]) / (</span>
+<span class="sd">                    lat_cent[idx + 1] - lat_cent[idx]</span>
+<span class="sd">                )</span>
+
+<span class="sd">            num_theta = len(theta_cent)</span>
+<span class="sd">            num_phi = len(double_phi_cent)</span>
+
+<span class="sd">            theta_u = theta_cent</span>
+<span class="sd">            phi_u = double_phi_cent</span>
+
+<span class="sd">            # loop over all the fucking atm matrices</span>
+
+<span class="sd">            tmp_out = np.zeros((ienerg, nobins_out))</span>
+<span class="sd">            sf = np.arctan(1.0) / 45.0</span>
+
+<span class="sd">            for i in prange(num_theta):</span>
+<span class="sd">                for j in prange(num_phi):</span>
+<span class="sd">                    #TODO: Check this, this was range(1), but I think 2 is needed to also cover</span>
+<span class="sd">                    # the negative phi values</span>
+<span class="sd">                    for k in prange(2):</span>
+
+<span class="sd">                        dirx, diry, dirz, az, el = geo_to_space(</span>
+<span class="sd">                            theta_u[i], phi_u[j, k], gx, gy, gz)</span>
+<span class="sd">                        plat = el * sf</span>
+<span class="sd">                        plon = az * sf</span>
+<span class="sd">                        P = np.array(</span>
+<span class="sd">                            [</span>
+<span class="sd">                                np.cos(plat) * np.cos(plon),</span>
+<span class="sd">                                np.cos(plat) * np.sin(plon),</span>
+<span class="sd">                                np.sin(plat),</span>
+<span class="sd">                            ]</span>
+<span class="sd">                        )</span>
+
+<span class="sd">                        # Find the closest direct matrix grid point and use it. No interpolation... should be accurate enough</span>
+<span class="sd">                        i1 = closest(P, grid_points_list)</span>
+
+<span class="sd">                        if new:</span>
+<span class="sd">                            if trigdat:</span>
+<span class="sd">                                #TODO why i1-1? makes no sense to me...</span>
+<span class="sd">                                rsps_echan_integrator = trigdat_precalc_rsps[milliaz[i1] + &quot;_&quot; + millizen[i1]]</span>
+
+<span class="sd">                            else:</span>
+<span class="sd">                                rsps_echan_integrator = echan_integrator(rsps[milliaz[i1] + &quot;_&quot; + millizen[i1]],</span>
+<span class="sd">                                                                         epx_lo,</span>
+<span class="sd">                                                                         epx_hi,</span>
+<span class="sd">                                                                         ichan,</span>
+<span class="sd">                                                                         out_edge</span>
+<span class="sd">                                )</span>
+
+<span class="sd">                            msum(at_scat_data[..., il_low, i, j],</span>
+<span class="sd">                                 at_scat_data[..., il_high, i, j],</span>
+<span class="sd">                                 np.ascontiguousarray(rsps_echan_integrator),</span>
+<span class="sd">                                 tmp_out,</span>
+<span class="sd">                                 l_frac,</span>
+<span class="sd">                            )</span>
+<span class="sd">                            #msum(np.ascontiguousarray(at_scat_data[..., il_low, i, j]),</span>
+<span class="sd">                            #     np.ascontiguousarray(</span>
+<span class="sd">                            #         at_scat_data[..., il_high, i, j]),</span>
+<span class="sd">                            #     np.ascontiguousarray(rsps_echan_integrator),</span>
+<span class="sd">                            #     tmp_out,</span>
+<span class="sd">                            #     l_frac,</span>
+<span class="sd">                            #     ienerg,</span>
+<span class="sd">                            #     nobins_out</span>
+<span class="sd">                            #)</span>
+
+<span class="sd">                        else:</span>
+<span class="sd">                            msum(np.ascontiguousarray(at_scat_data[..., il_low, i, j]),</span>
+<span class="sd">                                 np.ascontiguousarray(</span>
+<span class="sd">                                     at_scat_data[..., il_high, i, j]),</span>
+<span class="sd">                                 np.ascontiguousarray(echan_integrator(rsps[milliaz[i1] + &quot;_&quot; + millizen[i1]],</span>
+<span class="sd">                                                                       epx_lo,</span>
+<span class="sd">                                                                       epx_hi,</span>
+<span class="sd">                                                                       ichan,</span>
+<span class="sd">                                                                       out_edge</span>
+<span class="sd">                                 )),</span>
+<span class="sd">                                 tmp_out,</span>
+<span class="sd">                                 l_frac,</span>
+<span class="sd">                            )</span>
+
+<span class="sd">            tmp_out *= coslat_corr</span>
+<span class="sd">            atscat_diff_matrix = atscat_highres_ephoton_interpolator(</span>
+<span class="sd">                tmp_phot_bin,  ein, tmp_out)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<span class="c1">#    return atscat_diff_matrix</span>
+    <span class="c1">###################################</span>
+    <span class="n">new_epx_lo</span><span class="p">,</span> <span class="n">new_epx_hi</span><span class="p">,</span> <span class="n">diff_matrix</span> <span class="o">=</span> <span class="n">highres_ephoton_interpolator</span><span class="p">(</span>
+        <span class="n">tmp_phot_bin</span><span class="p">,</span> <span class="n">ein</span><span class="p">,</span> <span class="n">out_matrix</span><span class="p">,</span> <span class="n">epx_lo</span><span class="p">,</span> <span class="n">epx_hi</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">binned_matrix</span> <span class="o">=</span> <span class="n">echan_integrator</span><span class="p">(</span>
+        <span class="n">diff_matrix</span><span class="p">,</span> <span class="n">new_epx_lo</span><span class="p">,</span> <span class="n">new_epx_hi</span><span class="p">,</span> <span class="n">ichan</span><span class="p">,</span> <span class="n">out_edge</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">matrix_type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">binned_matrix</span> <span class="o">=</span> <span class="n">atscat_diff_matrix</span>
+    <span class="k">if</span> <span class="n">matrix_type</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c1"># TODO: Why :-1 ?</span>
+        <span class="n">binned_matrix</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+=</span> <span class="n">atscat_diff_matrix</span>
+    <span class="c1"># Integrate photon edge with trapazoid</span>
+    <span class="n">final_drm</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">binned_matrix</span><span class="p">[::</span><span class="mi">2</span><span class="p">,</span> <span class="p">:][:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="o">+</span> <span class="n">binned_matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">,</span> <span class="p">:][:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="o">+</span> <span class="n">binned_matrix</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">2</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="k">return</span> <span class="n">final_drm</span>
+
+
+<div class="viewcode-block" id="at_scat"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.at_scat">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">at_scat</span><span class="p">(</span><span class="n">tmp_out</span><span class="p">,</span> <span class="n">num_theta</span><span class="p">,</span> <span class="n">num_phi</span><span class="p">,</span> <span class="n">theta_u</span><span class="p">,</span> <span class="n">phi_u</span><span class="p">,</span> <span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">gz</span><span class="p">,</span>
+            <span class="n">sf</span><span class="p">,</span> <span class="n">grid_points_list</span><span class="p">,</span> <span class="n">trigdat_precalc_rsps</span><span class="p">,</span> <span class="n">rsps</span><span class="p">,</span> <span class="n">milliaz</span><span class="p">,</span> <span class="n">millizen</span><span class="p">,</span> <span class="n">epx_lo</span><span class="p">,</span> <span class="n">epx_hi</span><span class="p">,</span> <span class="n">ichan</span><span class="p">,</span> <span class="n">out_edge</span><span class="p">,</span>
+            <span class="n">at_scat_data</span><span class="p">,</span> <span class="n">il_low</span><span class="p">,</span> <span class="n">il_high</span><span class="p">,</span> <span class="n">l_frac</span><span class="p">,</span> <span class="n">trigdat</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">num_theta</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">num_phi</span><span class="p">):</span>
+            <span class="c1"># TODO: Changed this. This was range(1), but I think 2 is needed to also cover</span>
+            <span class="c1"># the negative phi values</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+                <span class="n">dirx</span><span class="p">,</span> <span class="n">diry</span><span class="p">,</span> <span class="n">dirz</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">el</span> <span class="o">=</span> <span class="n">geo_to_space</span><span class="p">(</span>
+                    <span class="n">theta_u</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">phi_u</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">],</span> <span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">gz</span><span class="p">)</span>
+                <span class="n">plat</span> <span class="o">=</span> <span class="n">el</span> <span class="o">*</span> <span class="n">sf</span>
+                <span class="n">plon</span> <span class="o">=</span> <span class="n">az</span> <span class="o">*</span> <span class="n">sf</span>
+                <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">plat</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">plon</span><span class="p">),</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">plat</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">plon</span><span class="p">),</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">plat</span><span class="p">),</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+
+                <span class="c1"># Find the closest direct matrix grid point and use it. No interpolation... should be accurate enough</span>
+
+                <span class="c1"># TODO: Difference, this was wrong in the old way. calc_sphere_dist(az, 90.-el, database.Azimuth[...], database.Zenith[...])</span>
+                <span class="c1"># must be calc_sphere_dist(az, el, database.Azimuth[...], 90-database.Zenith[...]. Gave wrong grid point</span>
+                <span class="c1"># as closest grid point (gave angles&gt;20 degree)</span>
+                <span class="n">i1</span> <span class="o">=</span> <span class="n">closest</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">grid_points_list</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">trigdat</span><span class="p">:</span>
+                    <span class="c1"># i1</span>
+                    <span class="n">rsps_echan_integrator</span> <span class="o">=</span> <span class="n">trigdat_precalc_rsps</span><span class="p">[</span><span class="n">milliaz</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span> <span class="o">+</span>
+                                                                 <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">millizen</span><span class="p">[</span><span class="n">i1</span><span class="p">]]</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">rsps_echan_integrator</span> <span class="o">=</span> <span class="n">echan_integrator</span><span class="p">(</span><span class="n">rsps</span><span class="p">[</span><span class="n">milliaz</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">millizen</span><span class="p">[</span><span class="n">i1</span><span class="p">]],</span>  <span class="c1"># i1</span>
+                                                             <span class="n">epx_lo</span><span class="p">,</span>
+                                                             <span class="n">epx_hi</span><span class="p">,</span>
+                                                             <span class="n">ichan</span><span class="p">,</span>
+                                                             <span class="n">out_edge</span>
+                                                             <span class="p">)</span>
+
+                <span class="n">msum</span><span class="p">(</span><span class="n">at_scat_data</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">il_low</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span>
+                     <span class="n">at_scat_data</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">il_high</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span>
+                     <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">rsps_echan_integrator</span><span class="p">),</span>
+                     <span class="n">tmp_out</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">],</span>
+                     <span class="n">l_frac</span><span class="p">,</span>
+                     <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="msum"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.msum">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">msum</span><span class="p">(</span><span class="n">this_data_lo</span><span class="p">,</span> <span class="n">this_data_hi</span><span class="p">,</span> <span class="n">direct_diff_matrix</span><span class="p">,</span> <span class="n">tmp_out</span><span class="p">,</span> <span class="n">l_frac</span><span class="p">):</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">this_data_lo</span><span class="o">*</span><span class="n">l_frac</span><span class="o">+</span><span class="n">this_data_hi</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">l_frac</span><span class="p">)</span>
+    <span class="n">tmp_out</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">direct_diff_matrix</span><span class="p">)</span></div>
+    <span class="c1"># for ii in prange(ienerg):</span>
+    <span class="c1">#    for jj in prange(nobins_out):</span>
+    <span class="c1">#        for kk in prange(ienerg):</span>
+    <span class="c1">#            tmp_out[ii, jj] += (</span>
+    <span class="c1">#                this_data_lo[ii, kk] * l_frac</span>
+    <span class="c1">#                + this_data_hi[ii, kk]</span>
+    <span class="c1">#                * (1 - l_frac)</span>
+    <span class="c1">#            ) * direct_diff_matrix[kk, jj]</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017-2021, J. Michael Burgess, Bjoern Biltzinger and Felix Kunzweiler.
+
+    </p>
+  </div> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

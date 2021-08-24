@@ -1,0 +1,463 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>gbm_drm_gen.utils package &mdash; gbm_drm_gen  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <link rel="stylesheet" href="../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> gbm_drm_gen
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">gbm_drm_gen.utils package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.utils.contour_finder">gbm_drm_gen.utils.contour_finder module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.utils.file_utils">gbm_drm_gen.utils.file_utils module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.utils.general_utils">gbm_drm_gen.utils.general_utils module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.utils.geometry">gbm_drm_gen.utils.geometry module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.utils.package_data">gbm_drm_gen.utils.package_data module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.utils.response">gbm_drm_gen.utils.response module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">gbm_drm_gen</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>gbm_drm_gen.utils package</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="gbm-drm-gen-utils-package">
+<h1>gbm_drm_gen.utils package<a class="headerlink" href="#gbm-drm-gen-utils-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-gbm_drm_gen.utils.contour_finder">
+<span id="gbm-drm-gen-utils-contour-finder-module"></span><h2>gbm_drm_gen.utils.contour_finder module<a class="headerlink" href="#module-gbm_drm_gen.utils.contour_finder" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.contour_finder.ContourFinder">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.contour_finder.</span></span><span class="sig-name descname"><span class="pre">ContourFinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">healpix_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">512</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/contour_finder.html#ContourFinder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.contour_finder.ContourFinder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.contour_finder.ContourFinder.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">healpix_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">512</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/contour_finder.html#ContourFinder.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.contour_finder.ContourFinder.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>modeled from giacomov</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.contour_finder.ContourFinder.map">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">map</span></span><a class="headerlink" href="#gbm_drm_gen.utils.contour_finder.ContourFinder.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the resized map</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.contour_finder.ContourFinder.nside">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">nside</span></span><a class="headerlink" href="#gbm_drm_gen.utils.contour_finder.ContourFinder.nside" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the nside of the re-sized map</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.contour_finder.ContourFinder.pixel_size">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">pixel_size</span></span><a class="headerlink" href="#gbm_drm_gen.utils.contour_finder.ContourFinder.pixel_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return average side of pixel in degrees for the re-sized map</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.contour_finder.ContourFinder.find_contour">
+<span class="sig-name descname"><span class="pre">find_contour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">containment_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/contour_finder.html#ContourFinder.find_contour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.contour_finder.ContourFinder.find_contour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <em>indexes</em> of the pixels in the map within the given containment level</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.contour_finder.ContourFinder.get_sky_coordinates">
+<span class="sig-name descname"><span class="pre">get_sky_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indexes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/contour_finder.html#ContourFinder.get_sky_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.contour_finder.ContourFinder.get_sky_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gbm_drm_gen.utils.file_utils">
+<span id="gbm-drm-gen-utils-file-utils-module"></span><h2>gbm_drm_gen.utils.file_utils module<a class="headerlink" href="#module-gbm_drm_gen.utils.file_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.file_utils.file_existing_and_readable">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.file_utils.</span></span><span class="sig-name descname"><span class="pre">file_existing_and_readable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/file_utils.html#file_existing_and_readable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.file_utils.file_existing_and_readable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.file_utils.path_exists_and_is_directory">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.file_utils.</span></span><span class="sig-name descname"><span class="pre">path_exists_and_is_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/file_utils.html#path_exists_and_is_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.file_utils.path_exists_and_is_directory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.file_utils.sanitize_filename">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.file_utils.</span></span><span class="sig-name descname"><span class="pre">sanitize_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abspath</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/file_utils.html#sanitize_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.file_utils.sanitize_filename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.file_utils.if_directory_not_existing_then_make">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.file_utils.</span></span><span class="sig-name descname"><span class="pre">if_directory_not_existing_then_make</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/file_utils.html#if_directory_not_existing_then_make"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.file_utils.if_directory_not_existing_then_make" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the given directory does not exists, then make it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>directory</strong> – directory to check or make</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.file_utils.get_random_unique_name">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.file_utils.</span></span><span class="sig-name descname"><span class="pre">get_random_unique_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/file_utils.html#get_random_unique_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.file_utils.get_random_unique_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a name which is random and (with extremely high probability) unique</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>random file name</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.file_utils.within_directory">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.file_utils.</span></span><span class="sig-name descname"><span class="pre">within_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/file_utils.html#within_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.file_utils.within_directory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-gbm_drm_gen.utils.general_utils">
+<span id="gbm-drm-gen-utils-general-utils-module"></span><h2>gbm_drm_gen.utils.general_utils module<a class="headerlink" href="#module-gbm_drm_gen.utils.general_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.general_utils.ThetaFormatterShiftPi">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.general_utils.</span></span><span class="sig-name descname"><span class="pre">ThetaFormatterShiftPi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">aa</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/general_utils.html#ThetaFormatterShiftPi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.general_utils.ThetaFormatterShiftPi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.projections.geo.GeoAxes.ThetaFormatter</span></code></p>
+<p>Shifts labelling by pi
+Shifts labelling from -180,180 to 0-360</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.general_utils.ThetaFormatterShiftPi.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">aa</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/general_utils.html#ThetaFormatterShiftPi.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.general_utils.ThetaFormatterShiftPi.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.general_utils.ThetaFormatterShiftPi.extrapi">
+<span class="sig-name descname"><span class="pre">extrapi</span></span><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#gbm_drm_gen.utils.general_utils.ThetaFormatterShiftPi.extrapi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.general_utils.check_power_of_two">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.general_utils.</span></span><span class="sig-name descname"><span class="pre">check_power_of_two</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/general_utils.html#check_power_of_two"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.general_utils.check_power_of_two" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that the given number is a power of 2</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.general_utils.pix_to_sky">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.general_utils.</span></span><span class="sig-name descname"><span class="pre">pix_to_sky</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/general_utils.html#pix_to_sky"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.general_utils.pix_to_sky" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the pixels corresponding to the input indexes to sky coordinates (RA, Dec)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.general_utils.sky_to_pix">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.general_utils.</span></span><span class="sig-name descname"><span class="pre">sky_to_pix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/general_utils.html#sky_to_pix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.general_utils.sky_to_pix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.general_utils.theta_shifter">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.general_utils.</span></span><span class="sig-name descname"><span class="pre">theta_shifter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/general_utils.html#theta_shifter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.general_utils.theta_shifter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-gbm_drm_gen.utils.geometry">
+<span id="gbm-drm-gen-utils-geometry-module"></span><h2>gbm_drm_gen.utils.geometry module<a class="headerlink" href="#module-gbm_drm_gen.utils.geometry" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.geometry.ang2cart">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.geometry.</span></span><span class="sig-name descname"><span class="pre">ang2cart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/geometry.html#ang2cart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.geometry.ang2cart" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ra</strong> – </p></li>
+<li><p><strong>dec</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.geometry.get_ang">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.geometry.</span></span><span class="sig-name descname"><span class="pre">get_ang</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/geometry.html#get_ang"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.geometry.get_ang" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X1</strong> – </p></li>
+<li><p><strong>X2</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.geometry.is_occulted">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.geometry.</span></span><span class="sig-name descname"><span class="pre">is_occulted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sc_pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/geometry.html#is_occulted"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.geometry.is_occulted" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ra</strong> – </p></li>
+<li><p><strong>dec</strong> – </p></li>
+<li><p><strong>sc_pos</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-gbm_drm_gen.utils.package_data">
+<span id="gbm-drm-gen-utils-package-data-module"></span><h2>gbm_drm_gen.utils.package_data module<a class="headerlink" href="#module-gbm_drm_gen.utils.package_data" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.package_data.get_path_of_data_file">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.package_data.</span></span><span class="sig-name descname"><span class="pre">get_path_of_data_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/package_data.html#get_path_of_data_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.package_data.get_path_of_data_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.package_data.get_path_of_data_dir">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.package_data.</span></span><span class="sig-name descname"><span class="pre">get_path_of_data_dir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/package_data.html#get_path_of_data_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.package_data.get_path_of_data_dir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.utils.package_data.copy_package_data">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.utils.package_data.</span></span><span class="sig-name descname"><span class="pre">copy_package_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/utils/package_data.html#copy_package_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.utils.package_data.copy_package_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-gbm_drm_gen.utils.response">
+<span id="gbm-drm-gen-utils-response-module"></span><h2>gbm_drm_gen.utils.response module<a class="headerlink" href="#module-gbm_drm_gen.utils.response" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-gbm_drm_gen.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gbm_drm_gen.utils" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017-2021, J. Michael Burgess, Bjoern Biltzinger and Felix Kunzweiler.
+
+    </p>
+  </div> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

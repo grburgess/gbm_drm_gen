@@ -1,0 +1,53 @@
+gbm\_drm\_gen.io package
+========================
+
+Submodules
+----------
+
+gbm\_drm\_gen.io.balrog\_drm module
+-----------------------------------
+
+.. automodule:: gbm_drm_gen.io.balrog_drm
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gbm\_drm\_gen.io.balrog\_healpix\_map module
+--------------------------------------------
+
+.. automodule:: gbm_drm_gen.io.balrog_healpix_map
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gbm\_drm\_gen.io.balrog\_like module
+------------------------------------
+
+.. automodule:: gbm_drm_gen.io.balrog_like
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gbm\_drm\_gen.io.palantir module
+--------------------------------
+
+.. automodule:: gbm_drm_gen.io.palantir
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+gbm\_drm\_gen.io.response\_generator module
+-------------------------------------------
+
+.. automodule:: gbm_drm_gen.io.response_generator
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: gbm_drm_gen.io
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,290 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>gbm_drm_gen.utils.contour_finder &mdash; gbm_drm_gen  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="stylesheet" href="../../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> gbm_drm_gen
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">gbm_drm_gen</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>gbm_drm_gen.utils.contour_finder</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  <h1>Source code for gbm_drm_gen.utils.contour_finder</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.general_utils</span> <span class="kn">import</span> <span class="n">check_power_of_two</span><span class="p">,</span> <span class="n">pix_to_sky</span>
+<span class="kn">import</span> <span class="nn">healpy</span> <span class="k">as</span> <span class="nn">hp</span>
+
+
+<div class="viewcode-block" id="ContourFinder"><a class="viewcode-back" href="../../../notebooks/api/gbm_drm_gen.utils.html#gbm_drm_gen.utils.contour_finder.ContourFinder">[docs]</a><span class="k">class</span> <span class="nc">ContourFinder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="ContourFinder.__init__"><a class="viewcode-back" href="../../../notebooks/api/gbm_drm_gen.utils.html#gbm_drm_gen.utils.contour_finder.ContourFinder.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">healpix_map</span><span class="p">,</span> <span class="n">nside</span><span class="o">=</span><span class="mi">512</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        modeled from giacomov</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nside</span> <span class="o">=</span> <span class="n">nside</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_power_of_two</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nside</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;nside must be a power of 2.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># hpx_orig, header = hp.read_map(healpix_map, h=True, verbose=False)</span>
+
+        <span class="c1"># Use power=-2 so the sum is still 1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_map</span> <span class="o">=</span> <span class="n">healpix_map</span>  <span class="c1"># hp.read_map(healpix_map)</span></div>
+
+        <span class="c1"># self._map = hp.pixelfunc.ud_grade(healpix_map, nside_out=self._nside, power=-2)</span>
+
+        <span class="c1"># Check that the total probability is still equal to the input map</span>
+
+        <span class="c1"># assert abs(np.sum(healpix_map) - np.sum(self._map)) &lt; 1e-3, &quot;Total probability after resize has not been kept!&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the resized map&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nside</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the nside of the re-sized map&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nside</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pixel_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return average side of pixel in degrees for the re-sized map&quot;&quot;&quot;</span>
+
+        <span class="c1"># Formula from the manual of the function HEALPIXWINDOW</span>
+
+        <span class="n">arcmin_to_degree</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mf">60.0</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">3.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="mf">3600.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nside</span> <span class="o">*</span> <span class="n">arcmin_to_degree</span>
+
+<div class="viewcode-block" id="ContourFinder.find_contour"><a class="viewcode-back" href="../../../notebooks/api/gbm_drm_gen.utils.html#gbm_drm_gen.utils.contour_finder.ContourFinder.find_contour">[docs]</a>    <span class="k">def</span> <span class="nf">find_contour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">containment_level</span><span class="o">=</span><span class="mf">0.9</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the *indexes* of the pixels in the map within the given containment level&quot;&quot;&quot;</span>
+
+        <span class="c1"># Get indexes sorting the array in decreasing order</span>
+
+        <span class="n">index_revsort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Compute the cumulative sum of the probabilities in the ordered &quot;space&quot;</span>
+
+        <span class="n">cumsum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">[</span><span class="n">index_revsort</span><span class="p">])</span>
+
+        <span class="c1"># Find out which pixels are within the containment level requested in the ordered &quot;space&quot;</span>
+
+        <span class="n">idx_prime</span> <span class="o">=</span> <span class="n">cumsum</span> <span class="o">&lt;=</span> <span class="n">containment_level</span>
+
+        <span class="c1"># Convert back to the &quot;unordered space&quot;</span>
+
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">index_revsort</span><span class="p">[</span><span class="n">idx_prime</span><span class="p">]</span>
+
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="o">-</span> <span class="n">containment_level</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-2</span>
+        <span class="p">),</span> <span class="s2">&quot;Total prob. within containment is too far from requested value&quot;</span>
+
+        <span class="k">return</span> <span class="n">idx</span></div>
+
+<div class="viewcode-block" id="ContourFinder.get_sky_coordinates"><a class="viewcode-back" href="../../../notebooks/api/gbm_drm_gen.utils.html#gbm_drm_gen.utils.contour_finder.ContourFinder.get_sky_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">get_sky_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indexes</span><span class="p">):</span>
+        <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span> <span class="o">=</span> <span class="n">pix_to_sky</span><span class="p">(</span><span class="n">indexes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nside</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017-2021, J. Michael Burgess, Bjoern Biltzinger and Felix Kunzweiler.
+
+    </p>
+  </div> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

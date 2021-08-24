@@ -1,0 +1,904 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>gbm_drm_gen.input_edges &mdash; gbm_drm_gen  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <link rel="stylesheet" href="../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> gbm_drm_gen
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">gbm_drm_gen</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>gbm_drm_gen.input_edges</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  <h1>Source code for gbm_drm_gen.input_edges</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="InputEdges"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.input_edges.InputEdges">[docs]</a><span class="k">class</span> <span class="nc">InputEdges</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="n">_emax</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_emin</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="InputEdges.__init__"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.input_edges.InputEdges.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+
+        <span class="c1"># check that the edges are monotonic</span>
+
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">diff</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">):</span>
+
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;The input edges are not monotonically increasing&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;The edges must have an odd length with the end points closed&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_edges</span> <span class="o">=</span> <span class="n">edges</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edges</span>
+
+<div class="viewcode-block" id="InputEdges.from_log_bins"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.input_edges.InputEdges.from_log_bins">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_log_bins</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_bins</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">n_bins</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+            <span class="n">n_bins</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_emin</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_emax</span><span class="p">,</span> <span class="n">n_bins</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="InputEdges.from_custom_array"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.input_edges.InputEdges.from_custom_array">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_custom_array</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">edges</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        create edges from a custom set of energies.</span>
+
+<span class="sd">        The end points must be those of the original edges.</span>
+
+<span class="sd">        This will be corrected if not done... but might cause errors</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">edges</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_emin</span><span class="p">:</span>
+
+            <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_min</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">edges</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_emin</span><span class="p">:</span>
+
+            <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="n">edges</span> <span class="o">&lt;=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_emin</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_emin</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">edges</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_emax</span><span class="p">:</span>
+
+            <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_emax</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">edges</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_emax</span><span class="p">:</span>
+
+            <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">edges</span><span class="p">[</span><span class="n">edges</span> <span class="o">&lt;=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_emax</span><span class="p">],</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_emax</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span></div></div>
+
+
+<span class="n">tte_edges</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">tte_edges</span><span class="p">[</span><span class="s2">&quot;nai&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="mf">5.00000</span><span class="p">,</span>
+        <span class="mf">5.34000</span><span class="p">,</span>
+        <span class="mf">5.70312</span><span class="p">,</span>
+        <span class="mf">6.09094</span><span class="p">,</span>
+        <span class="mf">6.50513</span><span class="p">,</span>
+        <span class="mf">6.94748</span><span class="p">,</span>
+        <span class="mf">7.41991</span><span class="p">,</span>
+        <span class="mf">7.92447</span><span class="p">,</span>
+        <span class="mf">8.46333</span><span class="p">,</span>
+        <span class="mf">9.03884</span><span class="p">,</span>
+        <span class="mf">9.65349</span><span class="p">,</span>
+        <span class="mf">10.3099</span><span class="p">,</span>
+        <span class="mf">11.0110</span><span class="p">,</span>
+        <span class="mf">11.7598</span><span class="p">,</span>
+        <span class="mf">12.5594</span><span class="p">,</span>
+        <span class="mf">13.4135</span><span class="p">,</span>
+        <span class="mf">14.3256</span><span class="p">,</span>
+        <span class="mf">15.2997</span><span class="p">,</span>
+        <span class="mf">16.3401</span><span class="p">,</span>
+        <span class="mf">17.4513</span><span class="p">,</span>
+        <span class="mf">18.6380</span><span class="p">,</span>
+        <span class="mf">19.9054</span><span class="p">,</span>
+        <span class="mf">21.2589</span><span class="p">,</span>
+        <span class="mf">22.7045</span><span class="p">,</span>
+        <span class="mf">24.2485</span><span class="p">,</span>
+        <span class="mf">25.8974</span><span class="p">,</span>
+        <span class="mf">27.6584</span><span class="p">,</span>
+        <span class="mf">29.5392</span><span class="p">,</span>
+        <span class="mf">31.5479</span><span class="p">,</span>
+        <span class="mf">33.6931</span><span class="p">,</span>
+        <span class="mf">35.9843</span><span class="p">,</span>
+        <span class="mf">38.4312</span><span class="p">,</span>
+        <span class="mf">41.0446</span><span class="p">,</span>
+        <span class="mf">43.8356</span><span class="p">,</span>
+        <span class="mf">46.8164</span><span class="p">,</span>
+        <span class="mf">50.0000</span><span class="p">,</span>
+        <span class="mf">53.4000</span><span class="p">,</span>
+        <span class="mf">57.0312</span><span class="p">,</span>
+        <span class="mf">60.9094</span><span class="p">,</span>
+        <span class="mf">65.0513</span><span class="p">,</span>
+        <span class="mf">69.4748</span><span class="p">,</span>
+        <span class="mf">74.1991</span><span class="p">,</span>
+        <span class="mf">79.2446</span><span class="p">,</span>
+        <span class="mf">84.6333</span><span class="p">,</span>
+        <span class="mf">90.3884</span><span class="p">,</span>
+        <span class="mf">96.5349</span><span class="p">,</span>
+        <span class="mf">103.099</span><span class="p">,</span>
+        <span class="mf">110.110</span><span class="p">,</span>
+        <span class="mf">117.598</span><span class="p">,</span>
+        <span class="mf">125.594</span><span class="p">,</span>
+        <span class="mf">134.135</span><span class="p">,</span>
+        <span class="mf">143.256</span><span class="p">,</span>
+        <span class="mf">152.997</span><span class="p">,</span>
+        <span class="mf">163.401</span><span class="p">,</span>
+        <span class="mf">174.513</span><span class="p">,</span>
+        <span class="mf">186.380</span><span class="p">,</span>
+        <span class="mf">199.054</span><span class="p">,</span>
+        <span class="mf">212.589</span><span class="p">,</span>
+        <span class="mf">227.045</span><span class="p">,</span>
+        <span class="mf">242.485</span><span class="p">,</span>
+        <span class="mf">258.974</span><span class="p">,</span>
+        <span class="mf">276.584</span><span class="p">,</span>
+        <span class="mf">295.392</span><span class="p">,</span>
+        <span class="mf">315.479</span><span class="p">,</span>
+        <span class="mf">336.931</span><span class="p">,</span>
+        <span class="mf">359.843</span><span class="p">,</span>
+        <span class="mf">384.312</span><span class="p">,</span>
+        <span class="mf">410.446</span><span class="p">,</span>
+        <span class="mf">438.356</span><span class="p">,</span>
+        <span class="mf">468.164</span><span class="p">,</span>
+        <span class="mf">500.000</span><span class="p">,</span>
+        <span class="mf">534.000</span><span class="p">,</span>
+        <span class="mf">570.312</span><span class="p">,</span>
+        <span class="mf">609.094</span><span class="p">,</span>
+        <span class="mf">650.512</span><span class="p">,</span>
+        <span class="mf">694.748</span><span class="p">,</span>
+        <span class="mf">741.991</span><span class="p">,</span>
+        <span class="mf">792.446</span><span class="p">,</span>
+        <span class="mf">846.333</span><span class="p">,</span>
+        <span class="mf">903.884</span><span class="p">,</span>
+        <span class="mf">965.349</span><span class="p">,</span>
+        <span class="mf">1030.99</span><span class="p">,</span>
+        <span class="mf">1101.10</span><span class="p">,</span>
+        <span class="mf">1175.98</span><span class="p">,</span>
+        <span class="mf">1255.94</span><span class="p">,</span>
+        <span class="mf">1341.35</span><span class="p">,</span>
+        <span class="mf">1432.56</span><span class="p">,</span>
+        <span class="mf">1529.97</span><span class="p">,</span>
+        <span class="mf">1634.01</span><span class="p">,</span>
+        <span class="mf">1745.13</span><span class="p">,</span>
+        <span class="mf">1863.80</span><span class="p">,</span>
+        <span class="mf">1990.54</span><span class="p">,</span>
+        <span class="mf">2125.89</span><span class="p">,</span>
+        <span class="mf">2270.45</span><span class="p">,</span>
+        <span class="mf">2424.85</span><span class="p">,</span>
+        <span class="mf">2589.74</span><span class="p">,</span>
+        <span class="mf">2765.84</span><span class="p">,</span>
+        <span class="mf">2953.92</span><span class="p">,</span>
+        <span class="mf">3154.79</span><span class="p">,</span>
+        <span class="mf">3369.31</span><span class="p">,</span>
+        <span class="mf">3598.43</span><span class="p">,</span>
+        <span class="mf">3843.12</span><span class="p">,</span>
+        <span class="mf">4104.46</span><span class="p">,</span>
+        <span class="mf">4383.56</span><span class="p">,</span>
+        <span class="mf">4681.65</span><span class="p">,</span>
+        <span class="mf">5000.00</span><span class="p">,</span>
+        <span class="mf">5340.00</span><span class="p">,</span>
+        <span class="mf">5703.12</span><span class="p">,</span>
+        <span class="mf">6090.94</span><span class="p">,</span>
+        <span class="mf">6505.12</span><span class="p">,</span>
+        <span class="mf">6947.48</span><span class="p">,</span>
+        <span class="mf">7419.91</span><span class="p">,</span>
+        <span class="mf">7924.46</span><span class="p">,</span>
+        <span class="mf">8463.33</span><span class="p">,</span>
+        <span class="mf">9038.84</span><span class="p">,</span>
+        <span class="mf">9653.49</span><span class="p">,</span>
+        <span class="mf">10309.9</span><span class="p">,</span>
+        <span class="mf">11011.0</span><span class="p">,</span>
+        <span class="mf">11759.8</span><span class="p">,</span>
+        <span class="mf">12559.4</span><span class="p">,</span>
+        <span class="mf">13413.5</span><span class="p">,</span>
+        <span class="mf">14325.6</span><span class="p">,</span>
+        <span class="mf">15299.7</span><span class="p">,</span>
+        <span class="mf">16340.1</span><span class="p">,</span>
+        <span class="mf">17451.3</span><span class="p">,</span>
+        <span class="mf">18637.9</span><span class="p">,</span>
+        <span class="mf">19905.3</span><span class="p">,</span>
+        <span class="mf">21258.9</span><span class="p">,</span>
+        <span class="mf">22704.5</span><span class="p">,</span>
+        <span class="mf">24248.5</span><span class="p">,</span>
+        <span class="mf">25897.3</span><span class="p">,</span>
+        <span class="mf">27658.4</span><span class="p">,</span>
+        <span class="mf">29539.2</span><span class="p">,</span>
+        <span class="mf">31547.8</span><span class="p">,</span>
+        <span class="mf">33693.1</span><span class="p">,</span>
+        <span class="mf">35984.3</span><span class="p">,</span>
+        <span class="mf">38431.2</span><span class="p">,</span>
+        <span class="mf">41044.6</span><span class="p">,</span>
+        <span class="mf">43835.6</span><span class="p">,</span>
+        <span class="mf">46816.4</span><span class="p">,</span>
+        <span class="mf">50000.0</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">tte_edges</span><span class="p">[</span><span class="s2">&quot;bgo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="mf">100.000</span><span class="p">,</span>
+        <span class="mf">105.579</span><span class="p">,</span>
+        <span class="mf">111.470</span><span class="p">,</span>
+        <span class="mf">117.689</span><span class="p">,</span>
+        <span class="mf">124.255</span><span class="p">,</span>
+        <span class="mf">131.188</span><span class="p">,</span>
+        <span class="mf">138.507</span><span class="p">,</span>
+        <span class="mf">146.235</span><span class="p">,</span>
+        <span class="mf">154.394</span><span class="p">,</span>
+        <span class="mf">163.008</span><span class="p">,</span>
+        <span class="mf">172.103</span><span class="p">,</span>
+        <span class="mf">181.705</span><span class="p">,</span>
+        <span class="mf">191.843</span><span class="p">,</span>
+        <span class="mf">202.546</span><span class="p">,</span>
+        <span class="mf">213.847</span><span class="p">,</span>
+        <span class="mf">225.778</span><span class="p">,</span>
+        <span class="mf">238.375</span><span class="p">,</span>
+        <span class="mf">251.675</span><span class="p">,</span>
+        <span class="mf">265.716</span><span class="p">,</span>
+        <span class="mf">280.541</span><span class="p">,</span>
+        <span class="mf">296.194</span><span class="p">,</span>
+        <span class="mf">312.719</span><span class="p">,</span>
+        <span class="mf">330.167</span><span class="p">,</span>
+        <span class="mf">348.588</span><span class="p">,</span>
+        <span class="mf">368.036</span><span class="p">,</span>
+        <span class="mf">388.570</span><span class="p">,</span>
+        <span class="mf">410.250</span><span class="p">,</span>
+        <span class="mf">433.139</span><span class="p">,</span>
+        <span class="mf">457.305</span><span class="p">,</span>
+        <span class="mf">482.820</span><span class="p">,</span>
+        <span class="mf">509.757</span><span class="p">,</span>
+        <span class="mf">538.198</span><span class="p">,</span>
+        <span class="mf">568.226</span><span class="p">,</span>
+        <span class="mf">599.929</span><span class="p">,</span>
+        <span class="mf">633.401</span><span class="p">,</span>
+        <span class="mf">668.740</span><span class="p">,</span>
+        <span class="mf">706.052</span><span class="p">,</span>
+        <span class="mf">745.444</span><span class="p">,</span>
+        <span class="mf">787.035</span><span class="p">,</span>
+        <span class="mf">830.946</span><span class="p">,</span>
+        <span class="mf">877.307</span><span class="p">,</span>
+        <span class="mf">926.255</span><span class="p">,</span>
+        <span class="mf">977.933</span><span class="p">,</span>
+        <span class="mf">1032.49</span><span class="p">,</span>
+        <span class="mf">1090.10</span><span class="p">,</span>
+        <span class="mf">1150.92</span><span class="p">,</span>
+        <span class="mf">1215.13</span><span class="p">,</span>
+        <span class="mf">1282.93</span><span class="p">,</span>
+        <span class="mf">1354.51</span><span class="p">,</span>
+        <span class="mf">1430.08</span><span class="p">,</span>
+        <span class="mf">1509.87</span><span class="p">,</span>
+        <span class="mf">1594.11</span><span class="p">,</span>
+        <span class="mf">1683.05</span><span class="p">,</span>
+        <span class="mf">1776.95</span><span class="p">,</span>
+        <span class="mf">1876.09</span><span class="p">,</span>
+        <span class="mf">1980.77</span><span class="p">,</span>
+        <span class="mf">2091.28</span><span class="p">,</span>
+        <span class="mf">2207.96</span><span class="p">,</span>
+        <span class="mf">2331.15</span><span class="p">,</span>
+        <span class="mf">2461.21</span><span class="p">,</span>
+        <span class="mf">2598.53</span><span class="p">,</span>
+        <span class="mf">2743.51</span><span class="p">,</span>
+        <span class="mf">2896.58</span><span class="p">,</span>
+        <span class="mf">3058.18</span><span class="p">,</span>
+        <span class="mf">3228.81</span><span class="p">,</span>
+        <span class="mf">3408.95</span><span class="p">,</span>
+        <span class="mf">3599.15</span><span class="p">,</span>
+        <span class="mf">3799.96</span><span class="p">,</span>
+        <span class="mf">4011.97</span><span class="p">,</span>
+        <span class="mf">4235.81</span><span class="p">,</span>
+        <span class="mf">4472.14</span><span class="p">,</span>
+        <span class="mf">4721.65</span><span class="p">,</span>
+        <span class="mf">4985.09</span><span class="p">,</span>
+        <span class="mf">5263.22</span><span class="p">,</span>
+        <span class="mf">5556.87</span><span class="p">,</span>
+        <span class="mf">5866.90</span><span class="p">,</span>
+        <span class="mf">6194.24</span><span class="p">,</span>
+        <span class="mf">6539.83</span><span class="p">,</span>
+        <span class="mf">6904.71</span><span class="p">,</span>
+        <span class="mf">7289.95</span><span class="p">,</span>
+        <span class="mf">7696.67</span><span class="p">,</span>
+        <span class="mf">8126.09</span><span class="p">,</span>
+        <span class="mf">8579.47</span><span class="p">,</span>
+        <span class="mf">9058.15</span><span class="p">,</span>
+        <span class="mf">9563.53</span><span class="p">,</span>
+        <span class="mf">10097.1</span><span class="p">,</span>
+        <span class="mf">10660.5</span><span class="p">,</span>
+        <span class="mf">11255.2</span><span class="p">,</span>
+        <span class="mf">11883.2</span><span class="p">,</span>
+        <span class="mf">12546.2</span><span class="p">,</span>
+        <span class="mf">13246.2</span><span class="p">,</span>
+        <span class="mf">13985.2</span><span class="p">,</span>
+        <span class="mf">14765.5</span><span class="p">,</span>
+        <span class="mf">15589.3</span><span class="p">,</span>
+        <span class="mf">16459.1</span><span class="p">,</span>
+        <span class="mf">17377.4</span><span class="p">,</span>
+        <span class="mf">18346.9</span><span class="p">,</span>
+        <span class="mf">19370.6</span><span class="p">,</span>
+        <span class="mf">20451.3</span><span class="p">,</span>
+        <span class="mf">21592.4</span><span class="p">,</span>
+        <span class="mf">22797.1</span><span class="p">,</span>
+        <span class="mf">24069.0</span><span class="p">,</span>
+        <span class="mf">25411.8</span><span class="p">,</span>
+        <span class="mf">26829.7</span><span class="p">,</span>
+        <span class="mf">28326.6</span><span class="p">,</span>
+        <span class="mf">29907.0</span><span class="p">,</span>
+        <span class="mf">31575.6</span><span class="p">,</span>
+        <span class="mf">33337.3</span><span class="p">,</span>
+        <span class="mf">35197.3</span><span class="p">,</span>
+        <span class="mf">37161.0</span><span class="p">,</span>
+        <span class="mf">39234.4</span><span class="p">,</span>
+        <span class="mf">41423.4</span><span class="p">,</span>
+        <span class="mf">43734.5</span><span class="p">,</span>
+        <span class="mf">46174.6</span><span class="p">,</span>
+        <span class="mf">48750.8</span><span class="p">,</span>
+        <span class="mf">51470.7</span><span class="p">,</span>
+        <span class="mf">54342.5</span><span class="p">,</span>
+        <span class="mf">57374.4</span><span class="p">,</span>
+        <span class="mf">60575.5</span><span class="p">,</span>
+        <span class="mf">63955.2</span><span class="p">,</span>
+        <span class="mf">67523.4</span><span class="p">,</span>
+        <span class="mf">71290.7</span><span class="p">,</span>
+        <span class="mf">75268.2</span><span class="p">,</span>
+        <span class="mf">79467.7</span><span class="p">,</span>
+        <span class="mf">83901.5</span><span class="p">,</span>
+        <span class="mf">88582.6</span><span class="p">,</span>
+        <span class="mf">93524.9</span><span class="p">,</span>
+        <span class="mf">98742.9</span><span class="p">,</span>
+        <span class="mf">104252.0</span><span class="p">,</span>
+        <span class="mf">110069.0</span><span class="p">,</span>
+        <span class="mf">116210.0</span><span class="p">,</span>
+        <span class="mf">122693.0</span><span class="p">,</span>
+        <span class="mf">129539.0</span><span class="p">,</span>
+        <span class="mf">136766.0</span><span class="p">,</span>
+        <span class="mf">144397.0</span><span class="p">,</span>
+        <span class="mf">152453.0</span><span class="p">,</span>
+        <span class="mf">160959.0</span><span class="p">,</span>
+        <span class="mf">169939.0</span><span class="p">,</span>
+        <span class="mf">179421.0</span><span class="p">,</span>
+        <span class="mf">189431.0</span><span class="p">,</span>
+        <span class="mf">200000.0</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="NaiTTEEdges"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.input_edges.NaiTTEEdges">[docs]</a><span class="k">class</span> <span class="nc">NaiTTEEdges</span><span class="p">(</span><span class="n">InputEdges</span><span class="p">):</span>
+    <span class="n">_emin</span> <span class="o">=</span> <span class="mf">5.0</span>
+    <span class="n">_emax</span> <span class="o">=</span> <span class="mf">50000.</span>
+
+<div class="viewcode-block" id="NaiTTEEdges.__init__"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.input_edges.NaiTTEEdges.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">NaiTTEEdges</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="BgoTTEEdges"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.input_edges.BgoTTEEdges">[docs]</a><span class="k">class</span> <span class="nc">BgoTTEEdges</span><span class="p">(</span><span class="n">InputEdges</span><span class="p">):</span>
+    <span class="n">_emin</span> <span class="o">=</span> <span class="mf">100.</span>
+    <span class="n">_emax</span> <span class="o">=</span> <span class="mf">200000.</span>
+
+<div class="viewcode-block" id="BgoTTEEdges.__init__"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.input_edges.BgoTTEEdges.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">BgoTTEEdges</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span></div></div>
+
+
+<span class="n">trigdat_edges</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="n">trigdat_edges</span><span class="p">[</span><span class="s2">&quot;nai&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="mf">5.00000</span><span class="p">,</span>
+        <span class="mf">5.34000</span><span class="p">,</span>
+        <span class="mf">5.70312</span><span class="p">,</span>
+        <span class="mf">6.09094</span><span class="p">,</span>
+        <span class="mf">6.50513</span><span class="p">,</span>
+        <span class="mf">6.94748</span><span class="p">,</span>
+        <span class="mf">7.41991</span><span class="p">,</span>
+        <span class="mf">7.92447</span><span class="p">,</span>
+        <span class="mf">8.46333</span><span class="p">,</span>
+        <span class="mf">9.03884</span><span class="p">,</span>
+        <span class="mf">9.65349</span><span class="p">,</span>
+        <span class="mf">10.3099</span><span class="p">,</span>
+        <span class="mf">11.0110</span><span class="p">,</span>
+        <span class="mf">11.7598</span><span class="p">,</span>
+        <span class="mf">12.5594</span><span class="p">,</span>
+        <span class="mf">13.4135</span><span class="p">,</span>
+        <span class="mf">14.3256</span><span class="p">,</span>
+        <span class="mf">15.2997</span><span class="p">,</span>
+        <span class="mf">16.3401</span><span class="p">,</span>
+        <span class="mf">17.4513</span><span class="p">,</span>
+        <span class="mf">18.6380</span><span class="p">,</span>
+        <span class="mf">19.9054</span><span class="p">,</span>
+        <span class="mf">21.2589</span><span class="p">,</span>
+        <span class="mf">22.7045</span><span class="p">,</span>
+        <span class="mf">24.2485</span><span class="p">,</span>
+        <span class="mf">25.8974</span><span class="p">,</span>
+        <span class="mf">27.6584</span><span class="p">,</span>
+        <span class="mf">29.5392</span><span class="p">,</span>
+        <span class="mf">31.5479</span><span class="p">,</span>
+        <span class="mf">33.6931</span><span class="p">,</span>
+        <span class="mf">35.9843</span><span class="p">,</span>
+        <span class="mf">38.4312</span><span class="p">,</span>
+        <span class="mf">41.0446</span><span class="p">,</span>
+        <span class="mf">43.8356</span><span class="p">,</span>
+        <span class="mf">46.8164</span><span class="p">,</span>
+        <span class="mf">50.0000</span><span class="p">,</span>
+        <span class="mf">53.4000</span><span class="p">,</span>
+        <span class="mf">57.0312</span><span class="p">,</span>
+        <span class="mf">60.9094</span><span class="p">,</span>
+        <span class="mf">65.0513</span><span class="p">,</span>
+        <span class="mf">69.4748</span><span class="p">,</span>
+        <span class="mf">74.1991</span><span class="p">,</span>
+        <span class="mf">79.2446</span><span class="p">,</span>
+        <span class="mf">84.6333</span><span class="p">,</span>
+        <span class="mf">90.3884</span><span class="p">,</span>
+        <span class="mf">96.5349</span><span class="p">,</span>
+        <span class="mf">103.099</span><span class="p">,</span>
+        <span class="mf">110.110</span><span class="p">,</span>
+        <span class="mf">117.598</span><span class="p">,</span>
+        <span class="mf">125.594</span><span class="p">,</span>
+        <span class="mf">134.135</span><span class="p">,</span>
+        <span class="mf">143.256</span><span class="p">,</span>
+        <span class="mf">152.997</span><span class="p">,</span>
+        <span class="mf">163.401</span><span class="p">,</span>
+        <span class="mf">174.513</span><span class="p">,</span>
+        <span class="mf">186.380</span><span class="p">,</span>
+        <span class="mf">199.054</span><span class="p">,</span>
+        <span class="mf">212.589</span><span class="p">,</span>
+        <span class="mf">227.045</span><span class="p">,</span>
+        <span class="mf">242.485</span><span class="p">,</span>
+        <span class="mf">258.974</span><span class="p">,</span>
+        <span class="mf">276.584</span><span class="p">,</span>
+        <span class="mf">295.392</span><span class="p">,</span>
+        <span class="mf">315.479</span><span class="p">,</span>
+        <span class="mf">336.931</span><span class="p">,</span>
+        <span class="mf">359.843</span><span class="p">,</span>
+        <span class="mf">384.312</span><span class="p">,</span>
+        <span class="mf">410.446</span><span class="p">,</span>
+        <span class="mf">438.356</span><span class="p">,</span>
+        <span class="mf">468.164</span><span class="p">,</span>
+        <span class="mf">500.000</span><span class="p">,</span>
+        <span class="mf">534.000</span><span class="p">,</span>
+        <span class="mf">570.312</span><span class="p">,</span>
+        <span class="mf">609.094</span><span class="p">,</span>
+        <span class="mf">650.512</span><span class="p">,</span>
+        <span class="mf">694.748</span><span class="p">,</span>
+        <span class="mf">741.991</span><span class="p">,</span>
+        <span class="mf">792.446</span><span class="p">,</span>
+        <span class="mf">846.333</span><span class="p">,</span>
+        <span class="mf">903.884</span><span class="p">,</span>
+        <span class="mf">965.349</span><span class="p">,</span>
+        <span class="mf">1030.99</span><span class="p">,</span>
+        <span class="mf">1101.10</span><span class="p">,</span>
+        <span class="mf">1175.98</span><span class="p">,</span>
+        <span class="mf">1255.94</span><span class="p">,</span>
+        <span class="mf">1341.35</span><span class="p">,</span>
+        <span class="mf">1432.56</span><span class="p">,</span>
+        <span class="mf">1529.97</span><span class="p">,</span>
+        <span class="mf">1634.01</span><span class="p">,</span>
+        <span class="mf">1745.13</span><span class="p">,</span>
+        <span class="mf">1863.80</span><span class="p">,</span>
+        <span class="mf">1990.54</span><span class="p">,</span>
+        <span class="mf">2125.89</span><span class="p">,</span>
+        <span class="mf">2270.45</span><span class="p">,</span>
+        <span class="mf">2424.85</span><span class="p">,</span>
+        <span class="mf">2589.74</span><span class="p">,</span>
+        <span class="mf">2765.84</span><span class="p">,</span>
+        <span class="mf">2953.92</span><span class="p">,</span>
+        <span class="mf">3154.79</span><span class="p">,</span>
+        <span class="mf">3369.31</span><span class="p">,</span>
+        <span class="mf">3598.43</span><span class="p">,</span>
+        <span class="mf">3843.12</span><span class="p">,</span>
+        <span class="mf">4104.46</span><span class="p">,</span>
+        <span class="mf">4383.56</span><span class="p">,</span>
+        <span class="mf">4681.65</span><span class="p">,</span>
+        <span class="mf">5000.00</span><span class="p">,</span>
+        <span class="mf">5340.00</span><span class="p">,</span>
+        <span class="mf">5703.12</span><span class="p">,</span>
+        <span class="mf">6090.94</span><span class="p">,</span>
+        <span class="mf">6505.12</span><span class="p">,</span>
+        <span class="mf">6947.48</span><span class="p">,</span>
+        <span class="mf">7419.91</span><span class="p">,</span>
+        <span class="mf">7924.46</span><span class="p">,</span>
+        <span class="mf">8463.33</span><span class="p">,</span>
+        <span class="mf">9038.84</span><span class="p">,</span>
+        <span class="mf">9653.49</span><span class="p">,</span>
+        <span class="mf">10309.9</span><span class="p">,</span>
+        <span class="mf">11011.0</span><span class="p">,</span>
+        <span class="mf">11759.8</span><span class="p">,</span>
+        <span class="mf">12559.4</span><span class="p">,</span>
+        <span class="mf">13413.5</span><span class="p">,</span>
+        <span class="mf">14325.6</span><span class="p">,</span>
+        <span class="mf">15299.7</span><span class="p">,</span>
+        <span class="mf">16340.1</span><span class="p">,</span>
+        <span class="mf">17451.3</span><span class="p">,</span>
+        <span class="mf">18637.9</span><span class="p">,</span>
+        <span class="mf">19905.3</span><span class="p">,</span>
+        <span class="mf">21258.9</span><span class="p">,</span>
+        <span class="mf">22704.5</span><span class="p">,</span>
+        <span class="mf">24248.5</span><span class="p">,</span>
+        <span class="mf">25897.3</span><span class="p">,</span>
+        <span class="mf">27658.4</span><span class="p">,</span>
+        <span class="mf">29539.2</span><span class="p">,</span>
+        <span class="mf">31547.8</span><span class="p">,</span>
+        <span class="mf">33693.1</span><span class="p">,</span>
+        <span class="mf">35984.3</span><span class="p">,</span>
+        <span class="mf">38431.2</span><span class="p">,</span>
+        <span class="mf">41044.6</span><span class="p">,</span>
+        <span class="mf">43835.6</span><span class="p">,</span>
+        <span class="mf">46816.4</span><span class="p">,</span>
+        <span class="mf">50000.0</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">trigdat_edges</span><span class="p">[</span><span class="s2">&quot;bgo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="mf">100.000</span><span class="p">,</span>
+        <span class="mf">105.579</span><span class="p">,</span>
+        <span class="mf">111.470</span><span class="p">,</span>
+        <span class="mf">117.689</span><span class="p">,</span>
+        <span class="mf">124.255</span><span class="p">,</span>
+        <span class="mf">131.188</span><span class="p">,</span>
+        <span class="mf">138.507</span><span class="p">,</span>
+        <span class="mf">146.235</span><span class="p">,</span>
+        <span class="mf">154.394</span><span class="p">,</span>
+        <span class="mf">163.008</span><span class="p">,</span>
+        <span class="mf">172.103</span><span class="p">,</span>
+        <span class="mf">181.705</span><span class="p">,</span>
+        <span class="mf">191.843</span><span class="p">,</span>
+        <span class="mf">202.546</span><span class="p">,</span>
+        <span class="mf">213.847</span><span class="p">,</span>
+        <span class="mf">225.778</span><span class="p">,</span>
+        <span class="mf">238.375</span><span class="p">,</span>
+        <span class="mf">251.675</span><span class="p">,</span>
+        <span class="mf">265.716</span><span class="p">,</span>
+        <span class="mf">280.541</span><span class="p">,</span>
+        <span class="mf">296.194</span><span class="p">,</span>
+        <span class="mf">312.719</span><span class="p">,</span>
+        <span class="mf">330.167</span><span class="p">,</span>
+        <span class="mf">348.588</span><span class="p">,</span>
+        <span class="mf">368.036</span><span class="p">,</span>
+        <span class="mf">388.570</span><span class="p">,</span>
+        <span class="mf">410.250</span><span class="p">,</span>
+        <span class="mf">433.139</span><span class="p">,</span>
+        <span class="mf">457.305</span><span class="p">,</span>
+        <span class="mf">482.820</span><span class="p">,</span>
+        <span class="mf">509.757</span><span class="p">,</span>
+        <span class="mf">538.198</span><span class="p">,</span>
+        <span class="mf">568.226</span><span class="p">,</span>
+        <span class="mf">599.929</span><span class="p">,</span>
+        <span class="mf">633.401</span><span class="p">,</span>
+        <span class="mf">668.740</span><span class="p">,</span>
+        <span class="mf">706.052</span><span class="p">,</span>
+        <span class="mf">745.444</span><span class="p">,</span>
+        <span class="mf">787.035</span><span class="p">,</span>
+        <span class="mf">830.946</span><span class="p">,</span>
+        <span class="mf">877.307</span><span class="p">,</span>
+        <span class="mf">926.255</span><span class="p">,</span>
+        <span class="mf">977.933</span><span class="p">,</span>
+        <span class="mf">1032.49</span><span class="p">,</span>
+        <span class="mf">1090.10</span><span class="p">,</span>
+        <span class="mf">1150.92</span><span class="p">,</span>
+        <span class="mf">1215.13</span><span class="p">,</span>
+        <span class="mf">1282.93</span><span class="p">,</span>
+        <span class="mf">1354.51</span><span class="p">,</span>
+        <span class="mf">1430.08</span><span class="p">,</span>
+        <span class="mf">1509.87</span><span class="p">,</span>
+        <span class="mf">1594.11</span><span class="p">,</span>
+        <span class="mf">1683.05</span><span class="p">,</span>
+        <span class="mf">1776.95</span><span class="p">,</span>
+        <span class="mf">1876.09</span><span class="p">,</span>
+        <span class="mf">1980.77</span><span class="p">,</span>
+        <span class="mf">2091.28</span><span class="p">,</span>
+        <span class="mf">2207.96</span><span class="p">,</span>
+        <span class="mf">2331.15</span><span class="p">,</span>
+        <span class="mf">2461.21</span><span class="p">,</span>
+        <span class="mf">2598.53</span><span class="p">,</span>
+        <span class="mf">2743.51</span><span class="p">,</span>
+        <span class="mf">2896.58</span><span class="p">,</span>
+        <span class="mf">3058.18</span><span class="p">,</span>
+        <span class="mf">3228.81</span><span class="p">,</span>
+        <span class="mf">3408.95</span><span class="p">,</span>
+        <span class="mf">3599.15</span><span class="p">,</span>
+        <span class="mf">3799.96</span><span class="p">,</span>
+        <span class="mf">4011.97</span><span class="p">,</span>
+        <span class="mf">4235.81</span><span class="p">,</span>
+        <span class="mf">4472.14</span><span class="p">,</span>
+        <span class="mf">4721.65</span><span class="p">,</span>
+        <span class="mf">4985.09</span><span class="p">,</span>
+        <span class="mf">5263.22</span><span class="p">,</span>
+        <span class="mf">5556.87</span><span class="p">,</span>
+        <span class="mf">5866.90</span><span class="p">,</span>
+        <span class="mf">6194.24</span><span class="p">,</span>
+        <span class="mf">6539.83</span><span class="p">,</span>
+        <span class="mf">6904.71</span><span class="p">,</span>
+        <span class="mf">7289.95</span><span class="p">,</span>
+        <span class="mf">7696.67</span><span class="p">,</span>
+        <span class="mf">8126.09</span><span class="p">,</span>
+        <span class="mf">8579.47</span><span class="p">,</span>
+        <span class="mf">9058.15</span><span class="p">,</span>
+        <span class="mf">9563.53</span><span class="p">,</span>
+        <span class="mf">10097.1</span><span class="p">,</span>
+        <span class="mf">10660.5</span><span class="p">,</span>
+        <span class="mf">11255.2</span><span class="p">,</span>
+        <span class="mf">11883.2</span><span class="p">,</span>
+        <span class="mf">12546.2</span><span class="p">,</span>
+        <span class="mf">13246.2</span><span class="p">,</span>
+        <span class="mf">13985.2</span><span class="p">,</span>
+        <span class="mf">14765.5</span><span class="p">,</span>
+        <span class="mf">15589.3</span><span class="p">,</span>
+        <span class="mf">16459.1</span><span class="p">,</span>
+        <span class="mf">17377.4</span><span class="p">,</span>
+        <span class="mf">18346.9</span><span class="p">,</span>
+        <span class="mf">19370.6</span><span class="p">,</span>
+        <span class="mf">20451.3</span><span class="p">,</span>
+        <span class="mf">21592.4</span><span class="p">,</span>
+        <span class="mf">22797.1</span><span class="p">,</span>
+        <span class="mf">24069.0</span><span class="p">,</span>
+        <span class="mf">25411.8</span><span class="p">,</span>
+        <span class="mf">26829.7</span><span class="p">,</span>
+        <span class="mf">28326.6</span><span class="p">,</span>
+        <span class="mf">29907.0</span><span class="p">,</span>
+        <span class="mf">31575.6</span><span class="p">,</span>
+        <span class="mf">33337.3</span><span class="p">,</span>
+        <span class="mf">35197.3</span><span class="p">,</span>
+        <span class="mf">37161.0</span><span class="p">,</span>
+        <span class="mf">39234.4</span><span class="p">,</span>
+        <span class="mf">41423.4</span><span class="p">,</span>
+        <span class="mf">43734.5</span><span class="p">,</span>
+        <span class="mf">46174.6</span><span class="p">,</span>
+        <span class="mf">48750.8</span><span class="p">,</span>
+        <span class="mf">51470.7</span><span class="p">,</span>
+        <span class="mf">54342.5</span><span class="p">,</span>
+        <span class="mf">57374.4</span><span class="p">,</span>
+        <span class="mf">60575.5</span><span class="p">,</span>
+        <span class="mf">63955.2</span><span class="p">,</span>
+        <span class="mf">67523.4</span><span class="p">,</span>
+        <span class="mf">71290.7</span><span class="p">,</span>
+        <span class="mf">75268.2</span><span class="p">,</span>
+        <span class="mf">79467.7</span><span class="p">,</span>
+        <span class="mf">83901.5</span><span class="p">,</span>
+        <span class="mf">88582.6</span><span class="p">,</span>
+        <span class="mf">93524.9</span><span class="p">,</span>
+        <span class="mf">98742.9</span><span class="p">,</span>
+        <span class="mf">104252.0</span><span class="p">,</span>
+        <span class="mf">110069.0</span><span class="p">,</span>
+        <span class="mf">116210.0</span><span class="p">,</span>
+        <span class="mf">122693.0</span><span class="p">,</span>
+        <span class="mf">129539.0</span><span class="p">,</span>
+        <span class="mf">136766.0</span><span class="p">,</span>
+        <span class="mf">144397.0</span><span class="p">,</span>
+        <span class="mf">152453.0</span><span class="p">,</span>
+        <span class="mf">160959.0</span><span class="p">,</span>
+        <span class="mf">169939.0</span><span class="p">,</span>
+        <span class="mf">179421.0</span><span class="p">,</span>
+        <span class="mf">189431.0</span><span class="p">,</span>
+        <span class="mf">200000.0</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">trigdat_out_edge</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">trigdat_out_edge</span><span class="p">[</span><span class="s2">&quot;nai&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="mf">3.4</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">22.0</span><span class="p">,</span> <span class="mf">44.0</span><span class="p">,</span> <span class="mf">95.0</span><span class="p">,</span> <span class="mf">300.0</span><span class="p">,</span> <span class="mf">500.0</span><span class="p">,</span> <span class="mf">800.0</span><span class="p">,</span> <span class="mf">2000.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">trigdat_out_edge</span><span class="p">[</span><span class="s2">&quot;bgo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span><span class="mf">150.0</span><span class="p">,</span> <span class="mf">400.0</span><span class="p">,</span> <span class="mf">850.0</span><span class="p">,</span> <span class="mf">1500.0</span><span class="p">,</span> <span class="mf">3000.0</span><span class="p">,</span> <span class="mf">5500.0</span><span class="p">,</span> <span class="mf">10000.0</span><span class="p">,</span> <span class="mf">20000.0</span><span class="p">,</span> <span class="mf">50000.0</span><span class="p">,</span> <span class="p">],</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017-2021, J. Michael Burgess, Bjoern Biltzinger and Felix Kunzweiler.
+
+    </p>
+  </div> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

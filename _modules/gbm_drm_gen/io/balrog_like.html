@@ -1,0 +1,369 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>gbm_drm_gen.io.balrog_like &mdash; gbm_drm_gen  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="stylesheet" href="../../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> gbm_drm_gen
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">gbm_drm_gen</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>gbm_drm_gen.io.balrog_like</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  <h1>Source code for gbm_drm_gen.io.balrog_like</h1><div class="highlight"><pre>
+<span></span><span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">threeML.plugins.DispersionSpectrumLike</span> <span class="kn">import</span> <span class="n">DispersionSpectrumLike</span>
+
+<span class="k">except</span><span class="p">:</span>
+
+
+    <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">astromodels.functions.priors</span> <span class="kn">import</span> <span class="n">Cosine_Prior</span><span class="p">,</span> <span class="n">Uniform_prior</span>
+
+<span class="kn">from</span> <span class="nn">.balrog_drm</span> <span class="kn">import</span> <span class="n">BALROG_DRM</span>
+
+
+<div class="viewcode-block" id="BALROGLike"><a class="viewcode-back" href="../../../notebooks/api/gbm_drm_gen.io.html#gbm_drm_gen.BALROGLike">[docs]</a><span class="k">class</span> <span class="nc">BALROGLike</span><span class="p">(</span><span class="n">DispersionSpectrumLike</span><span class="p">):</span>
+<div class="viewcode-block" id="BALROGLike.__init__"><a class="viewcode-back" href="../../../notebooks/api/gbm_drm_gen.io.html#gbm_drm_gen.BALROGLike.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="n">observation</span><span class="p">,</span>
+        <span class="n">drm_generator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">background</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">free_position</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">use_cache</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        BALROGLike is a general plugin for fitting GBM spectra and locations at the same time</span>
+
+
+<span class="sd">        :param name: plugin name</span>
+<span class="sd">        :param observation: observed spectrum</span>
+<span class="sd">        :param drm_generator: the drm generator for this </span>
+<span class="sd">        :param background: background spectrum</span>
+<span class="sd">        :param time: time of the observation</span>
+<span class="sd">        :param free_position: keep the position free</span>
+<span class="sd">        :param verbose: the verbosity level of the plugin</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_free_position</span> <span class="o">=</span> <span class="n">free_position</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_use_cache</span> <span class="o">=</span> <span class="n">use_cache</span>
+        <span class="k">if</span> <span class="n">drm_generator</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="c1"># If a generator is not supplied</span>
+            <span class="c1"># then make sure that there is a</span>
+            <span class="c1"># balrog response</span>
+
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">observation</span><span class="o">.</span><span class="n">response</span><span class="p">,</span> <span class="n">BALROG_DRM</span>
+            <span class="p">),</span> <span class="s2">&quot;The response associated with the observation is not a BALROG&quot;</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="c1"># here we will reset the response</span>
+            <span class="c1"># this is violating the fact that</span>
+            <span class="c1"># the response is provate</span>
+
+            <span class="n">balrog_drm</span> <span class="o">=</span> <span class="n">BALROG_DRM</span><span class="p">(</span><span class="n">drm_generator</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+            <span class="n">observation</span><span class="o">.</span><span class="n">_rsp</span> <span class="o">=</span> <span class="n">balrog_drm</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">BALROGLike</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">observation</span><span class="p">,</span> <span class="n">background</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># only on the start up</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rsp</span><span class="o">.</span><span class="n">set_time</span><span class="p">(</span><span class="n">time</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BALROGLike.set_model"><a class="viewcode-back" href="../../../notebooks/api/gbm_drm_gen.io.html#gbm_drm_gen.BALROGLike.set_model">[docs]</a>    <span class="k">def</span> <span class="nf">set_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">likelihoodModel</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the model and free the location parameters</span>
+
+
+<span class="sd">        :param likelihoodModel:</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># set the standard likelihood model</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">BALROGLike</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">set_model</span><span class="p">(</span><span class="n">likelihoodModel</span><span class="p">)</span>
+
+        <span class="c1"># now free the position</span>
+        <span class="c1"># if it is needed</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_free_position</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Freeing the position of </span><span class="si">%s</span><span class="s2"> and setting priors&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_like_model</span><span class="o">.</span><span class="n">point_sources</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_like_model</span><span class="o">.</span><span class="n">point_sources</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_like_model</span><span class="o">.</span><span class="n">point_sources</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_like_model</span><span class="o">.</span><span class="n">point_sources</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="n">Uniform_prior</span><span class="p">(</span>
+                    <span class="n">lower_bound</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">upper_bound</span><span class="o">=</span><span class="mi">360</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_like_model</span><span class="o">.</span><span class="n">point_sources</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="n">Cosine_Prior</span><span class="p">(</span>
+                    <span class="n">lower_bound</span><span class="o">=-</span><span class="mf">90.0</span><span class="p">,</span> <span class="n">upper_bound</span><span class="o">=</span><span class="mi">90</span>
+                <span class="p">)</span>
+
+                <span class="n">ra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_like_model</span><span class="o">.</span><span class="n">point_sources</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">dec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_like_model</span><span class="o">.</span><span class="n">point_sources</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_like_model</span><span class="o">.</span><span class="n">point_sources</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_like_model</span><span class="o">.</span><span class="n">point_sources</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="n">Uniform_prior</span><span class="p">(</span>
+                    <span class="n">lower_bound</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">upper_bound</span><span class="o">=</span><span class="mi">360</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_like_model</span><span class="o">.</span><span class="n">point_sources</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="n">Cosine_Prior</span><span class="p">(</span>
+                    <span class="n">lower_bound</span><span class="o">=-</span><span class="mf">90.0</span><span class="p">,</span> <span class="n">upper_bound</span><span class="o">=</span><span class="mi">90</span>
+                <span class="p">)</span>
+
+                <span class="n">ra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_like_model</span><span class="o">.</span><span class="n">point_sources</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">dec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_like_model</span><span class="o">.</span><span class="n">point_sources</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rsp</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_use_cache</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BALROGLike.get_model"><a class="viewcode-back" href="../../../notebooks/api/gbm_drm_gen.io.html#gbm_drm_gen.BALROGLike.get_model">[docs]</a>    <span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precalc_fluxes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="c1"># Here we update the GBM drm parameters which creates and new DRM for that location</span>
+        <span class="c1"># we should only be dealing with one source for GBM</span>
+
+        <span class="c1"># update the location</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_free_position</span><span class="p">:</span>
+
+            <span class="c1"># assumes that the is only one point source which is how it should be!</span>
+            <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_like_model</span><span class="o">.</span><span class="n">get_point_source_position</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rsp</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_use_cache</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">BALROGLike</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">precalc_fluxes</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BALROGLike.from_spectrumlike"><a class="viewcode-back" href="../../../notebooks/api/gbm_drm_gen.io.html#gbm_drm_gen.BALROGLike.from_spectrumlike">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_spectrumlike</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">spectrum_like</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">drm_generator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">free_position</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate a BALROGlike from an existing SpectrumLike child</span>
+
+
+<span class="sd">        :param spectrum_like: the existing spectrumlike</span>
+<span class="sd">        :param time: the time to generate the RSPs at</span>
+<span class="sd">        :param drm_generator: optional BALROG DRM generator</span>
+<span class="sd">        :param free_position: if the position should be free</span>
+<span class="sd">        :return: </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">spectrum_like</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">spectrum_like</span><span class="o">.</span><span class="n">_observed_spectrum</span><span class="p">,</span>
+            <span class="n">drm_generator</span><span class="p">,</span>
+            <span class="n">spectrum_like</span><span class="o">.</span><span class="n">_background_spectrum</span><span class="p">,</span>
+            <span class="n">time</span><span class="p">,</span>
+            <span class="n">free_position</span><span class="p">,</span>
+            <span class="n">spectrum_like</span><span class="o">.</span><span class="n">_verbose</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017-2021, J. Michael Burgess, Bjoern Biltzinger and Felix Kunzweiler.
+
+    </p>
+  </div> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

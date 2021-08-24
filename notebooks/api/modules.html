@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>gbm_drm_gen &mdash; gbm_drm_gen  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <link rel="stylesheet" href="../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> gbm_drm_gen
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">gbm_drm_gen</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">gbm_drm_gen</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>gbm_drm_gen</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="gbm-drm-gen">
+<h1>gbm_drm_gen<a class="headerlink" href="#gbm-drm-gen" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gbm_drm_gen.html">gbm_drm_gen package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gbm_drm_gen.io.html">gbm_drm_gen.io package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gbm_drm_gen.io.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gbm_drm_gen.io.html#module-gbm_drm_gen.io.balrog_drm">gbm_drm_gen.io.balrog_drm module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gbm_drm_gen.io.html#module-gbm_drm_gen.io.balrog_healpix_map">gbm_drm_gen.io.balrog_healpix_map module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gbm_drm_gen.io.html#module-gbm_drm_gen.io.balrog_like">gbm_drm_gen.io.balrog_like module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gbm_drm_gen.io.html#module-gbm_drm_gen.io.palantir">gbm_drm_gen.io.palantir module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gbm_drm_gen.io.html#module-gbm_drm_gen.io.response_generator">gbm_drm_gen.io.response_generator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gbm_drm_gen.io.html#module-gbm_drm_gen.io">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gbm_drm_gen.utils.html">gbm_drm_gen.utils package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gbm_drm_gen.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gbm_drm_gen.utils.html#module-gbm_drm_gen.utils.contour_finder">gbm_drm_gen.utils.contour_finder module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gbm_drm_gen.utils.html#module-gbm_drm_gen.utils.file_utils">gbm_drm_gen.utils.file_utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gbm_drm_gen.utils.html#module-gbm_drm_gen.utils.general_utils">gbm_drm_gen.utils.general_utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gbm_drm_gen.utils.html#module-gbm_drm_gen.utils.geometry">gbm_drm_gen.utils.geometry module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gbm_drm_gen.utils.html#module-gbm_drm_gen.utils.package_data">gbm_drm_gen.utils.package_data module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gbm_drm_gen.utils.html#module-gbm_drm_gen.utils.response">gbm_drm_gen.utils.response module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gbm_drm_gen.utils.html#module-gbm_drm_gen.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.html#module-gbm_drm_gen.basersp">gbm_drm_gen.basersp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.html#module-gbm_drm_gen.basersp_numba">gbm_drm_gen.basersp_numba module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.html#gbm-drm-gen-detdatabase-module">gbm_drm_gen.detdatabase module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.html#module-gbm_drm_gen.drmgen">gbm_drm_gen.drmgen module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.html#module-gbm_drm_gen.drmgen_trig">gbm_drm_gen.drmgen_trig module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.html#module-gbm_drm_gen.drmgen_tte">gbm_drm_gen.drmgen_tte module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.html#module-gbm_drm_gen.input_edges">gbm_drm_gen.input_edges module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.html#module-gbm_drm_gen.matrix_functions">gbm_drm_gen.matrix_functions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.html#module-gbm_drm_gen">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017-2021, J. Michael Burgess, Bjoern Biltzinger and Felix Kunzweiler.
+
+    </p>
+  </div> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

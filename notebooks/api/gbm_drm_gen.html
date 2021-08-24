@@ -1,0 +1,974 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>gbm_drm_gen package &mdash; gbm_drm_gen  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <link rel="stylesheet" href="../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> gbm_drm_gen
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">gbm_drm_gen package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.basersp">gbm_drm_gen.basersp module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.basersp_numba">gbm_drm_gen.basersp_numba module</a></li>
+<li><a class="reference internal" href="#gbm-drm-gen-detdatabase-module">gbm_drm_gen.detdatabase module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.drmgen">gbm_drm_gen.drmgen module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.drmgen_trig">gbm_drm_gen.drmgen_trig module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.drmgen_tte">gbm_drm_gen.drmgen_tte module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.input_edges">gbm_drm_gen.input_edges module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen.matrix_functions">gbm_drm_gen.matrix_functions module</a></li>
+<li><a class="reference internal" href="#module-gbm_drm_gen">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">gbm_drm_gen</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>gbm_drm_gen package</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="gbm-drm-gen-package">
+<h1>gbm_drm_gen package<a class="headerlink" href="#gbm-drm-gen-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gbm_drm_gen.io.html">gbm_drm_gen.io package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.io.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.io.html#module-gbm_drm_gen.io.balrog_drm">gbm_drm_gen.io.balrog_drm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.io.html#module-gbm_drm_gen.io.balrog_healpix_map">gbm_drm_gen.io.balrog_healpix_map module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.io.html#module-gbm_drm_gen.io.balrog_like">gbm_drm_gen.io.balrog_like module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.io.html#module-gbm_drm_gen.io.palantir">gbm_drm_gen.io.palantir module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.io.html#module-gbm_drm_gen.io.response_generator">gbm_drm_gen.io.response_generator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.io.html#module-gbm_drm_gen.io">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gbm_drm_gen.utils.html">gbm_drm_gen.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.utils.html#module-gbm_drm_gen.utils.contour_finder">gbm_drm_gen.utils.contour_finder module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.utils.html#module-gbm_drm_gen.utils.file_utils">gbm_drm_gen.utils.file_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.utils.html#module-gbm_drm_gen.utils.general_utils">gbm_drm_gen.utils.general_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.utils.html#module-gbm_drm_gen.utils.geometry">gbm_drm_gen.utils.geometry module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.utils.html#module-gbm_drm_gen.utils.package_data">gbm_drm_gen.utils.package_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.utils.html#module-gbm_drm_gen.utils.response">gbm_drm_gen.utils.response module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gbm_drm_gen.utils.html#module-gbm_drm_gen.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-gbm_drm_gen.basersp">
+<span id="gbm-drm-gen-basersp-module"></span><h2>gbm_drm_gen.basersp module<a class="headerlink" href="#module-gbm_drm_gen.basersp" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.basersp.get_path_of_data_file">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.basersp.</span></span><span class="sig-name descname"><span class="pre">get_path_of_data_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/basersp.html#get_path_of_data_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.basersp.get_path_of_data_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.basersp.DetDatabase">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.basersp.</span></span><span class="sig-name descname"><span class="pre">DetDatabase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detector_group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/basersp.html#DetDatabase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.basersp.DetDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.basersp.DetDatabase.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detector_group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/basersp.html#DetDatabase.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.basersp.DetDatabase.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>detector_group</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.basersp.DetDatabase.get_rsp">
+<span class="sig-name descname"><span class="pre">get_rsp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">az</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/basersp.html#DetDatabase.get_rsp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.basersp.DetDatabase.get_rsp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z</strong> – </p></li>
+<li><p><strong>az</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.basersp.get_database">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.basersp.</span></span><span class="sig-name descname"><span class="pre">get_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">det</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/basersp.html#get_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.basersp.get_database" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-gbm_drm_gen.basersp_numba">
+<span id="gbm-drm-gen-basersp-numba-module"></span><h2>gbm_drm_gen.basersp_numba module<a class="headerlink" href="#module-gbm_drm_gen.basersp_numba" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.basersp_numba.get_path_of_data_file">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.basersp_numba.</span></span><span class="sig-name descname"><span class="pre">get_path_of_data_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/basersp_numba.html#get_path_of_data_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.basersp_numba.get_path_of_data_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.basersp_numba.DetDatabase_numba">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.basersp_numba.</span></span><span class="sig-name descname"><span class="pre">DetDatabase_numba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detector_group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/basersp_numba.html#DetDatabase_numba"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.basersp_numba.DetDatabase_numba" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.basersp_numba.DetDatabase_numba.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detector_group</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/basersp_numba.html#DetDatabase_numba.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.basersp_numba.DetDatabase_numba.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>detector_group</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.basersp_numba.DetDatabase_numba.get_rsp">
+<span class="sig-name descname"><span class="pre">get_rsp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">az</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/basersp_numba.html#DetDatabase_numba.get_rsp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.basersp_numba.DetDatabase_numba.get_rsp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z</strong> – </p></li>
+<li><p><strong>az</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.basersp_numba.DetDatabase_numba.rsps">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">rsps</span></span><a class="headerlink" href="#gbm_drm_gen.basersp_numba.DetDatabase_numba.rsps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.basersp_numba.get_database">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.basersp_numba.</span></span><span class="sig-name descname"><span class="pre">get_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">det</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/basersp_numba.html#get_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.basersp_numba.get_database" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.basersp_numba.TrigdatPrecalcDetDatabase_numba">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.basersp_numba.</span></span><span class="sig-name descname"><span class="pre">TrigdatPrecalcDetDatabase_numba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detector_group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/basersp_numba.html#TrigdatPrecalcDetDatabase_numba"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.basersp_numba.TrigdatPrecalcDetDatabase_numba" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.basersp_numba.TrigdatPrecalcDetDatabase_numba.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detector_group</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/basersp_numba.html#TrigdatPrecalcDetDatabase_numba.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.basersp_numba.TrigdatPrecalcDetDatabase_numba.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>detector_group</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.basersp_numba.TrigdatPrecalcDetDatabase_numba.get_rsp">
+<span class="sig-name descname"><span class="pre">get_rsp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">az</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/basersp_numba.html#TrigdatPrecalcDetDatabase_numba.get_rsp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.basersp_numba.TrigdatPrecalcDetDatabase_numba.get_rsp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z</strong> – </p></li>
+<li><p><strong>az</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.basersp_numba.TrigdatPrecalcDetDatabase_numba.rsps">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">rsps</span></span><a class="headerlink" href="#gbm_drm_gen.basersp_numba.TrigdatPrecalcDetDatabase_numba.rsps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.basersp_numba.get_trigdat_precalc_database">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.basersp_numba.</span></span><span class="sig-name descname"><span class="pre">get_trigdat_precalc_database</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">det</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/basersp_numba.html#get_trigdat_precalc_database"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.basersp_numba.get_trigdat_precalc_database" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gbm-drm-gen-detdatabase-module">
+<h2>gbm_drm_gen.detdatabase module<a class="headerlink" href="#gbm-drm-gen-detdatabase-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-gbm_drm_gen.drmgen">
+<span id="gbm-drm-gen-drmgen-module"></span><h2>gbm_drm_gen.drmgen module<a class="headerlink" href="#module-gbm_drm_gen.drmgen" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen.DRMGen">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.drmgen.</span></span><span class="sig-name descname"><span class="pre">DRMGen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quaternions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sc_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">det_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ebin_edge_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ebin_edge_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occult</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen.html#DRMGen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.drmgen.DRMGen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen.DRMGen.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quaternions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sc_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">det_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ebin_edge_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ebin_edge_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occult</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen.html#DRMGen.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.drmgen.DRMGen.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>A generic GBM DRM generator. This can be inherited for specific purposes.
+It takes as input various spacecraft files to figure out geometry. The user can
+either supply custom output energy edges or they can be read from a cspec file.</p>
+<p>The great benefit here is the ability to make custom input edges if desired. The
+user needs to have the GBM database pointed at by the environment variable:
+BALROG_DB</p>
+<p>Additionally, matrix folding routines are supplied for spectral fitting. One can also
+simulate Poisson rates from supplied spectral models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trigdat</strong> – the path to a trigdat file</p></li>
+<li><p><strong>det_number</strong> – the number (0-13) of the detector to be used</p></li>
+<li><p><strong>ebin_edge_in</strong> – an array of energy <strong>edges</strong> lenght 1 longer than the num of bins</p></li>
+<li><p><strong>mat_type</strong> – 0=direct 1=scattered 2=direct+scattered</p></li>
+<li><p><strong>time</strong> – time relative to trigger to pull spacecraft position</p></li>
+<li><p><strong>cspecfile</strong> – the cspecfile to pull energy output edges from</p></li>
+<li><p><strong>ebin_edge_out</strong> – an array of output edges</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen.DRMGen.ebounds">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ebounds</span></span><a class="headerlink" href="#gbm_drm_gen.drmgen.DRMGen.ebounds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen.DRMGen.monte_carlo_energies">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">monte_carlo_energies</span></span><a class="headerlink" href="#gbm_drm_gen.drmgen.DRMGen.monte_carlo_energies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen.DRMGen.matrix">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">matrix</span></span><a class="headerlink" href="#gbm_drm_gen.drmgen.DRMGen.matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen.DRMGen.to_3ML_response">
+<span class="sig-name descname"><span class="pre">to_3ML_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen.html#DRMGen.to_3ML_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.drmgen.DRMGen.to_3ML_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen.DRMGen.to_3ML_response_direct_sat_coord">
+<span class="sig-name descname"><span class="pre">to_3ML_response_direct_sat_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">az</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">el</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen.html#DRMGen.to_3ML_response_direct_sat_coord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.drmgen.DRMGen.to_3ML_response_direct_sat_coord" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen.DRMGen.to_fits">
+<span class="sig-name descname"><span class="pre">to_fits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen.html#DRMGen.to_fits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.drmgen.DRMGen.to_fits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen.DRMGen.set_location">
+<span class="sig-name descname"><span class="pre">set_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen.html#DRMGen.set_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.drmgen.DRMGen.set_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the Ra and Dec of the DRM to be built. This invokes DRM generation as well.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ra</strong> – ra in degrees</p></li>
+<li><p><strong>dec</strong> – dec in degrees</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen.DRMGen.set_location_direct_sat_coord">
+<span class="sig-name descname"><span class="pre">set_location_direct_sat_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">az</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">el</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen.html#DRMGen.set_location_direct_sat_coord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.drmgen.DRMGen.set_location_direct_sat_coord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the AZ and EL in satellite coordinates of the DRM to be built. This invokes DRM generation as well.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>az</strong> – az in degrees</p></li>
+<li><p><strong>el</strong> – el in degrees</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen.DRMGen.set_time">
+<span class="sig-name descname"><span class="pre">set_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen.html#DRMGen.set_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.drmgen.DRMGen.set_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen.DRMGen._compute_spacecraft_coordinates">
+<span class="sig-name descname"><span class="pre">_compute_spacecraft_coordinates</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen.html#DRMGen._compute_spacecraft_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.drmgen.DRMGen._compute_spacecraft_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>GBM geometry calculations</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen.at_scat">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.drmgen.</span></span><span class="sig-name descname"><span class="pre">at_scat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tmp_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta_u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_points_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trigdat_precalc_rsps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rsps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">milliaz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">millizen</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epx_lo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epx_hi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ichan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">at_scat_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">il_low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">il_high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l_frac</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trigdat</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen.html#at_scat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.drmgen.at_scat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen.msum">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.drmgen.</span></span><span class="sig-name descname"><span class="pre">msum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">this_data_lo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">this_data_hi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direct_diff_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmp_out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l_frac</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen.html#msum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.drmgen.msum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-gbm_drm_gen.drmgen_trig">
+<span id="gbm-drm-gen-drmgen-trig-module"></span><h2>gbm_drm_gen.drmgen_trig module<a class="headerlink" href="#module-gbm_drm_gen.drmgen_trig" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen_trig.DRMGenTrig">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.drmgen_trig.</span></span><span class="sig-name descname"><span class="pre">DRMGenTrig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quaternions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sc_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">det</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occult</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen_trig.html#DRMGenTrig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.drmgen_trig.DRMGenTrig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gbm_drm_gen.drmgen.DRMGen" title="gbm_drm_gen.drmgen.DRMGen"><code class="xref py py-class docutils literal notranslate"><span class="pre">gbm_drm_gen.drmgen.DRMGen</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen_trig.DRMGenTrig.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quaternions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sc_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">det</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occult</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen_trig.html#DRMGenTrig.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.drmgen_trig.DRMGenTrig.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inherited drmgen from the TTE version. Builds 8-channel RSPs for trigdat data using 140 input edges
+:param trigdat: a TrigReader object with the background and source selection already exists
+:param det: a number corresponding to the GBM detector to be used
+:param mat_type: the type of matrix to produce: 0=direct 1=scattered 2=direct+scattered
+:param time: the time of the spacecraft position to use
+:param occult: (bool) occult points blocked by the Earth</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gbm_drm_gen.drmgen_tte">
+<span id="gbm-drm-gen-drmgen-tte-module"></span><h2>gbm_drm_gen.drmgen_tte module<a class="headerlink" href="#module-gbm_drm_gen.drmgen_tte" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen_tte.DRMGenTTE">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.drmgen_tte.</span></span><span class="sig-name descname"><span class="pre">DRMGenTTE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tte_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">det_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cspecfile</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trigdat</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poshist</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T0</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_input_edges</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gbm_drm_gen.input_edges.InputEdges" title="gbm_drm_gen.input_edges.InputEdges"><span class="pre">gbm_drm_gen.input_edges.InputEdges</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occult</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen_tte.html#DRMGenTTE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.drmgen_tte.DRMGenTTE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gbm_drm_gen.drmgen.DRMGen" title="gbm_drm_gen.drmgen.DRMGen"><code class="xref py py-class docutils literal notranslate"><span class="pre">gbm_drm_gen.drmgen.DRMGen</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.drmgen_tte.DRMGenTTE.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tte_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">det_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cspecfile</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trigdat</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poshist</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T0</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_input_edges</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gbm_drm_gen.input_edges.InputEdges" title="gbm_drm_gen.input_edges.InputEdges"><span class="pre">gbm_drm_gen.input_edges.InputEdges</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occult</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen_tte.html#DRMGenTTE.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.drmgen_tte.DRMGenTTE.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>A TTE/CSPEC specific drmgen already incorporating the standard input edges. Output edges are obtained
+from lib import funs the input cspec file. Spacecraft position is read from the TTE file. For further details see the
+generic reader (DRMGen).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tte_file</strong> – the TTE file the data are associated to (used if det name NOT given)</p></li>
+<li><p><strong>det_name</strong> – either NAI_{**} or BGO_{**} or n* b*</p></li>
+<li><p><strong>trigdat</strong> – the path to a trigdat file</p></li>
+<li><p><strong>mat_type</strong> – 0=direct 1=scattered 2=direct+scattered</p></li>
+<li><p><strong>time</strong> – time relative to trigger to pull spacecraft position or MET if using a poshist file</p></li>
+<li><p><strong>cspecfile</strong> – the cspecfile to pull energy output edges from</p></li>
+<li><p><strong>poshist</strong> – read a poshist file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gbm_drm_gen.input_edges">
+<span id="gbm-drm-gen-input-edges-module"></span><h2>gbm_drm_gen.input_edges module<a class="headerlink" href="#module-gbm_drm_gen.input_edges" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.input_edges.InputEdges">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.input_edges.</span></span><span class="sig-name descname"><span class="pre">InputEdges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/input_edges.html#InputEdges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.input_edges.InputEdges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.input_edges.InputEdges.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/input_edges.html#InputEdges.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.input_edges.InputEdges.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.input_edges.InputEdges.edges">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">edges</span></span><a class="headerlink" href="#gbm_drm_gen.input_edges.InputEdges.edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.input_edges.InputEdges.from_log_bins">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_log_bins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/input_edges.html#InputEdges.from_log_bins"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.input_edges.InputEdges.from_log_bins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.input_edges.InputEdges.from_custom_array">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_custom_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/input_edges.html#InputEdges.from_custom_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.input_edges.InputEdges.from_custom_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>create edges from a custom set of energies.</p>
+<p>The end points must be those of the original edges.</p>
+<p>This will be corrected if not done… but might cause errors</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.input_edges.NaiTTEEdges">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.input_edges.</span></span><span class="sig-name descname"><span class="pre">NaiTTEEdges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/input_edges.html#NaiTTEEdges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.input_edges.NaiTTEEdges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gbm_drm_gen.input_edges.InputEdges" title="gbm_drm_gen.input_edges.InputEdges"><code class="xref py py-class docutils literal notranslate"><span class="pre">gbm_drm_gen.input_edges.InputEdges</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.input_edges.NaiTTEEdges.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/input_edges.html#NaiTTEEdges.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.input_edges.NaiTTEEdges.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.input_edges.BgoTTEEdges">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.input_edges.</span></span><span class="sig-name descname"><span class="pre">BgoTTEEdges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/input_edges.html#BgoTTEEdges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.input_edges.BgoTTEEdges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gbm_drm_gen.input_edges.InputEdges" title="gbm_drm_gen.input_edges.InputEdges"><code class="xref py py-class docutils literal notranslate"><span class="pre">gbm_drm_gen.input_edges.InputEdges</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.input_edges.BgoTTEEdges.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/input_edges.html#BgoTTEEdges.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.input_edges.BgoTTEEdges.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gbm_drm_gen.matrix_functions">
+<span id="gbm-drm-gen-matrix-functions-module"></span><h2>gbm_drm_gen.matrix_functions module<a class="headerlink" href="#module-gbm_drm_gen.matrix_functions" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.matrix_functions.closest">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.matrix_functions.</span></span><span class="sig-name descname"><span class="pre">closest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_assume_f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_points_list_f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/matrix_functions.html#closest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.matrix_functions.closest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.matrix_functions.trfind">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.matrix_functions.</span></span><span class="sig-name descname"><span class="pre">trfind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_assume_f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_points_list_f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/matrix_functions.html#trfind"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.matrix_functions.trfind" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.matrix_functions.calc_weights_numba">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.matrix_functions.</span></span><span class="sig-name descname"><span class="pre">calc_weights_numba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_find</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/matrix_functions.html#calc_weights_numba"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.matrix_functions.calc_weights_numba" title="Permalink to this definition">¶</a></dt>
+<dd><p>###################### Weights from <a class="reference external" href="https://codeplea.com/triangular-interpolation">https://codeplea.com/triangular-interpolation</a> ############
+p1_lat = np.arcsin(p1[2])
+p1_lon = np.arctan2(p1[1],p1[0])</p>
+<p>p2_lat = np.arcsin(p2[2])
+p2_lon = np.arctan2(p2[1],p2[0])</p>
+<p>p3_lat = np.arcsin(p3[2])
+p3_lon = np.arctan2(p3[1],p3[0])</p>
+<p>pf_lat = np.arcsin(p_find[2])
+pf_lon = np.arctan2(p_find[1],p_find[0])</p>
+<p>W1 = ((p2_lat-p3_lat)*(pf_lon-p3_lon)+(p3_lon-p2_lon)*(pf_lat-p3_lat))/((p2_lat-p3_lat)*(p1_lon-p3_lon)+(p3_lon-p2_lon)*(p1_lat-p3_lat))
+W2 = ((p3_lat-p1_lat)*(pf_lon-p3_lon)+(p1_lon-p3_lon)*(pf_lat-p3_lat))/((p2_lat-p3_lat)*(p1_lon-p3_lon)+(p3_lon-p2_lon)*(p1_lat-p3_lat))
+W3 = 1-W1-W2</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.matrix_functions.geocoords">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.matrix_functions.</span></span><span class="sig-name descname"><span class="pre">geocoords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta_geo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_geo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta_source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_source</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/matrix_functions.html#geocoords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.matrix_functions.geocoords" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.matrix_functions.geo_to_space">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.matrix_functions.</span></span><span class="sig-name descname"><span class="pre">geo_to_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta_u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/matrix_functions.html#geo_to_space"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.matrix_functions.geo_to_space" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.matrix_functions.calc_sphere_dist">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.matrix_functions.</span></span><span class="sig-name descname"><span class="pre">calc_sphere_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ra1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ra2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/matrix_functions.html#calc_sphere_dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.matrix_functions.calc_sphere_dist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.matrix_functions.highres_ephoton_interpolator">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.matrix_functions.</span></span><span class="sig-name descname"><span class="pre">highres_ephoton_interpolator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebin_edge_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ein</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edif_edge_lo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edif_edge_hi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nhbins</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/matrix_functions.html#highres_ephoton_interpolator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.matrix_functions.highres_ephoton_interpolator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.matrix_functions.atscat_highres_ephoton_interpolator">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.matrix_functions.</span></span><span class="sig-name descname"><span class="pre">atscat_highres_ephoton_interpolator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebin_edge_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ein</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/matrix_functions.html#atscat_highres_ephoton_interpolator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.matrix_functions.atscat_highres_ephoton_interpolator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gbm_drm_gen.matrix_functions.echan_integrator">
+<span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.matrix_functions.</span></span><span class="sig-name descname"><span class="pre">echan_integrator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diff_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edif_edge_lo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edif_edge_hi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nhbins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ebin_edge_out</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/matrix_functions.html#echan_integrator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.matrix_functions.echan_integrator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-gbm_drm_gen">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-gbm_drm_gen" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.DRMGenTTE">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.</span></span><span class="sig-name descname"><span class="pre">DRMGenTTE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tte_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">det_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cspecfile</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trigdat</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poshist</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T0</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_input_edges</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gbm_drm_gen.input_edges.InputEdges" title="gbm_drm_gen.input_edges.InputEdges"><span class="pre">gbm_drm_gen.input_edges.InputEdges</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occult</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen_tte.html#DRMGenTTE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.DRMGenTTE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gbm_drm_gen.drmgen.DRMGen" title="gbm_drm_gen.drmgen.DRMGen"><code class="xref py py-class docutils literal notranslate"><span class="pre">gbm_drm_gen.drmgen.DRMGen</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.DRMGenTTE.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tte_file</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">det_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cspecfile</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trigdat</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poshist</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T0</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_input_edges</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#gbm_drm_gen.input_edges.InputEdges" title="gbm_drm_gen.input_edges.InputEdges"><span class="pre">gbm_drm_gen.input_edges.InputEdges</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occult</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen_tte.html#DRMGenTTE.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.DRMGenTTE.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>A TTE/CSPEC specific drmgen already incorporating the standard input edges. Output edges are obtained
+from lib import funs the input cspec file. Spacecraft position is read from the TTE file. For further details see the
+generic reader (DRMGen).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tte_file</strong> – the TTE file the data are associated to (used if det name NOT given)</p></li>
+<li><p><strong>det_name</strong> – either NAI_{**} or BGO_{**} or n* b*</p></li>
+<li><p><strong>trigdat</strong> – the path to a trigdat file</p></li>
+<li><p><strong>mat_type</strong> – 0=direct 1=scattered 2=direct+scattered</p></li>
+<li><p><strong>time</strong> – time relative to trigger to pull spacecraft position or MET if using a poshist file</p></li>
+<li><p><strong>cspecfile</strong> – the cspecfile to pull energy output edges from</p></li>
+<li><p><strong>poshist</strong> – read a poshist file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.DRMGenTrig">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.</span></span><span class="sig-name descname"><span class="pre">DRMGenTrig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quaternions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sc_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">det</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occult</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen_trig.html#DRMGenTrig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.DRMGenTrig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gbm_drm_gen.drmgen.DRMGen" title="gbm_drm_gen.drmgen.DRMGen"><code class="xref py py-class docutils literal notranslate"><span class="pre">gbm_drm_gen.drmgen.DRMGen</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.DRMGenTrig.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quaternions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sc_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">det</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tstop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occult</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/drmgen_trig.html#DRMGenTrig.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.DRMGenTrig.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inherited drmgen from the TTE version. Builds 8-channel RSPs for trigdat data using 140 input edges
+:param trigdat: a TrigReader object with the background and source selection already exists
+:param det: a number corresponding to the GBM detector to be used
+:param mat_type: the type of matrix to produce: 0=direct 1=scattered 2=direct+scattered
+:param time: the time of the spacecraft position to use
+:param occult: (bool) occult points blocked by the Earth</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.NaiTTEEdges">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.</span></span><span class="sig-name descname"><span class="pre">NaiTTEEdges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/input_edges.html#NaiTTEEdges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.NaiTTEEdges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gbm_drm_gen.input_edges.InputEdges" title="gbm_drm_gen.input_edges.InputEdges"><code class="xref py py-class docutils literal notranslate"><span class="pre">gbm_drm_gen.input_edges.InputEdges</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.NaiTTEEdges.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/input_edges.html#NaiTTEEdges.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.NaiTTEEdges.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.BgoTTEEdges">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.</span></span><span class="sig-name descname"><span class="pre">BgoTTEEdges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/input_edges.html#BgoTTEEdges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.BgoTTEEdges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gbm_drm_gen.input_edges.InputEdges" title="gbm_drm_gen.input_edges.InputEdges"><code class="xref py py-class docutils literal notranslate"><span class="pre">gbm_drm_gen.input_edges.InputEdges</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.BgoTTEEdges.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/input_edges.html#BgoTTEEdges.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.BgoTTEEdges.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.BALROG_DRM">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.</span></span><span class="sig-name descname"><span class="pre">BALROG_DRM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drm_generator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_drm.html#BALROG_DRM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.BALROG_DRM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">threeML.utils.OGIP.response.InstrumentResponse</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.BALROG_DRM.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drm_generator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_drm.html#BALROG_DRM.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.BALROG_DRM.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>drm_generator</strong> – BALROG DRM generator</p></li>
+<li><p><strong>ra</strong> – RA of the source</p></li>
+<li><p><strong>dec</strong> – DEC of the source</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.BALROG_DRM.set_location">
+<span class="sig-name descname"><span class="pre">set_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ra</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_drm.html#BALROG_DRM.set_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.BALROG_DRM.set_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the source location
+:param ra:
+:param dec:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.BALROG_DRM.set_time">
+<span class="sig-name descname"><span class="pre">set_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_drm.html#BALROG_DRM.set_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.BALROG_DRM.set_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>set the time of the source
+:param time:
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.BALROGLike">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.</span></span><span class="sig-name descname"><span class="pre">BALROGLike</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drm_generator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_like.html#BALROGLike"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.BALROGLike" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">threeML.plugins.DispersionSpectrumLike.DispersionSpectrumLike</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.BALROGLike.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drm_generator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_like.html#BALROGLike.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.BALROGLike.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>BALROGLike is a general plugin for fitting GBM spectra and locations at the same time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – plugin name</p></li>
+<li><p><strong>observation</strong> – observed spectrum</p></li>
+<li><p><strong>drm_generator</strong> – the drm generator for this</p></li>
+<li><p><strong>background</strong> – background spectrum</p></li>
+<li><p><strong>time</strong> – time of the observation</p></li>
+<li><p><strong>free_position</strong> – keep the position free</p></li>
+<li><p><strong>verbose</strong> – the verbosity level of the plugin</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.BALROGLike.set_model">
+<span class="sig-name descname"><span class="pre">set_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">likelihoodModel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_like.html#BALROGLike.set_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.BALROGLike.set_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the model and free the location parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>likelihoodModel</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.BALROGLike.get_model">
+<span class="sig-name descname"><span class="pre">get_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">precalc_fluxes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_like.html#BALROGLike.get_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.BALROGLike.get_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>The model integrated over the energy bins. Note that it only returns the  model for the
+currently active channels/measurements</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>array of folded model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.BALROGLike.from_spectrumlike">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_spectrumlike</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectrum_like</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drm_generator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_position</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_like.html#BALROGLike.from_spectrumlike"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.BALROGLike.from_spectrumlike" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a BALROGlike from an existing SpectrumLike child</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spectrum_like</strong> – the existing spectrumlike</p></li>
+<li><p><strong>time</strong> – the time to generate the RSPs at</p></li>
+<li><p><strong>drm_generator</strong> – optional BALROG DRM generator</p></li>
+<li><p><strong>free_position</strong> – if the position should be free</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.BALROGHealpixMap">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.</span></span><span class="sig-name descname"><span class="pre">BALROGHealpixMap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">analysis_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_healpix_map.html#BALROGHealpixMap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.BALROGHealpixMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.BALROGHealpixMap.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">analysis_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_healpix_map.html#BALROGHealpixMap.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.BALROGHealpixMap.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.BALROGHealpixMap.write_map">
+<span class="sig-name descname"><span class="pre">write_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/balrog_healpix_map.html#BALROGHealpixMap.write_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.BALROGHealpixMap.write_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.BALROGHealpixMap.map">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">map</span></span><a class="headerlink" href="#gbm_drm_gen.BALROGHealpixMap.map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.BALROGHealpixMap.ra">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ra</span></span><a class="headerlink" href="#gbm_drm_gen.BALROGHealpixMap.ra" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.BALROGHealpixMap.ra_healpix">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">ra_healpix</span></span><a class="headerlink" href="#gbm_drm_gen.BALROGHealpixMap.ra_healpix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.BALROGHealpixMap.dec">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">dec</span></span><a class="headerlink" href="#gbm_drm_gen.BALROGHealpixMap.dec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gbm_drm_gen.Palantir">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">gbm_drm_gen.</span></span><span class="sig-name descname"><span class="pre">Palantir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trigdat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poshist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/palantir.html#Palantir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.Palantir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.Palantir.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nside</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trigdat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poshist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/palantir.html#Palantir.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.Palantir.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>View the 3ML BALROG results</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> – 3ML BALROG result</p></li>
+<li><p><strong>nside</strong> – power of 2</p></li>
+<li><p><strong>trigdat</strong> – optional trigdat files</p></li>
+<li><p><strong>time</strong> – time of observation</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.Palantir.add_healpix_map">
+<span class="sig-name descname"><span class="pre">add_healpix_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">healpix_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/palantir.html#Palantir.add_healpix_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.Palantir.add_healpix_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.Palantir.skymap">
+<span class="sig-name descname"><span class="pre">skymap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">dets</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/palantir.html#Palantir.skymap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.Palantir.skymap" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dets</strong> – optional detectors</p></li>
+<li><p><strong>cmap</strong> – colormap for location</p></li>
+<li><p><strong>show_earth</strong> – show the earth points</p></li>
+<li><p><strong>width</strong> – no idea</p></li>
+<li><p><strong>fov</strong> – FOV of GBM detectors</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gbm_drm_gen.Palantir.get_flux_upper_bound">
+<span class="sig-name descname"><span class="pre">get_flux_upper_bound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ene_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ene_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">95.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/gbm_drm_gen/io/palantir.html#Palantir.get_flux_upper_bound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gbm_drm_gen.Palantir.get_flux_upper_bound" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.Palantir.healpix_map">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">healpix_map</span></span><a class="headerlink" href="#gbm_drm_gen.Palantir.healpix_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gbm_drm_gen.Palantir.balrog_map">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">balrog_map</span></span><a class="headerlink" href="#gbm_drm_gen.Palantir.balrog_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017-2021, J. Michael Burgess, Bjoern Biltzinger and Felix Kunzweiler.
+
+    </p>
+  </div> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
