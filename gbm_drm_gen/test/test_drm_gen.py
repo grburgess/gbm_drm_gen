@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import astropy.io.fits as fits
 import numpy as np
@@ -73,7 +74,7 @@ def test_rsp2_gen(built_drm_gen_new):
 
         
 
-    
+    Path("out.rsp2").unlink()
 
 
 

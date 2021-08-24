@@ -1,6 +1,6 @@
 import numpy as np
 
-from drmgen import DRMGen
+from .drmgen import DRMGen
 from responsum.response import RSP2
 from responsum.utils.time_interval import TimeInterval
 
