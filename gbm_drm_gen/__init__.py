@@ -2,6 +2,11 @@
 from .drmgen_tte import DRMGenTTE
 from .drmgen_trig import DRMGenTrig
 
+from .drmgen import DRMGen
+
+from .create_rsp2 import create_rsp2
+
+
 from .input_edges import NaiTTEEdges, BgoTTEEdges
 
 from gbm_drm_gen.io.palantir import Palantir

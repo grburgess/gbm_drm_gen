@@ -8,12 +8,7 @@ import numpy as np
 from numba import prange, types
 # TODO Remove this
 from numba.typed import Dict
-
-try:
-    from threeML.utils.OGIP.response import InstrumentResponse
-
-except:
-    from responsum import InstrumentResponse
+from responsum import InstrumentResponse
 
 from gbm_drm_gen.basersp_numba import (get_database,
                                        get_trigdat_precalc_database)
@@ -219,7 +214,7 @@ class DRMGen(object):
 
         det_number = det_name_lookup[det_name]
 
-        if self._det_number > 11:
+        if det_number > 11:
             # BGO
 
             if custom_input_edges is None:
@@ -231,7 +226,7 @@ class DRMGen(object):
                 assert isinstance(
                     custom_input_edges, BgoTTEEdges), f"custom edges are not an instance of BgoTTEEdges!"
 
-                self._in_edge = custom_input_edges.edges
+                in_edge = custom_input_edges.edges
 
         else:
 
@@ -267,7 +262,7 @@ class DRMGen(object):
                     trigdat_file=trigdat
                 )
 
-            self._gbm = gbmgeometry.GBM(
+            gbm = gbmgeometry.GBM(
                 position_interpolator.quaternion(time),
                 position_interpolator.sc_pos(time) * u.km,
             )
@@ -286,7 +281,7 @@ class DRMGen(object):
                     poshist_file=poshist, T0=T0
                 )
 
-            self._gbm = gbmgeometry.GBM(
+            gbm = gbmgeometry.GBM(
                 position_interpolator.quaternion(time),
                 position_interpolator.sc_pos(time) * u.m,
             )
@@ -295,7 +290,7 @@ class DRMGen(object):
 
             raise RuntimeError("No trigdat or posthist file used!")
 
-        cls(
+        out = cls(
             position_interpolator=position_interpolator,
             det_number=det_number,
             ebin_edge_in=in_edge,
@@ -304,6 +299,10 @@ class DRMGen(object):
             occult=occult,
             time=time
         )
+
+        out._gbm = gbm
+
+        return out
 
     @classmethod
     def from_trigdat(cls,
