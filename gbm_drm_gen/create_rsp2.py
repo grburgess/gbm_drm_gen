@@ -17,8 +17,25 @@ def create_rsp2(file_name: str,
     """
 
     """
+
+    # convert to MET
+
+    met_tstart = response_generator.met_at(tstart)
+
+    met_tstop = response_generator.met_at(tstop)
     
     
+    met_time_bins = np.arange(met_tstart, met_tstop, delta_time).tolist()
+
+    met_time_bins.append(met_time_bins[-1] + delta_time)
+
+    met_time_bins = np.array(met_time_bins)
+    
+    met_start = met_time_bins[:-1]
+
+    met_stop = met_time_bins[1:]
+
+
     time_bins = np.arange(tstart, tstop, delta_time).tolist()
 
     time_bins.append(time_bins[-1] + delta_time)
@@ -29,6 +46,7 @@ def create_rsp2(file_name: str,
 
     stop = time_bins[1:]
 
+    
     list_of_matrices = []
     
     for a, b in zip(start, stop):
@@ -43,7 +61,7 @@ def create_rsp2(file_name: str,
 
         list_of_matrices.append(rsp.matrix)
         
-    rsp2 = RSP2(rsp.monte_carlo_energies, rsp.ebounds, list_of_matrices, "Fermi", "GBM", start, stop)
+    rsp2 = RSP2(rsp.monte_carlo_energies, rsp.ebounds, list_of_matrices, "Fermi", "GBM", met_start, met_stop)
 
 
     rsp2.writeto(file_name, overwrite=overwrite)

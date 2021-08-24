@@ -387,7 +387,31 @@ class DRMGen(object):
 
 
 
+    @property
+    def postion_interpolator(self) -> gbmgeometry.PositionInterpolator:
+
+        return self._position_interpolator
+
+    @property
+    def current_met(self) -> float:
+
+        return self._position_interpolator.met(self._time)
+
+    def met_at(self, t: float) -> float:
+
+        """
+        returns the MET at a given relative time
+
+        :param t: 
+        :type t: float
+        :returns: 
+
+        """
+        return self._position_interpolator.met(t)
+    
+
         
+    
     @property
     def ebounds(self):
 

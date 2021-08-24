@@ -299,7 +299,9 @@ create_rsp2(output_file_name,
             dec=0,
             tstart=0,
             tstop=10,
-            delta_time=2)
+            delta_time=2,
+            overwrite=True
+           )
 ```
 
 ```python
@@ -307,9 +309,26 @@ with fits.open(output_file_name) as f:
     
     f.info()
     
+    print(f[0].header['DRM_NUM'])
     print(f[2].header['TSTART'])
     print(f[2].header['TSTOP'])
     
+   
+```
+
+```python
+from threeML import TimeSeriesBuilder
+```
+
+```python
+tsb = TimeSeriesBuilder.from_gbm_cspec_or_ctime("cspec", cspec_or_ctime_file=cspec_file, rsp_file="my_new_rsp.rsp2")
+
+tsb.view_lightcurve();
+
+```
+
+```python
+tsb.set_active_time_interval('1-5')
 ```
 
 ```python
