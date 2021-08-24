@@ -105,7 +105,7 @@ jobs:
         with:
           python-version: 3.7        
 
-      - name: Install astromodels
+      - name: Install twopc
         run: |
 
           pip3 install numpy scipy numba astropy
@@ -116,8 +116,10 @@ jobs:
           pip3 install mock recommonmark
           pip3 install sphinx_rtd_theme
           pip3 install -U sphinx nbsphinx sphinx-gallery
+
+    
           
-          python3 setup.py develop
+          python3 setup.py install
 
       - uses: actions/download-artifact@master
         with:
