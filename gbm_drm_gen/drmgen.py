@@ -1,5 +1,4 @@
-# import at_scat
-# import ftran
+from typing import Optional
 
 import astropy.io.fits as fits
 import astropy.units as u
@@ -18,6 +17,8 @@ except:
 
 from gbm_drm_gen.basersp_numba import (get_database,
                                        get_trigdat_precalc_database)
+from gbm_drm_gen.input_edges import (BgoTTEEdges, InputEdges, NaiTTEEdges,
+                                     tte_edges)
 from gbm_drm_gen.matrix_functions import (atscat_highres_ephoton_interpolator,
                                           calc_sphere_dist, closest,
                                           echan_integrator, geo_to_space,
@@ -64,13 +65,13 @@ lu = [
 class DRMGen(object):
     def __init__(
         self,
-        quaternions,
-        sc_pos,
-        det_number,
+        position_interpolator: gbmgeometry.PositionInterpolator,
+        det_number: str,
         ebin_edge_in,
-        mat_type=0,
+        mat_type: int=0,
         ebin_edge_out=None,
-        occult=True,
+        occult:bool=True,
+        time:float=0,
     ):
         """
         A generic GBM DRM generator. This can be inherited for specific purposes.
@@ -110,14 +111,18 @@ class DRMGen(object):
         self._database_nb = get_database(lu[det_number])
         #######################################################################################
 
+        # this checks if the output edges do not change
+        
         self._trigdat = True
         self._trigdat_mask = np.array([], dtype=int)
+
         if det_number < 12:
             trigdat_edges = np.array(
                 [3.4, 10., 22., 44., 95., 300., 500., 800., 2000.])
         else:
             trigdat_edges = np.array(
                 [150., 400., 850., 1500., 3000., 5500., 10000., 20000., 50000.])
+
         for i, (e_l, e_h) in enumerate(zip(ebin_edge_out[:-1], ebin_edge_out[1:])):
             elow_index = np.argwhere(np.isclose(e_l,
                                                 trigdat_edges,
@@ -133,11 +138,13 @@ class DRMGen(object):
         if self._trigdat:
             self._database_precalc_trigdat = get_trigdat_precalc_database(
                 lu[det_number], self._trigdat_mask)
+
         else:
             # dummy
             self._database_precalc_trigdat = get_trigdat_precalc_database(lu[det_number], [
                                                                           0])
             self._trigdat_mask = None
+
         #######################################################################################
         self._ein = np.zeros(self._nobins_in, dtype=np.float32)
         energ_lo = self._database_nb.energ_lo
@@ -150,14 +157,220 @@ class DRMGen(object):
 
         self._nobins_out = len(self._out_edge) - 1
 
-        self._quaternions = quaternions
-        self._sc_pos = sc_pos
 
-        self._compute_spacecraft_coordinates()
+        self._position_interpolator = position_interpolator
 
-    # @classmethod
-    # def from_tte(cls)
+        self.set_time(time)
+        
 
+    @classmethod
+    def from_128_bin_data(
+            cls,
+            det_name,
+            time: float = 0.0,
+            cspecfile: Optional[str] = None,
+            trigdat: Optional[str] = None,
+            poshist: Optional[str] = None,
+            T0: Optional[float] = None,
+            mat_type: int = 0,
+            custom_input_edges: Optional[InputEdges] = None,
+            occult: bool = False,
+    ):
+        """
+        A TTE/CSPEC specific drmgen already incorporating the standard input edges. Output edges are obtained
+        from lib import funs the input cspec file. Spacecraft position is read from the TTE file. For further details see the 
+        generic reader (DRMGen).
+
+        :param det_name: either NAI_{**} or BGO_{**} or n* b*
+        :param trigdat: the path to a trigdat file
+        :param mat_type: 0=direct 1=scattered 2=direct+scattered
+        :param time: time relative to trigger to pull spacecraft position or MET if using a poshist file
+        :param cspecfile: the cspecfile to pull energy output edges from
+        :param poshist: read a poshist file
+        """
+
+
+        if det_name not in det_name_lookup:
+
+            if det_name not in det_name_lookup2:
+
+                raise RuntimeError(f"{det_name} is not valid")
+
+            else:
+
+                det_name = det_name_lookup2[det_name]
+
+        det_number = det_name_lookup[det_name]
+
+        if self._det_number > 11:
+            # BGO
+
+            if custom_input_edges is None:
+
+                in_edge = tte_edges["bgo"]
+
+            else:
+
+                assert isinstance(
+                    custom_input_edges, BgoTTEEdges), f"custom edges are not an instance of BgoTTEEdges!"
+
+                self._in_edge = custom_input_edges.edges
+
+        else:
+
+            if custom_input_edges is None:
+
+                in_edge = tte_edges["nai"]
+
+            else:
+
+                assert isinstance(
+                    custom_input_edges, NaiTTEEdges), f"custom edges are not an instance of NaiTTEEdges!"
+
+                in_edge = custom_input_edges.edges
+
+        # Create the out edge energies
+        with fits.open(cspecfile) as f:
+            out_edge = np.zeros(129, dtype=np.float32)
+            out_edge[:-1] = f["EBOUNDS"].data["E_MIN"]
+            out_edge[-1] = f["EBOUNDS"].data["E_MAX"][-1]
+
+        out_edge = out_edge
+
+        if trigdat is not None:
+
+            try:
+                position_interpolator = gbmgeometry.PositionInterpolator.from_trigdat(
+                    trigdat_file=trigdat
+                )
+
+            except:
+
+                position_interpolator = gbmgeometry.PositionInterpolator.from_trigdat_hdf5(
+                    trigdat_file=trigdat
+                )
+
+            self._gbm = gbmgeometry.GBM(
+                position_interpolator.quaternion(time),
+                position_interpolator.sc_pos(time) * u.km,
+            )
+
+        elif poshist is not None:
+
+            try:
+
+                position_interpolator = gbmgeometry.PositionInterpolator.from_poshist(
+                    poshist_file=poshist, T0=T0
+                )
+
+            except:
+
+                position_interpolator = gbmgeometry.PositionInterpolator.from_poshist_hdf5(
+                    poshist_file=poshist, T0=T0
+                )
+
+            self._gbm = gbmgeometry.GBM(
+                position_interpolator.quaternion(time),
+                position_interpolator.sc_pos(time) * u.m,
+            )
+
+        else:
+
+            raise RuntimeError("No trigdat or posthist file used!")
+
+        cls(
+            position_interpolator=position_interpolator,
+            det_number=det_number,
+            ebin_edge_in=in_edge,
+            mat_type=mat_type,
+            ebin_edge_out=out_edge,
+            occult=occult,
+            time=time
+        )
+
+    @classmethod
+    def from_trigdat(cls,
+                     trigdat_file: str,
+                     det,
+                     mat_type=0,
+                     tstart=0,
+                     tstop=0.0,
+                     time=0.0,
+                     occult=False):
+
+        """TODO describe function
+
+        :param cls: 
+        :type cls: 
+        :param trigdat_file: 
+        :type trigdat_file: str
+        :param det: 
+        :type det: 
+        :param mat_type: 
+        :type mat_type: 
+        :param tstart: 
+        :type tstart: 
+        :param tstop: 
+        :type tstop: 
+        :param time: 
+        :type time: 
+        :param occult: 
+        :type occult: 
+        :returns: 
+
+        """
+
+        matrix_type = mat_type
+
+        
+        det_number = det
+
+        time = time
+
+        maxen = 140
+
+        
+        # Setup the input side energy edges
+        if det > 11:
+
+            in_edge = trigdat_edges["bgo"]
+            out_edge = trigdat_out_edge["bgo"]
+
+        else:
+
+            in_edge = trigdat_edges["nai"]
+            out_edge = trigdat_out_edge["nai"]
+
+
+        try:
+            position_interpolator = gbmgeometry.PositionInterpolator.from_trigdat(
+                trigdat_file=trigdat_file
+            )
+
+        except:
+
+            position_interpolator = gbmgeometry.PositionInterpolator.from_trigdat_hdf5(
+                trigdat_file=trigdat_file
+                )
+
+        out = cls(
+            position_interpolator=position_interpolator,
+            det_number=det_number,
+            ebin_edge_in=in_edge,
+            mat_type=matrix_type,
+            ebin_edge_out=out_edge,
+            occult=occult,
+            time = time
+        )
+
+        out._tstart = tstart
+        out._tstop = tstop
+
+        return out
+
+
+
+        
     @property
     def ebounds(self):
 
@@ -173,8 +386,17 @@ class DRMGen(object):
 
         return self._drm.T
 
-    def to_3ML_response(self, ra, dec):
+    def to_3ML_response(self, ra, dec, coverage_interval=None):
+        """
+        create an instrument reponse object for 3ML
+        
+        :param ra: 
+        :type ra: 
+        :param dec: 
+        :type dec: 
+        :returns: 
 
+        """
         self.set_location(ra, dec)
 
         out = self.matrix
@@ -186,7 +408,7 @@ class DRMGen(object):
                 out[i, j] = 0.
 
         response = InstrumentResponse(
-            out, self.ebounds, self.monte_carlo_energies
+            out, self.ebounds, self.monte_carlo_energies, coverage_interval=coverage_interval
         )
 
         return response
@@ -276,9 +498,14 @@ class DRMGen(object):
 
         self._sc_quaternions_updater()
 
+        self._compute_spacecraft_coordinates()
+        
+
     def _sc_quaternions_updater(self):
 
-        raise NotImplementedError("implemented in subclass")
+        self._quaternions = self._position_interpolator.quaternion(self._time)
+
+        self._sc_pos = self._position_interpolator.sc_pos(self._time)
 
     def _compute_spacecraft_coordinates(self):
         """

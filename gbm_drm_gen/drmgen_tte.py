@@ -72,12 +72,7 @@ class DRMGenTTE(DRMGen):
         :param poshist: read a poshist file
         """
 
-        self._occult = occult
-
-        self._time = time
-
-        self._matrix_type = mat_type
-
+        
         if det_name is None:
 
             assert tte_file is not None
@@ -100,14 +95,14 @@ class DRMGenTTE(DRMGen):
 
                     det_name = det_name_lookup2[det_name]
 
-        self._det_number = det_name_lookup[det_name]
+        det_number = det_name_lookup[det_name]
 
-        if self._det_number > 11:
+        if det_number > 11:
             # BGO
 
             if custom_input_edges is None:
 
-                self._in_edge = tte_edges["bgo"]
+                in_edge = tte_edges["bgo"]
 
             else:
 
@@ -120,14 +115,14 @@ class DRMGenTTE(DRMGen):
 
             if custom_input_edges is None:
 
-                self._in_edge = tte_edges["nai"]
+                in_edge = tte_edges["nai"]
 
             else:
 
                 assert isinstance(
                     custom_input_edges, NaiTTEEdges), f"custom edges are not an instance of NaiTTEEdges!"
 
-                self._in_edge = custom_input_edges.edges
+                in_edge = custom_input_edges.edges
 
         # Create the out edge energies
         with fits.open(cspecfile) as f:
@@ -135,63 +130,56 @@ class DRMGenTTE(DRMGen):
             out_edge[:-1] = f["EBOUNDS"].data["E_MIN"]
             out_edge[-1] = f["EBOUNDS"].data["E_MAX"][-1]
 
-        self._out_edge = out_edge
+        out_edge = out_edge
 
         if trigdat is not None:
 
             try:
-                self._position_interpolator = gbmgeometry.PositionInterpolator.from_trigdat(
+                position_interpolator = gbmgeometry.PositionInterpolator.from_trigdat(
                     trigdat_file=trigdat
                 )
 
             except:
 
-                self._position_interpolator = gbmgeometry.PositionInterpolator.from_trigdat_hdf5(
+                position_interpolator = gbmgeometry.PositionInterpolator.from_trigdat_hdf5(
                     trigdat_file=trigdat
                 )
 
             self._gbm = gbmgeometry.GBM(
-                self._position_interpolator.quaternion(time),
-                self._position_interpolator.sc_pos(time) * u.km,
+                position_interpolator.quaternion(time),
+                position_interpolator.sc_pos(time) * u.km,
             )
 
         elif poshist is not None:
 
             try:
 
-                self._position_interpolator = gbmgeometry.PositionInterpolator.from_poshist(
+                position_interpolator = gbmgeometry.PositionInterpolator.from_poshist(
                     poshist_file=poshist, T0=T0
                 )
 
             except:
 
-                self._position_interpolator = gbmgeometry.PositionInterpolator.from_poshist_hdf5(
+                position_interpolator = gbmgeometry.PositionInterpolator.from_poshist_hdf5(
                     poshist_file=poshist, T0=T0
                 )
 
             self._gbm = gbmgeometry.GBM(
-                self._position_interpolator.quaternion(time),
-                self._position_interpolator.sc_pos(time) * u.m,
+                position_interpolator.quaternion(time),
+                position_interpolator.sc_pos(time) * u.m,
             )
 
         else:
 
             raise RuntimeError("No trigdat or posthist file used!")
 
-        self._sc_quaternions_updater()
-
-    def _sc_quaternions_updater(self):
-
-        quaternions = self._position_interpolator.quaternion(self._time)
-
-        sc_pos = self._position_interpolator.sc_pos(self._time)
-
         super(DRMGenTTE, self).__init__(
-            quaternions=quaternions,
-            sc_pos=sc_pos,
-            det_number=self._det_number,
-            ebin_edge_in=self._in_edge,
-            mat_type=self._matrix_type,
-            ebin_edge_out=self._out_edge,
-            occult=self._occult,
+            position_interpolator=position_interpolator,
+            det_number=det_number,
+            ebin_edge_in=in_edge,
+            mat_type=mat_type,
+            ebin_edge_out=out_edge,
+            occult=occult,
+            time=time
         )
+
