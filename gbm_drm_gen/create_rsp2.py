@@ -46,4 +46,4 @@ def create_rsp2(file_name: str,
     rsp2 = RSP2(rsp.monte_carlo_energies, rsp.ebounds, list_of_matrices, "Fermi", "GBM", start, stop)
 
 
-    rsp2.to_fits(file_name, overwrite=overwrite)
+    rsp2.writeto(file_name, overwrite=overwrite)
