@@ -26,7 +26,7 @@ When we want to generate DRMS for GBM detectors, we simply need to obtain the pr
 
 ```python
 import matplotlib.pyplot as plt
-
+import astropy.io.fits as fits
 
 import numpy as np
 
@@ -303,5 +303,5 @@ create_rsp2(output_file_name,
 ```
 
 ```python
-
+with fits.o
 ```
