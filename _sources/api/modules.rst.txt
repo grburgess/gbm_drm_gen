@@ -1,4 +1,4 @@
-astromodels
+gbm_drm_gen
 ===========
 
 .. toctree::

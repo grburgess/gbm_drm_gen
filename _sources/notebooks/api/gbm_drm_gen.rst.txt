@@ -29,6 +29,14 @@ gbm\_drm\_gen.basersp\_numba module
    :undoc-members:
    :show-inheritance:
 
+gbm\_drm\_gen.create\_rsp2 module
+---------------------------------
+
+.. automodule:: gbm_drm_gen.create_rsp2
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 gbm\_drm\_gen.detdatabase module
 --------------------------------
 

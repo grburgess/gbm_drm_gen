@@ -36,6 +36,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^0.21.0-alpha.0/dist/embed-amd.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     
@@ -101,10 +102,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#a-custom-array">a custom array</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#Creating-RSP2-files">Creating RSP2 files</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/API.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/API.html#gbm-drm-gen">gbm_drm_gen</a></li>
 </ul>
 
             
@@ -466,7 +468,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-
+<span class="kn">import</span> <span class="nn">astropy.io.fits</span> <span class="k">as</span> <span class="nn">fits</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -476,7 +478,7 @@ div.rendered_html tbody tr:hover {
 
 <span class="n">jtplot</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="s2">&quot;talk&quot;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">gbm_drm_gen</span> <span class="kn">import</span> <span class="n">DRMGenTTE</span>
+<span class="kn">from</span> <span class="nn">gbm_drm_gen</span> <span class="kn">import</span> <span class="n">DRMGen</span>
 <span class="kn">from</span> <span class="nn">gbm_drm_gen.utils.package_data</span> <span class="kn">import</span> <span class="n">get_path_of_data_file</span>
 
 
@@ -485,12 +487,33 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
 WARNING: AstropyDeprecationWarning: The private astropy._erfa module has been made into its own package, pyerfa, which is a dependency of astropy and can be imported directly using &#34;import erfa&#34; [astropy._erfa]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> The naima package is not available. Models that depend on it will not be available</span>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it will not be available.</span>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> The ebltable package is not available. Models that depend on it will not be available</span>
+[<span class="ansi-green-fg">INFO    </span>]<span class="ansi-green-fg"> Starting 3ML!</span>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> no display variable set. using backend for graphics without display (agg)</span>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> ROOT minimizer not available</span>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> Multinest minimizer not available</span>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> PyGMO is not available</span>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> The cthreeML package is not installed. You will not be able to use plugins which require the C/C++ interface (currently HAWC)</span>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> Could not import plugin FermiLATLike.py. Do you have the relative instrument software installed and configured?</span>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> Could not import plugin HAWCLike.py. Do you have the relative instrument software installed and configured?</span>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> Env. variable OMP_NUM_THREADS is not set. Please set it to 1 for optimal performances in 3ML</span>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> Env. variable MKL_NUM_THREADS is not set. Please set it to 1 for optimal performances in 3ML</span>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> Env. variable NUMEXPR_NUM_THREADS is not set. Please set it to 1 for optimal performances in 3ML</span>
 </pre></div></div>
 </div>
 <div class="section" id="quick-start">
@@ -506,7 +529,7 @@ WARNING: AstropyDeprecationWarning: The private astropy._erfa module has been ma
 
 
 <span class="c1"># create the generator</span>
-<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGen</span><span class="o">.</span><span class="n">from_128_bin_data</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
                              <span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="c1"># time relative to T0 or trigger time.</span>
                              <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
                              <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
@@ -574,23 +597,18 @@ array([[1.21529588e-02, 2.66685346e-02, 3.35702294e-02, ...,
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/opt/hostedtoolcache/Python/3.8.11/x64/lib/python3.8/site-packages/responsum-0.1.4-py3.8.egg/responsum/response.py:270: MatplotlibDeprecationWarning: You are modifying the state of a globally registered colormap. This has been deprecated since 3.3 and in 3.6, you will not be able to modify a registered colormap in-place. To remove this warning, you can make a copy of the colormap first. cmap = mpl.cm.get_cmap(&#34;ocean&#34;).copy()
+
+WARNING MatplotlibDeprecationWarning: You are modifying the state of a globally registered colormap. This has been deprecated since 3.3 and in 3.6, you will not be able to modify a registered colormap in-place. To remove this warning, you can make a copy of the colormap first. cmap = mpl.cm.get_cmap(&#34;ocean&#34;).copy()
+
 </pre></div></div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_drm_gen_doc_11_1.png" src="../_images/notebooks_drm_gen_doc_11_1.png" />
-</div>
-</div>
 <p>To see how the effective area varies with location, we can loop through various angles.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
@@ -612,13 +630,6 @@ array([[1.21529588e-02, 2.66685346e-02, 3.35702294e-02, ...,
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Effective Area (cm$^2$)&#39;</span><span class="p">);</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;MC Energies&#39;</span><span class="p">);</span>
 </pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_drm_gen_doc_13_0.png" src="../_images/notebooks_drm_gen_doc_13_0.png" />
 </div>
 </div>
 </div>
@@ -661,7 +672,7 @@ array([[1.21529588e-02, 2.66685346e-02, 3.35702294e-02, ...,
 <span></span><span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_log_bins</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">531</span><span class="p">)</span>
 
 
-<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGen</span><span class="o">.</span><span class="n">from_128_bin_data</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
                              <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
                              <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
                              <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
@@ -677,23 +688,18 @@ array([[1.21529588e-02, 2.66685346e-02, 3.35702294e-02, ...,
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-/opt/hostedtoolcache/Python/3.8.11/x64/lib/python3.8/site-packages/responsum-0.1.4-py3.8.egg/responsum/response.py:270: MatplotlibDeprecationWarning: You are modifying the state of a globally registered colormap. This has been deprecated since 3.3 and in 3.6, you will not be able to modify a registered colormap in-place. To remove this warning, you can make a copy of the colormap first. cmap = mpl.cm.get_cmap(&#34;ocean&#34;).copy()
+
+WARNING MatplotlibDeprecationWarning: You are modifying the state of a globally registered colormap. This has been deprecated since 3.3 and in 3.6, you will not be able to modify a registered colormap in-place. To remove this warning, you can make a copy of the colormap first. cmap = mpl.cm.get_cmap(&#34;ocean&#34;).copy()
+
 </pre></div></div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_drm_gen_doc_18_1.png" src="../_images/notebooks_drm_gen_doc_18_1.png" />
-</div>
-</div>
 <p>And now with a much coarser input binning:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
@@ -701,7 +707,7 @@ array([[1.21529588e-02, 2.66685346e-02, 3.35702294e-02, ...,
 <span></span><span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_log_bins</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">73</span><span class="p">)</span>
 
 
-<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+<span class="n">gbm_n6_generator</span> <span class="o">=</span>  <span class="n">DRMGen</span><span class="o">.</span><span class="n">from_128_bin_data</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
                              <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
                              <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
                              <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
@@ -715,13 +721,6 @@ array([[1.21529588e-02, 2.66685346e-02, 3.35702294e-02, ...,
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">plot_matrix</span><span class="p">()</span>
 </pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_drm_gen_doc_20_0.png" src="../_images/notebooks_drm_gen_doc_20_0.png" />
 </div>
 </div>
 <p>It is easier to see the difference with simple matrix plotting:</p>
@@ -733,7 +732,7 @@ array([[1.21529588e-02, 2.66685346e-02, 3.35702294e-02, ...,
 <span></span><span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_log_bins</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">91</span><span class="p">)</span>
 
 
-<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+<span class="n">gbm_n6_generator</span> <span class="o">=</span>  <span class="n">DRMGen</span><span class="o">.</span><span class="n">from_128_bin_data</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
                              <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
                              <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
                              <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
@@ -750,7 +749,7 @@ array([[1.21529588e-02, 2.66685346e-02, 3.35702294e-02, ...,
 <span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_log_bins</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">141</span><span class="p">)</span>
 
 
-<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+<span class="n">gbm_n6_generator</span> <span class="o">=</span>  <span class="n">DRMGen</span><span class="o">.</span><span class="n">from_128_bin_data</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
                              <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
                              <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
                              <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
@@ -769,7 +768,7 @@ array([[1.21529588e-02, 2.66685346e-02, 3.35702294e-02, ...,
 <span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_log_bins</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">1541</span><span class="p">)</span>
 
 
-<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+<span class="n">gbm_n6_generator</span> <span class="o">=</span>  <span class="n">DRMGen</span><span class="o">.</span><span class="n">from_128_bin_data</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
                              <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
                              <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
                              <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
@@ -791,35 +790,27 @@ array([[1.21529588e-02, 2.66685346e-02, 3.35702294e-02, ...,
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.image.AxesImage at 0x7f40843a12b0&gt;
+&lt;matplotlib.image.AxesImage at 0x7f1d1443b820&gt;
 </pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_drm_gen_doc_22_1.png" src="../_images/notebooks_drm_gen_doc_22_1.png" />
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_drm_gen_doc_22_2.png" src="../_images/notebooks_drm_gen_doc_22_2.png" />
-</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
-<img alt="../_images/notebooks_drm_gen_doc_22_3.png" src="../_images/notebooks_drm_gen_doc_22_3.png" />
-</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+WARNING RuntimeWarning: overflow encountered in double_scalars
+
+
+WARNING RuntimeWarning: overflow encountered in double_scalars
+
+</pre></div></div>
 </div>
 </div>
 <div class="section" id="a-custom-array">
 <h3>a custom array<a class="headerlink" href="#a-custom-array" title="Permalink to this headline">¶</a></h3>
 <p>And we can even supply and entirely custom array of energies:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
@@ -830,7 +821,7 @@ array([[1.21529588e-02, 2.66685346e-02, 3.35702294e-02, ...,
 <span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_custom_array</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
 
 
-<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+<span class="n">gbm_n6_generator</span> <span class="o">=</span>  <span class="n">DRMGen</span><span class="o">.</span><span class="n">from_128_bin_data</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
                              <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
                              <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
                              <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
@@ -846,24 +837,173 @@ array([[1.21529588e-02, 2.66685346e-02, 3.35702294e-02, ...,
 </pre></div>
 </div>
 </div>
+</div>
+</div>
+<div class="section" id="Creating-RSP2-files">
+<h2>Creating RSP2 files<a class="headerlink" href="#Creating-RSP2-files" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">gbm_drm_gen</span> <span class="kn">import</span> <span class="n">create_rsp2</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># create the generator</span>
+<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGen</span><span class="o">.</span><span class="n">from_128_bin_data</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+                             <span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="c1"># time relative to T0 or trigger time.</span>
+                             <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
+                             <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
+                             <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">output_file_name</span> <span class="o">=</span> <span class="s2">&quot;my_new_rsp.rsp2&quot;</span> <span class="c1"># you must call it an RSP2 file!</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">create_rsp2</span><span class="p">(</span><span class="n">output_file_name</span><span class="p">,</span>
+            <span class="n">response_generator</span><span class="o">=</span><span class="n">gbm_n6_generator</span><span class="p">,</span>
+            <span class="n">ra</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">dec</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">tstart</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">tstop</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">delta_time</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span>
+           <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output_file_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+
+    <span class="n">f</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;DRM_NUM&#39;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;TSTART&#39;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;TSTOP&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_drm_gen_doc_24_0.png" src="../_images/notebooks_drm_gen_doc_24_0.png" />
-</div>
+<div class="highlight"><pre>
+Filename: my_new_rsp.rsp2
+No.    Name      Ver    Type      Cards   Dimensions   Format
+  0  PRIMARY       1 PrimaryHDU       5   ()
+  1  EBOUNDS       1 BinTableHDU     28   128R x 3C   [K, E, E]
+  2  SPECRESP MATRIX    1 BinTableHDU     42   140R x 6C   [E, E, I, I, I, 128D]
+  3  SPECRESP MATRIX    2 BinTableHDU     42   140R x 6C   [E, E, I, I, I, 128D]
+  4  SPECRESP MATRIX    3 BinTableHDU     42   140R x 6C   [E, E, I, I, I, 128D]
+  5  SPECRESP MATRIX    4 BinTableHDU     42   140R x 6C   [E, E, I, I, I, 128D]
+  6  SPECRESP MATRIX    5 BinTableHDU     42   140R x 6C   [E, E, I, I, I, 128D]
+5
+332916465.760476
+332916467.760476
+</pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<span></span><span class="kn">from</span> <span class="nn">threeML</span> <span class="kn">import</span> <span class="n">TimeSeriesBuilder</span>
 </pre></div>
 </div>
 </div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tsb</span> <span class="o">=</span> <span class="n">TimeSeriesBuilder</span><span class="o">.</span><span class="n">from_gbm_cspec_or_ctime</span><span class="p">(</span><span class="s2">&quot;cspec&quot;</span><span class="p">,</span> <span class="n">cspec_or_ctime_file</span><span class="o">=</span><span class="n">cspec_file</span><span class="p">,</span> <span class="n">rsp_file</span><span class="o">=</span><span class="s2">&quot;my_new_rsp.rsp2&quot;</span><span class="p">)</span>
+
+<span class="n">tsb</span><span class="o">.</span><span class="n">view_lightcurve</span><span class="p">();</span>
+
+</pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> The default choice for MATRIX extension failed:KeyError(&#34;Extension (&#39;MATRIX&#39;, 1) not found.&#34;)available: None &#39;EBOUNDS&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39;</span>
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+WARNING FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will perform elementwise comparison
+
+
+WARNING FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will perform elementwise comparison
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "2d6c8cc942b544bab4ed70d7b11a1f05", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> The default choice for MATRIX extension failed:KeyError(&#34;Extension (&#39;MATRIX&#39;, 1) not found.&#34;)available: None &#39;EBOUNDS&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39;</span>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> The default choice for MATRIX extension failed:KeyError(&#34;Extension (&#39;MATRIX&#39;, 2) not found.&#34;)available: None &#39;EBOUNDS&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39;</span>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> The default choice for MATRIX extension failed:KeyError(&#34;Extension (&#39;MATRIX&#39;, 3) not found.&#34;)available: None &#39;EBOUNDS&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39;</span>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> The default choice for MATRIX extension failed:KeyError(&#34;Extension (&#39;MATRIX&#39;, 4) not found.&#34;)available: None &#39;EBOUNDS&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39;</span>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> The default choice for MATRIX extension failed:KeyError(&#34;Extension (&#39;MATRIX&#39;, 5) not found.&#34;)available: None &#39;EBOUNDS&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39; &#39;SPECRESP MATRIX&#39;</span>
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tsb</span><span class="o">.</span><span class="n">set_active_time_interval</span><span class="p">(</span><span class="s1">&#39;1-5&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[<span class="ansi-green-fg">INFO    </span>]<span class="ansi-green-fg"> Interval set to 0.7039839625358582-4.800044000148773 for cspec</span>
+</pre></div></div>
+</div>
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {"0cb90047d8c44715b282a3489b09200e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": ""}}, "2d6c8cc942b544bab4ed70d7b11a1f05": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "HBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "HBoxView", "box_style": "", "children": ["IPY_MODEL_84001f5d8a024ab5b73c016837ba3d1c", "IPY_MODEL_dbb370a70756408487656716b53e07b5", "IPY_MODEL_dcb4da9dc4c2464e94d5b3f9345d5bee"], "layout": "IPY_MODEL_f59c0e3cdb974ceaa1eb9cf5f4126903"}}, "30ac072b15b7400daf3c71fa2e555655": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": "2", "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "65866fac174040bfb63082aaffb89a8c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "ProgressStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "bar_color": "#440154", "description_width": ""}}, "84001f5d8a024ab5b73c016837ba3d1c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "HTMLView", "description": "", "description_tooltip": null, "layout": "IPY_MODEL_99ce846598d348f48ffec3f0ca3d1162", "placeholder": "\u200b", "style": "IPY_MODEL_b1ae2afeb7724070876b6cdaabee420d", "value": "Loading PHAII Spectra: 100%"}}, "99ce846598d348f48ffec3f0ca3d1162": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "b1ae2afeb7724070876b6cdaabee420d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": ""}}, "bb74e65f54ae443eabd69d3dd2997de5": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "dbb370a70756408487656716b53e07b5": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "FloatProgressModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "ProgressView", "bar_style": "success", "description": "", "description_tooltip": null, "layout": "IPY_MODEL_30ac072b15b7400daf3c71fa2e555655", "max": 2395.0, "min": 0.0, "orientation": "horizontal", "style": "IPY_MODEL_65866fac174040bfb63082aaffb89a8c", "value": 2395.0}}, "dcb4da9dc4c2464e94d5b3f9345d5bee": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "HTMLView", "description": "", "description_tooltip": null, "layout": "IPY_MODEL_bb74e65f54ae443eabd69d3dd2997de5", "placeholder": "\u200b", "style": "IPY_MODEL_0cb90047d8c44715b282a3489b09200e", "value": " 2395/2395 [00:01&lt;00:00, 1153.44it/s]"}}, "f59c0e3cdb974ceaa1eb9cf5f4126903": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": "inline-flex", "flex": null, "flex_flow": "row wrap", "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": "100%"}}}, "version_major": 2, "version_minor": 0}
+</script></div>
 </div>
 
 

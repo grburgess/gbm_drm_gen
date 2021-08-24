@@ -36,6 +36,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^0.21.0-alpha.0/dist/embed-amd.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -91,7 +92,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/drm_gen_doc.html">Generating DRMs for GBM detectors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/API.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/API.html#gbm-drm-gen">gbm_drm_gen</a></li>
 </ul>
 
             
@@ -321,13 +322,17 @@
 </li>
       <li><a href="notebooks/api/gbm_drm_gen.utils.html#gbm_drm_gen.utils.general_utils.check_power_of_two">check_power_of_two() (in module gbm_drm_gen.utils.general_utils)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="notebooks/api/gbm_drm_gen.html#gbm_drm_gen.matrix_functions.closest">closest() (in module gbm_drm_gen.matrix_functions)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="notebooks/api/gbm_drm_gen.utils.html#gbm_drm_gen.utils.contour_finder.ContourFinder">ContourFinder (class in gbm_drm_gen.utils.contour_finder)</a>
 </li>
       <li><a href="notebooks/api/gbm_drm_gen.utils.html#gbm_drm_gen.utils.package_data.copy_package_data">copy_package_data() (in module gbm_drm_gen.utils.package_data)</a>
+</li>
+      <li><a href="notebooks/api/gbm_drm_gen.html#gbm_drm_gen.create_rsp2.create_rsp2">create_rsp2() (in module gbm_drm_gen.create_rsp2)</a>
+</li>
+      <li><a href="notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.current_met">current_met (gbm_drm_gen.drmgen.DRMGen property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -387,6 +392,8 @@
 </li>
       <li><a href="notebooks/api/gbm_drm_gen.utils.html#gbm_drm_gen.utils.contour_finder.ContourFinder.find_contour">find_contour() (gbm_drm_gen.utils.contour_finder.ContourFinder method)</a>
 </li>
+      <li><a href="notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.from_128_bin_data">from_128_bin_data() (gbm_drm_gen.drmgen.DRMGen class method)</a>
+</li>
       <li><a href="notebooks/api/gbm_drm_gen.html#gbm_drm_gen.input_edges.InputEdges.from_custom_array">from_custom_array() (gbm_drm_gen.input_edges.InputEdges class method)</a>
 </li>
   </ul></td>
@@ -399,6 +406,8 @@
         <li><a href="notebooks/api/gbm_drm_gen.io.html#gbm_drm_gen.io.balrog_like.BALROGLike.from_spectrumlike">(gbm_drm_gen.io.balrog_like.BALROGLike class method)</a>
 </li>
       </ul></li>
+      <li><a href="notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.from_trigdat">from_trigdat() (gbm_drm_gen.drmgen.DRMGen class method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -424,6 +433,13 @@
 
       <ul>
         <li><a href="notebooks/api/gbm_drm_gen.html#module-gbm_drm_gen.basersp_numba">module</a>
+</li>
+      </ul></li>
+      <li>
+    gbm_drm_gen.create_rsp2
+
+      <ul>
+        <li><a href="notebooks/api/gbm_drm_gen.html#module-gbm_drm_gen.create_rsp2">module</a>
 </li>
       </ul></li>
       <li>
@@ -648,6 +664,8 @@
       </ul></li>
       <li><a href="notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.matrix">matrix (gbm_drm_gen.drmgen.DRMGen property)</a>
 </li>
+      <li><a href="notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.met_at">met_at() (gbm_drm_gen.drmgen.DRMGen method)</a>
+</li>
       <li>
     module
 
@@ -657,6 +675,8 @@
         <li><a href="notebooks/api/gbm_drm_gen.html#module-gbm_drm_gen.basersp">gbm_drm_gen.basersp</a>
 </li>
         <li><a href="notebooks/api/gbm_drm_gen.html#module-gbm_drm_gen.basersp_numba">gbm_drm_gen.basersp_numba</a>
+</li>
+        <li><a href="notebooks/api/gbm_drm_gen.html#module-gbm_drm_gen.create_rsp2">gbm_drm_gen.create_rsp2</a>
 </li>
         <li><a href="notebooks/api/gbm_drm_gen.html#module-gbm_drm_gen.drmgen">gbm_drm_gen.drmgen</a>
 </li>
@@ -729,13 +749,15 @@
         <li><a href="notebooks/api/gbm_drm_gen.io.html#gbm_drm_gen.io.palantir.Palantir">(class in gbm_drm_gen.io.palantir)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="notebooks/api/gbm_drm_gen.utils.html#gbm_drm_gen.utils.file_utils.path_exists_and_is_directory">path_exists_and_is_directory() (in module gbm_drm_gen.utils.file_utils)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="notebooks/api/gbm_drm_gen.utils.html#gbm_drm_gen.utils.general_utils.pix_to_sky">pix_to_sky() (in module gbm_drm_gen.utils.general_utils)</a>
 </li>
       <li><a href="notebooks/api/gbm_drm_gen.utils.html#gbm_drm_gen.utils.contour_finder.ContourFinder.pixel_size">pixel_size (gbm_drm_gen.utils.contour_finder.ContourFinder property)</a>
+</li>
+      <li><a href="notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.postion_interpolator">postion_interpolator (gbm_drm_gen.drmgen.DRMGen property)</a>
 </li>
   </ul></td>
 </tr></table>

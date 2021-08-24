@@ -36,6 +36,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^0.21.0-alpha.0/dist/embed-amd.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -91,7 +92,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/drm_gen_doc.html">Generating DRMs for GBM detectors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/API.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/API.html#gbm-drm-gen">gbm_drm_gen</a></li>
 </ul>
 
             
@@ -174,7 +175,8 @@
            <div itemprop="articleBody">
             
   <h1>Source code for gbm_drm_gen.drmgen_trig</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span> <span class="nn">gbmgeometry</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">.drmgen</span> <span class="kn">import</span> <span class="n">DRMGen</span>
 <span class="kn">from</span> <span class="nn">.input_edges</span> <span class="kn">import</span> <span class="n">trigdat_edges</span><span class="p">,</span> <span class="n">trigdat_out_edge</span>
@@ -182,15 +184,14 @@
 
 <div class="viewcode-block" id="DRMGenTrig"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen_trig.DRMGenTrig">[docs]</a><span class="k">class</span> <span class="nc">DRMGenTrig</span><span class="p">(</span><span class="n">DRMGen</span><span class="p">):</span>
 <div class="viewcode-block" id="DRMGenTrig.__init__"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen_trig.DRMGenTrig.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">quaternions</span><span class="p">,</span>
-        <span class="n">sc_pos</span><span class="p">,</span>
-        <span class="n">det</span><span class="p">,</span>
-        <span class="n">mat_type</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">tstart</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">tstop</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-        <span class="n">time</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-        <span class="n">occult</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">trigdat_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">det</span><span class="p">,</span>
+            <span class="n">mat_type</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">tstart</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">tstop</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">time</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">occult</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Inherited drmgen from the TTE version. Builds 8-channel RSPs for trigdat data using 140 input edges</span>
@@ -201,61 +202,52 @@
 <span class="sd">        :param occult: (bool) occult points blocked by the Earth</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_matrix_type</span> <span class="o">=</span> <span class="n">mat_type</span>
+        <span class="n">matrix_type</span> <span class="o">=</span> <span class="n">mat_type</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_tstart</span> <span class="o">=</span> <span class="n">tstart</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tstop</span> <span class="o">=</span> <span class="n">tstop</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_det_number</span> <span class="o">=</span> <span class="n">det</span>
+        <span class="n">det_number</span> <span class="o">=</span> <span class="n">det</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_time</span> <span class="o">=</span> <span class="n">time</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">time</span>
 
         <span class="n">maxen</span> <span class="o">=</span> <span class="mi">140</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_occult</span> <span class="o">=</span> <span class="n">occult</span>
+        
         <span class="c1"># Setup the input side energy edges</span>
         <span class="k">if</span> <span class="n">det</span> <span class="o">&gt;</span> <span class="mi">11</span><span class="p">:</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_in_edge</span> <span class="o">=</span> <span class="n">trigdat_edges</span><span class="p">[</span><span class="s2">&quot;bgo&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_out_edge</span> <span class="o">=</span> <span class="n">trigdat_out_edge</span><span class="p">[</span><span class="s2">&quot;bgo&quot;</span><span class="p">]</span>
+            <span class="n">in_edge</span> <span class="o">=</span> <span class="n">trigdat_edges</span><span class="p">[</span><span class="s2">&quot;bgo&quot;</span><span class="p">]</span>
+            <span class="n">out_edge</span> <span class="o">=</span> <span class="n">trigdat_out_edge</span><span class="p">[</span><span class="s2">&quot;bgo&quot;</span><span class="p">]</span>
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_in_edge</span> <span class="o">=</span> <span class="n">trigdat_edges</span><span class="p">[</span><span class="s2">&quot;nai&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_out_edge</span> <span class="o">=</span> <span class="n">trigdat_out_edge</span><span class="p">[</span><span class="s2">&quot;nai&quot;</span><span class="p">]</span>
+            <span class="n">in_edge</span> <span class="o">=</span> <span class="n">trigdat_edges</span><span class="p">[</span><span class="s2">&quot;nai&quot;</span><span class="p">]</span>
+            <span class="n">out_edge</span> <span class="o">=</span> <span class="n">trigdat_out_edge</span><span class="p">[</span><span class="s2">&quot;nai&quot;</span><span class="p">]</span>
 
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_all_quats</span> <span class="o">=</span> <span class="n">quaternions</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_all_sc_pos</span> <span class="o">=</span> <span class="n">sc_pos</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">position_interpolator</span> <span class="o">=</span> <span class="n">gbmgeometry</span><span class="o">.</span><span class="n">PositionInterpolator</span><span class="o">.</span><span class="n">from_trigdat</span><span class="p">(</span>
+                <span class="n">trigdat_file</span><span class="o">=</span><span class="n">trigdat_file</span>
+            <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_sc_quaternions_updater</span><span class="p">()</span></div>
+        <span class="k">except</span><span class="p">:</span>
 
-        <span class="c1">#</span>
-        <span class="c1"># super(DRMGenTrig, self).__init__(quaternions=quaternions,</span>
-        <span class="c1">#                                 sc_pos=sc_pos,</span>
-        <span class="c1">#                                 det_number=det,</span>
-        <span class="c1">#                                 ebin_edge_in=self._in_edge,</span>
-        <span class="c1">#                                 mat_type=mat_type,</span>
-        <span class="c1">#                                 ebin_edge_out=self._out_edge)</span>
+            <span class="n">position_interpolator</span> <span class="o">=</span> <span class="n">gbmgeometry</span><span class="o">.</span><span class="n">PositionInterpolator</span><span class="o">.</span><span class="n">from_trigdat_hdf5</span><span class="p">(</span>
+                <span class="n">trigdat_file</span><span class="o">=</span><span class="n">trigdat_file</span>
+                <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_sc_quaternions_updater</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="n">condition</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_tstart</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tstop</span>
-        <span class="p">)</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">DRMGenTrig</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+                <span class="n">position_interpolator</span><span class="o">=</span><span class="n">position_interpolator</span><span class="p">,</span>
+                <span class="n">det_number</span><span class="o">=</span><span class="n">det_number</span><span class="p">,</span>
+                <span class="n">ebin_edge_in</span><span class="o">=</span><span class="n">in_edge</span><span class="p">,</span>
+                <span class="n">mat_type</span><span class="o">=</span><span class="n">matrix_type</span><span class="p">,</span>
+                <span class="n">ebin_edge_out</span><span class="o">=</span><span class="n">out_edge</span><span class="p">,</span>
+                <span class="n">occult</span><span class="o">=</span><span class="n">occult</span><span class="p">,</span>
+                <span class="n">time</span> <span class="o">=</span> <span class="n">time</span>
+        <span class="p">)</span></div></div>
 
-        <span class="n">quaternions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_quats</span><span class="p">[</span><span class="n">condition</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">sc_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_sc_pos</span><span class="p">[</span><span class="n">condition</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="nb">super</span><span class="p">(</span><span class="n">DRMGenTrig</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">quaternions</span><span class="o">=</span><span class="n">quaternions</span><span class="p">,</span>
-            <span class="n">sc_pos</span><span class="o">=</span><span class="n">sc_pos</span><span class="p">,</span>
-            <span class="n">det_number</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_det_number</span><span class="p">,</span>
-            <span class="n">ebin_edge_in</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_edge</span><span class="p">,</span>
-            <span class="n">mat_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_matrix_type</span><span class="p">,</span>
-            <span class="n">ebin_edge_out</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_out_edge</span><span class="p">,</span>
-            <span class="n">occult</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_occult</span><span class="p">,</span>
-        <span class="p">)</span></div>
 
 
 <span class="c1">################</span>

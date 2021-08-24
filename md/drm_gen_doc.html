@@ -36,6 +36,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^0.21.0-alpha.0/dist/embed-amd.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -91,7 +92,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/drm_gen_doc.html">Generating DRMs for GBM detectors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/API.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/API.html#gbm-drm-gen">gbm_drm_gen</a></li>
 </ul>
 
             
@@ -228,7 +229,7 @@ name: python3<a class="headerlink" href="#jupyter-jupytext-formats-ipynb-md-text
 <p>The main purpose for <code class="docutils literal notranslate"><span class="pre">gbm_drm_gen</span></code> is a fast and easy way to generate detector response matrices for the Fermi-GBM detectors in a pythonic way.</p>
 <p>When we want to generate DRMS for GBM detectors, we simply need to obtain the proper data</p>
 <!-- #endregion --><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-
+<span class="kn">import</span> <span class="nn">astropy.io.fits</span> <span class="k">as</span> <span class="nn">fits</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -238,64 +239,64 @@ name: python3<a class="headerlink" href="#jupyter-jupytext-formats-ipynb-md-text
 
 <span class="n">jtplot</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="s2">&quot;talk&quot;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">gbm_drm_gen</span> <span class="kn">import</span> <span class="n">DRMGenTTE</span>
+<span class="kn">from</span> <span class="nn">gbm_drm_gen</span> <span class="kn">import</span> <span class="n">DRMGen</span>
 <span class="kn">from</span> <span class="nn">gbm_drm_gen.utils.package_data</span> <span class="kn">import</span> <span class="n">get_path_of_data_file</span>
 
 
 
 </pre></div>
 </div>
-<!-- #region heading_collapsed=true --><div class="section" id="quick-start">
+<div class="section" id="quick-start">
 <h2>quick start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h2>
-<!-- #endregion --><!-- #region hidden=true --><p>To create a DRM generator for TTE data, we need the TTE, CSPEC, and the TRIGDAT data files.</p>
+<p>To create a DRM generator for TTE data, we need the TTE, CSPEC, and the TRIGDAT data files.</p>
 <ul class="simple">
 <li><p>The CSPEC data contains the output side of the DRM’s energy bounds.</p></li>
 <li><p>The TRIGDAT data contains the spacecraft orientation data.</p></li>
 </ul>
-<!-- #endregion --><div class="highlight-python hidden=true notranslate"><div class="highlight"><pre><span></span>trigdat_file = get_path_of_data_file(&#39;example_data/glg_trigdat_all_bn110721200_v01.fit&#39;)
-cspec_file = get_path_of_data_file(&#39;example_data/glg_cspec_n6_bn110721200_v00.pha&#39;)
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trigdat_file</span> <span class="o">=</span> <span class="n">get_path_of_data_file</span><span class="p">(</span><span class="s1">&#39;example_data/glg_trigdat_all_bn110721200_v01.fit&#39;</span><span class="p">)</span>
+<span class="n">cspec_file</span> <span class="o">=</span> <span class="n">get_path_of_data_file</span><span class="p">(</span><span class="s1">&#39;example_data/glg_cspec_n6_bn110721200_v00.pha&#39;</span><span class="p">)</span>
 
 
-# create the generator
-gbm_n6_generator = DRMGenTTE(det_name= &quot;n6&quot;,
-                             time=0, # time relative to T0 or trigger time.
-                             trigdat = trigdat_file,
-                             mat_type = 2, # direct response + atmospheric scattering
-                             cspecfile = cspec_file)
+<span class="c1"># create the generator</span>
+<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGen</span><span class="o">.</span><span class="n">from_128_bin_data</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+                             <span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="c1"># time relative to T0 or trigger time.</span>
+                             <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
+                             <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
+                             <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">)</span>
 </pre></div>
 </div>
-<!-- #region hidden=true --><p>We can set the location of the source directly. The first run can be a bit slow as <code class="docutils literal notranslate"><span class="pre">numba</span></code> is used in the background to be very fast.</p>
-<!-- #endregion --><div class="highlight-python hidden=true notranslate"><div class="highlight"><pre><span></span>gbm_n6_generator.set_location(ra=329,dec = -38.2)
+<p>We can set the location of the source directly. The first run can be a bit slow as <code class="docutils literal notranslate"><span class="pre">numba</span></code> is used in the background to be very fast.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gbm_n6_generator</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mi">329</span><span class="p">,</span><span class="n">dec</span> <span class="o">=</span> <span class="o">-</span><span class="mf">38.2</span><span class="p">)</span>
 </pre></div>
 </div>
-<!-- #region hidden=true --><p>We can now checkout the matrix object created in the background:</p>
-<!-- #endregion --><div class="highlight-python hidden=true notranslate"><div class="highlight"><pre><span></span>gbm_n6_generator.matrix
+<p>We can now checkout the matrix object created in the background:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gbm_n6_generator</span><span class="o">.</span><span class="n">matrix</span>
 </pre></div>
 </div>
-<!-- #region hidden=true --><p>Or we can input RA and DEC to create a 3ML style OGIP response directly:</p>
-<!-- #endregion --><div class="highlight-python hidden=true notranslate"><div class="highlight"><pre><span></span>response = gbm_n6_generator.to_3ML_response(ra=329,dec = -38.2)
+<p>Or we can input RA and DEC to create a 3ML style OGIP response directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">gbm_n6_generator</span><span class="o">.</span><span class="n">to_3ML_response</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="mi">329</span><span class="p">,</span><span class="n">dec</span> <span class="o">=</span> <span class="o">-</span><span class="mf">38.2</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python hidden=true notranslate"><div class="highlight"><pre><span></span>fig = response.plot_matrix()
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">plot_matrix</span><span class="p">()</span>
 </pre></div>
 </div>
-<!-- #region hidden=true --><p>To see how the effective area varies with location, we can loop through various angles.</p>
-<!-- #endregion --><div class="highlight-python hidden=true notranslate"><div class="highlight"><pre><span></span>fig, ax = plt.subplots()
+<p>To see how the effective area varies with location, we can loop through various angles.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-bounds = np.vstack((gbm_n6_generator.monte_carlo_energies[:-1],gbm_n6_generator.monte_carlo_energies[1:])).T
-de = np.diff(bounds)
-ene = np.mean(bounds,axis=1)
+<span class="n">bounds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">gbm_n6_generator</span><span class="o">.</span><span class="n">monte_carlo_energies</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">gbm_n6_generator</span><span class="o">.</span><span class="n">monte_carlo_energies</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span><span class="o">.</span><span class="n">T</span>
+<span class="n">de</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">bounds</span><span class="p">)</span>
+<span class="n">ene</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-for ra in np.linspace(260, 350, 10):
+<span class="k">for</span> <span class="n">ra</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">260</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
     
-    gbm_n6_generator.set_location(ra=ra,dec = -38.2)
+    <span class="n">gbm_n6_generator</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">ra</span><span class="p">,</span><span class="n">dec</span> <span class="o">=</span> <span class="o">-</span><span class="mf">38.2</span><span class="p">)</span>
 
-    ax.loglog(ene,gbm_n6_generator.matrix.sum(axis=0),label=r&#39;%d$^{\circ}$&#39;%ra)
+    <span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">ene</span><span class="p">,</span><span class="n">gbm_n6_generator</span><span class="o">.</span><span class="n">matrix</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span><span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">$^{\circ}$&#39;</span><span class="o">%</span><span class="n">ra</span><span class="p">)</span>
 
-ax.set_ylim(1)
-ax.legend()
-ax.set_xlabel(r&#39;Effective Area (cm$^2$)&#39;);
-ax.set_xlabel(&#39;MC Energies&#39;);
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Effective Area (cm$^2$)&#39;</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;MC Energies&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <!-- #region --></div>
@@ -325,7 +326,7 @@ ax.set_xlabel(&#39;MC Energies&#39;);
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_log_bins</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">531</span><span class="p">)</span>
 
 
-<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGen</span><span class="o">.</span><span class="n">from_128_bin_data</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
                              <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
                              <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
                              <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
@@ -344,7 +345,7 @@ ax.set_xlabel(&#39;MC Energies&#39;);
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_log_bins</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">73</span><span class="p">)</span>
 
 
-<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+<span class="n">gbm_n6_generator</span> <span class="o">=</span>  <span class="n">DRMGen</span><span class="o">.</span><span class="n">from_128_bin_data</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
                              <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
                              <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
                              <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
@@ -363,7 +364,7 @@ ax.set_xlabel(&#39;MC Energies&#39;);
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_log_bins</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">91</span><span class="p">)</span>
 
 
-<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+<span class="n">gbm_n6_generator</span> <span class="o">=</span>  <span class="n">DRMGen</span><span class="o">.</span><span class="n">from_128_bin_data</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
                              <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
                              <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
                              <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
@@ -380,7 +381,7 @@ ax.set_xlabel(&#39;MC Energies&#39;);
 <span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_log_bins</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">141</span><span class="p">)</span>
 
 
-<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+<span class="n">gbm_n6_generator</span> <span class="o">=</span>  <span class="n">DRMGen</span><span class="o">.</span><span class="n">from_128_bin_data</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
                              <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
                              <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
                              <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
@@ -399,7 +400,7 @@ ax.set_xlabel(&#39;MC Energies&#39;);
 <span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_log_bins</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">1541</span><span class="p">)</span>
 
 
-<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+<span class="n">gbm_n6_generator</span> <span class="o">=</span>  <span class="n">DRMGen</span><span class="o">.</span><span class="n">from_128_bin_data</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
                              <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
                              <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
                              <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
@@ -424,7 +425,7 @@ ax.set_xlabel(&#39;MC Energies&#39;);
 <span class="n">custom_edges</span> <span class="o">=</span> <span class="n">NaiTTEEdges</span><span class="o">.</span><span class="n">from_custom_array</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
 
 
-<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGenTTE</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+<span class="n">gbm_n6_generator</span> <span class="o">=</span>  <span class="n">DRMGen</span><span class="o">.</span><span class="n">from_128_bin_data</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
                              <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
                              <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
                              <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">,</span>
@@ -439,9 +440,56 @@ ax.set_xlabel(&#39;MC Energies&#39;);
 <span class="n">fig</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">plot_matrix</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+</div>
+</div>
+<div class="section" id="creating-rsp2-files">
+<h2>Creating RSP2 files<a class="headerlink" href="#creating-rsp2-files" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gbm_drm_gen</span> <span class="kn">import</span> <span class="n">create_rsp2</span>
 </pre></div>
 </div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create the generator</span>
+<span class="n">gbm_n6_generator</span> <span class="o">=</span> <span class="n">DRMGen</span><span class="o">.</span><span class="n">from_128_bin_data</span><span class="p">(</span><span class="n">det_name</span><span class="o">=</span> <span class="s2">&quot;n6&quot;</span><span class="p">,</span>
+                             <span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="c1"># time relative to T0 or trigger time.</span>
+                             <span class="n">trigdat</span> <span class="o">=</span> <span class="n">trigdat_file</span><span class="p">,</span>
+                             <span class="n">mat_type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># direct response + atmospheric scattering</span>
+                             <span class="n">cspecfile</span> <span class="o">=</span> <span class="n">cspec_file</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">output_file_name</span> <span class="o">=</span> <span class="s2">&quot;my_new_rsp.rsp2&quot;</span> <span class="c1"># you must call it an RSP2 file!</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">create_rsp2</span><span class="p">(</span><span class="n">output_file_name</span><span class="p">,</span>
+            <span class="n">response_generator</span><span class="o">=</span><span class="n">gbm_n6_generator</span><span class="p">,</span>
+            <span class="n">ra</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">dec</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">tstart</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">tstop</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">delta_time</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span>
+           <span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output_file_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    
+    <span class="n">f</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;DRM_NUM&#39;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;TSTART&#39;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;TSTOP&#39;</span><span class="p">])</span>
+    
+   
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">threeML</span> <span class="kn">import</span> <span class="n">TimeSeriesBuilder</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tsb</span> <span class="o">=</span> <span class="n">TimeSeriesBuilder</span><span class="o">.</span><span class="n">from_gbm_cspec_or_ctime</span><span class="p">(</span><span class="s2">&quot;cspec&quot;</span><span class="p">,</span> <span class="n">cspec_or_ctime_file</span><span class="o">=</span><span class="n">cspec_file</span><span class="p">,</span> <span class="n">rsp_file</span><span class="o">=</span><span class="s2">&quot;my_new_rsp.rsp2&quot;</span><span class="p">)</span>
+
+<span class="n">tsb</span><span class="o">.</span><span class="n">view_lightcurve</span><span class="p">();</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tsb</span><span class="o">.</span><span class="n">set_active_time_interval</span><span class="p">(</span><span class="s1">&#39;1-5&#39;</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 </div>

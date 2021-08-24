@@ -36,6 +36,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^0.21.0-alpha.0/dist/embed-amd.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -91,7 +92,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../notebooks/drm_gen_doc.html">Generating DRMs for GBM detectors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/API.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/API.html#gbm-drm-gen">gbm_drm_gen</a></li>
 </ul>
 
             
@@ -174,8 +175,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for gbm_drm_gen.drmgen</h1><div class="highlight"><pre>
-<span></span><span class="c1"># import at_scat</span>
-<span class="c1"># import ftran</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">astropy.io.fits</span> <span class="k">as</span> <span class="nn">fits</span>
 <span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
@@ -185,15 +185,13 @@
 <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">prange</span><span class="p">,</span> <span class="n">types</span>
 <span class="c1"># TODO Remove this</span>
 <span class="kn">from</span> <span class="nn">numba.typed</span> <span class="kn">import</span> <span class="n">Dict</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">threeML.utils.OGIP.response</span> <span class="kn">import</span> <span class="n">InstrumentResponse</span>
-
-<span class="k">except</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">responsum</span> <span class="kn">import</span> <span class="n">InstrumentResponse</span>
+<span class="kn">from</span> <span class="nn">responsum</span> <span class="kn">import</span> <span class="n">InstrumentResponse</span>
 
 <span class="kn">from</span> <span class="nn">gbm_drm_gen.basersp_numba</span> <span class="kn">import</span> <span class="p">(</span><span class="n">get_database</span><span class="p">,</span>
                                        <span class="n">get_trigdat_precalc_database</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">gbm_drm_gen.input_edges</span> <span class="kn">import</span> <span class="p">(</span><span class="n">BgoTTEEdges</span><span class="p">,</span> <span class="n">InputEdges</span><span class="p">,</span> <span class="n">NaiTTEEdges</span><span class="p">,</span>
+                                     <span class="n">trigdat_edges</span><span class="p">,</span> <span class="n">trigdat_out_edge</span><span class="p">,</span>
+                                     <span class="n">tte_edges</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">gbm_drm_gen.matrix_functions</span> <span class="kn">import</span> <span class="p">(</span><span class="n">atscat_highres_ephoton_interpolator</span><span class="p">,</span>
                                           <span class="n">calc_sphere_dist</span><span class="p">,</span> <span class="n">closest</span><span class="p">,</span>
                                           <span class="n">echan_integrator</span><span class="p">,</span> <span class="n">geo_to_space</span><span class="p">,</span>
@@ -218,6 +216,23 @@
     <span class="s2">&quot;BGO_01&quot;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
 <span class="p">}</span>
 
+<span class="n">det_name_lookup2</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;n0&quot;</span><span class="p">:</span> <span class="s2">&quot;NAI_00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n1&quot;</span><span class="p">:</span> <span class="s2">&quot;NAI_01&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n2&quot;</span><span class="p">:</span> <span class="s2">&quot;NAI_02&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n3&quot;</span><span class="p">:</span> <span class="s2">&quot;NAI_03&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n4&quot;</span><span class="p">:</span> <span class="s2">&quot;NAI_04&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n5&quot;</span><span class="p">:</span> <span class="s2">&quot;NAI_05&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n6&quot;</span><span class="p">:</span> <span class="s2">&quot;NAI_06&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n7&quot;</span><span class="p">:</span> <span class="s2">&quot;NAI_07&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n8&quot;</span><span class="p">:</span> <span class="s2">&quot;NAI_08&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;n9&quot;</span><span class="p">:</span> <span class="s2">&quot;NAI_09&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;na&quot;</span><span class="p">:</span> <span class="s2">&quot;NAI_10&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nb&quot;</span><span class="p">:</span> <span class="s2">&quot;NAI_11&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;b0&quot;</span><span class="p">:</span> <span class="s2">&quot;BGO_00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;b1&quot;</span><span class="p">:</span> <span class="s2">&quot;BGO_01&quot;</span><span class="p">}</span>
+
+
 
 <span class="n">lu</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;n0&quot;</span><span class="p">,</span>
@@ -240,13 +255,13 @@
 <div class="viewcode-block" id="DRMGen"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen">[docs]</a><span class="k">class</span> <span class="nc">DRMGen</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <div class="viewcode-block" id="DRMGen.__init__"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">quaternions</span><span class="p">,</span>
-        <span class="n">sc_pos</span><span class="p">,</span>
-        <span class="n">det_number</span><span class="p">,</span>
+        <span class="n">position_interpolator</span><span class="p">:</span> <span class="n">gbmgeometry</span><span class="o">.</span><span class="n">PositionInterpolator</span><span class="p">,</span>
+        <span class="n">det_number</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">ebin_edge_in</span><span class="p">,</span>
-        <span class="n">mat_type</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">mat_type</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="n">ebin_edge_out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">occult</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">occult</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">time</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A generic GBM DRM generator. This can be inherited for specific purposes.</span>
@@ -286,14 +301,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span> <span class="o">=</span> <span class="n">get_database</span><span class="p">(</span><span class="n">lu</span><span class="p">[</span><span class="n">det_number</span><span class="p">])</span>
         <span class="c1">#######################################################################################</span>
 
+        <span class="c1"># this checks if the output edges do not change</span>
+        
         <span class="bp">self</span><span class="o">.</span><span class="n">_trigdat</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_trigdat_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">det_number</span> <span class="o">&lt;</span> <span class="mi">12</span><span class="p">:</span>
             <span class="n">trigdat_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                 <span class="p">[</span><span class="mf">3.4</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">22.</span><span class="p">,</span> <span class="mf">44.</span><span class="p">,</span> <span class="mf">95.</span><span class="p">,</span> <span class="mf">300.</span><span class="p">,</span> <span class="mf">500.</span><span class="p">,</span> <span class="mf">800.</span><span class="p">,</span> <span class="mf">2000.</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">trigdat_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                 <span class="p">[</span><span class="mf">150.</span><span class="p">,</span> <span class="mf">400.</span><span class="p">,</span> <span class="mf">850.</span><span class="p">,</span> <span class="mf">1500.</span><span class="p">,</span> <span class="mf">3000.</span><span class="p">,</span> <span class="mf">5500.</span><span class="p">,</span> <span class="mf">10000.</span><span class="p">,</span> <span class="mf">20000.</span><span class="p">,</span> <span class="mf">50000.</span><span class="p">])</span>
+
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">e_l</span><span class="p">,</span> <span class="n">e_h</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ebin_edge_out</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">ebin_edge_out</span><span class="p">[</span><span class="mi">1</span><span class="p">:])):</span>
             <span class="n">elow_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">e_l</span><span class="p">,</span>
                                                 <span class="n">trigdat_edges</span><span class="p">,</span>
@@ -309,11 +328,13 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trigdat</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_database_precalc_trigdat</span> <span class="o">=</span> <span class="n">get_trigdat_precalc_database</span><span class="p">(</span>
                 <span class="n">lu</span><span class="p">[</span><span class="n">det_number</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trigdat_mask</span><span class="p">)</span>
+
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># dummy</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_database_precalc_trigdat</span> <span class="o">=</span> <span class="n">get_trigdat_precalc_database</span><span class="p">(</span><span class="n">lu</span><span class="p">[</span><span class="n">det_number</span><span class="p">],</span> <span class="p">[</span>
                                                                           <span class="mi">0</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_trigdat_mask</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="c1">#######################################################################################</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ein</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nobins_in</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
         <span class="n">energ_lo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_nb</span><span class="o">.</span><span class="n">energ_lo</span>
@@ -326,14 +347,248 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_nobins_out</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_out_edge</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span> <span class="o">=</span> <span class="n">quaternions</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_sc_pos</span> <span class="o">=</span> <span class="n">sc_pos</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_compute_spacecraft_coordinates</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_position_interpolator</span> <span class="o">=</span> <span class="n">position_interpolator</span>
 
-    <span class="c1"># @classmethod</span>
-    <span class="c1"># def from_tte(cls)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_time</span><span class="p">(</span><span class="n">time</span><span class="p">)</span></div>
+        
 
+<div class="viewcode-block" id="DRMGen.from_128_bin_data"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.from_128_bin_data">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_128_bin_data</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span>
+            <span class="n">det_name</span><span class="p">,</span>
+            <span class="n">time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="n">cspecfile</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">trigdat</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">poshist</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">T0</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">mat_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="n">custom_input_edges</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">InputEdges</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">occult</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A TTE/CSPEC specific drmgen already incorporating the standard input edges. Output edges are obtained</span>
+<span class="sd">        from lib import funs the input cspec file. Spacecraft position is read from the TTE file. For further details see the </span>
+<span class="sd">        generic reader (DRMGen).</span>
+
+<span class="sd">        :param det_name: either NAI_{**} or BGO_{**} or n* b*</span>
+<span class="sd">        :param trigdat: the path to a trigdat file</span>
+<span class="sd">        :param mat_type: 0=direct 1=scattered 2=direct+scattered</span>
+<span class="sd">        :param time: time relative to trigger to pull spacecraft position or MET if using a poshist file</span>
+<span class="sd">        :param cspecfile: the cspecfile to pull energy output edges from</span>
+<span class="sd">        :param poshist: read a poshist file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+        <span class="k">if</span> <span class="n">det_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">det_name_lookup</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">det_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">det_name_lookup2</span><span class="p">:</span>
+
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">det_name</span><span class="si">}</span><span class="s2"> is not valid&quot;</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">det_name</span> <span class="o">=</span> <span class="n">det_name_lookup2</span><span class="p">[</span><span class="n">det_name</span><span class="p">]</span>
+
+        <span class="n">det_number</span> <span class="o">=</span> <span class="n">det_name_lookup</span><span class="p">[</span><span class="n">det_name</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">det_number</span> <span class="o">&gt;</span> <span class="mi">11</span><span class="p">:</span>
+            <span class="c1"># BGO</span>
+
+            <span class="k">if</span> <span class="n">custom_input_edges</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+                <span class="n">in_edge</span> <span class="o">=</span> <span class="n">tte_edges</span><span class="p">[</span><span class="s2">&quot;bgo&quot;</span><span class="p">]</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+                    <span class="n">custom_input_edges</span><span class="p">,</span> <span class="n">BgoTTEEdges</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;custom edges are not an instance of BgoTTEEdges!&quot;</span>
+
+                <span class="n">in_edge</span> <span class="o">=</span> <span class="n">custom_input_edges</span><span class="o">.</span><span class="n">edges</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">custom_input_edges</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+                <span class="n">in_edge</span> <span class="o">=</span> <span class="n">tte_edges</span><span class="p">[</span><span class="s2">&quot;nai&quot;</span><span class="p">]</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+                    <span class="n">custom_input_edges</span><span class="p">,</span> <span class="n">NaiTTEEdges</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;custom edges are not an instance of NaiTTEEdges!&quot;</span>
+
+                <span class="n">in_edge</span> <span class="o">=</span> <span class="n">custom_input_edges</span><span class="o">.</span><span class="n">edges</span>
+
+        <span class="c1"># Create the out edge energies</span>
+        <span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">cspecfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">out_edge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">129</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">out_edge</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;EBOUNDS&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;E_MIN&quot;</span><span class="p">]</span>
+            <span class="n">out_edge</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;EBOUNDS&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;E_MAX&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">out_edge</span> <span class="o">=</span> <span class="n">out_edge</span>
+
+        <span class="k">if</span> <span class="n">trigdat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">position_interpolator</span> <span class="o">=</span> <span class="n">gbmgeometry</span><span class="o">.</span><span class="n">PositionInterpolator</span><span class="o">.</span><span class="n">from_trigdat</span><span class="p">(</span>
+                    <span class="n">trigdat_file</span><span class="o">=</span><span class="n">trigdat</span>
+                <span class="p">)</span>
+
+            <span class="k">except</span><span class="p">:</span>
+
+                <span class="n">position_interpolator</span> <span class="o">=</span> <span class="n">gbmgeometry</span><span class="o">.</span><span class="n">PositionInterpolator</span><span class="o">.</span><span class="n">from_trigdat_hdf5</span><span class="p">(</span>
+                    <span class="n">trigdat_file</span><span class="o">=</span><span class="n">trigdat</span>
+                <span class="p">)</span>
+
+            <span class="n">gbm</span> <span class="o">=</span> <span class="n">gbmgeometry</span><span class="o">.</span><span class="n">GBM</span><span class="p">(</span>
+                <span class="n">position_interpolator</span><span class="o">.</span><span class="n">quaternion</span><span class="p">(</span><span class="n">time</span><span class="p">),</span>
+                <span class="n">position_interpolator</span><span class="o">.</span><span class="n">sc_pos</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">km</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">poshist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="k">try</span><span class="p">:</span>
+
+                <span class="n">position_interpolator</span> <span class="o">=</span> <span class="n">gbmgeometry</span><span class="o">.</span><span class="n">PositionInterpolator</span><span class="o">.</span><span class="n">from_poshist</span><span class="p">(</span>
+                    <span class="n">poshist_file</span><span class="o">=</span><span class="n">poshist</span><span class="p">,</span> <span class="n">T0</span><span class="o">=</span><span class="n">T0</span>
+                <span class="p">)</span>
+
+            <span class="k">except</span><span class="p">:</span>
+
+                <span class="n">position_interpolator</span> <span class="o">=</span> <span class="n">gbmgeometry</span><span class="o">.</span><span class="n">PositionInterpolator</span><span class="o">.</span><span class="n">from_poshist_hdf5</span><span class="p">(</span>
+                    <span class="n">poshist_file</span><span class="o">=</span><span class="n">poshist</span><span class="p">,</span> <span class="n">T0</span><span class="o">=</span><span class="n">T0</span>
+                <span class="p">)</span>
+
+            <span class="n">gbm</span> <span class="o">=</span> <span class="n">gbmgeometry</span><span class="o">.</span><span class="n">GBM</span><span class="p">(</span>
+                <span class="n">position_interpolator</span><span class="o">.</span><span class="n">quaternion</span><span class="p">(</span><span class="n">time</span><span class="p">),</span>
+                <span class="n">position_interpolator</span><span class="o">.</span><span class="n">sc_pos</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;No trigdat or posthist file used!&quot;</span><span class="p">)</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">position_interpolator</span><span class="o">=</span><span class="n">position_interpolator</span><span class="p">,</span>
+            <span class="n">det_number</span><span class="o">=</span><span class="n">det_number</span><span class="p">,</span>
+            <span class="n">ebin_edge_in</span><span class="o">=</span><span class="n">in_edge</span><span class="p">,</span>
+            <span class="n">mat_type</span><span class="o">=</span><span class="n">mat_type</span><span class="p">,</span>
+            <span class="n">ebin_edge_out</span><span class="o">=</span><span class="n">out_edge</span><span class="p">,</span>
+            <span class="n">occult</span><span class="o">=</span><span class="n">occult</span><span class="p">,</span>
+            <span class="n">time</span><span class="o">=</span><span class="n">time</span>
+        <span class="p">)</span>
+
+        <span class="n">out</span><span class="o">.</span><span class="n">_gbm</span> <span class="o">=</span> <span class="n">gbm</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+<div class="viewcode-block" id="DRMGen.from_trigdat"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.from_trigdat">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_trigdat</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span>
+                     <span class="n">trigdat_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                     <span class="n">det</span><span class="p">,</span>
+                     <span class="n">mat_type</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                     <span class="n">tstart</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                     <span class="n">tstop</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                     <span class="n">time</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                     <span class="n">occult</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;TODO describe function</span>
+
+<span class="sd">        :param cls: </span>
+<span class="sd">        :type cls: </span>
+<span class="sd">        :param trigdat_file: </span>
+<span class="sd">        :type trigdat_file: str</span>
+<span class="sd">        :param det: </span>
+<span class="sd">        :type det: </span>
+<span class="sd">        :param mat_type: </span>
+<span class="sd">        :type mat_type: </span>
+<span class="sd">        :param tstart: </span>
+<span class="sd">        :type tstart: </span>
+<span class="sd">        :param tstop: </span>
+<span class="sd">        :type tstop: </span>
+<span class="sd">        :param time: </span>
+<span class="sd">        :type time: </span>
+<span class="sd">        :param occult: </span>
+<span class="sd">        :type occult: </span>
+<span class="sd">        :returns: </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">matrix_type</span> <span class="o">=</span> <span class="n">mat_type</span>
+
+        
+        <span class="n">det_number</span> <span class="o">=</span> <span class="n">det</span>
+
+        <span class="n">time</span> <span class="o">=</span> <span class="n">time</span>
+
+        <span class="n">maxen</span> <span class="o">=</span> <span class="mi">140</span>
+
+        
+        <span class="c1"># Setup the input side energy edges</span>
+        <span class="k">if</span> <span class="n">det</span> <span class="o">&gt;</span> <span class="mi">11</span><span class="p">:</span>
+
+            <span class="n">in_edge</span> <span class="o">=</span> <span class="n">trigdat_edges</span><span class="p">[</span><span class="s2">&quot;bgo&quot;</span><span class="p">]</span>
+            <span class="n">out_edge</span> <span class="o">=</span> <span class="n">trigdat_out_edge</span><span class="p">[</span><span class="s2">&quot;bgo&quot;</span><span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">in_edge</span> <span class="o">=</span> <span class="n">trigdat_edges</span><span class="p">[</span><span class="s2">&quot;nai&quot;</span><span class="p">]</span>
+            <span class="n">out_edge</span> <span class="o">=</span> <span class="n">trigdat_out_edge</span><span class="p">[</span><span class="s2">&quot;nai&quot;</span><span class="p">]</span>
+
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">position_interpolator</span> <span class="o">=</span> <span class="n">gbmgeometry</span><span class="o">.</span><span class="n">PositionInterpolator</span><span class="o">.</span><span class="n">from_trigdat</span><span class="p">(</span>
+                <span class="n">trigdat_file</span><span class="o">=</span><span class="n">trigdat_file</span>
+            <span class="p">)</span>
+
+        <span class="k">except</span><span class="p">:</span>
+
+            <span class="n">position_interpolator</span> <span class="o">=</span> <span class="n">gbmgeometry</span><span class="o">.</span><span class="n">PositionInterpolator</span><span class="o">.</span><span class="n">from_trigdat_hdf5</span><span class="p">(</span>
+                <span class="n">trigdat_file</span><span class="o">=</span><span class="n">trigdat_file</span>
+                <span class="p">)</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">position_interpolator</span><span class="o">=</span><span class="n">position_interpolator</span><span class="p">,</span>
+            <span class="n">det_number</span><span class="o">=</span><span class="n">det_number</span><span class="p">,</span>
+            <span class="n">ebin_edge_in</span><span class="o">=</span><span class="n">in_edge</span><span class="p">,</span>
+            <span class="n">mat_type</span><span class="o">=</span><span class="n">matrix_type</span><span class="p">,</span>
+            <span class="n">ebin_edge_out</span><span class="o">=</span><span class="n">out_edge</span><span class="p">,</span>
+            <span class="n">occult</span><span class="o">=</span><span class="n">occult</span><span class="p">,</span>
+            <span class="n">time</span> <span class="o">=</span> <span class="n">time</span>
+        <span class="p">)</span>
+
+        <span class="n">out</span><span class="o">.</span><span class="n">_tstart</span> <span class="o">=</span> <span class="n">tstart</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">_tstop</span> <span class="o">=</span> <span class="n">tstop</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">postion_interpolator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">gbmgeometry</span><span class="o">.</span><span class="n">PositionInterpolator</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position_interpolator</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_met</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position_interpolator</span><span class="o">.</span><span class="n">met</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_time</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DRMGen.met_at"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.met_at">[docs]</a>    <span class="k">def</span> <span class="nf">met_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns the MET at a given relative time</span>
+
+<span class="sd">        :param t: </span>
+<span class="sd">        :type t: float</span>
+<span class="sd">        :returns: </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position_interpolator</span><span class="o">.</span><span class="n">met</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></div>
+    
+
+        
+    
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ebounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -349,8 +604,17 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_drm</span><span class="o">.</span><span class="n">T</span>
 
-<div class="viewcode-block" id="DRMGen.to_3ML_response"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.to_3ML_response">[docs]</a>    <span class="k">def</span> <span class="nf">to_3ML_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">):</span>
+<div class="viewcode-block" id="DRMGen.to_3ML_response"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen.to_3ML_response">[docs]</a>    <span class="k">def</span> <span class="nf">to_3ML_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">coverage_interval</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        create an instrument reponse object for 3ML</span>
+<span class="sd">        </span>
+<span class="sd">        :param ra: </span>
+<span class="sd">        :type ra: </span>
+<span class="sd">        :param dec: </span>
+<span class="sd">        :type dec: </span>
+<span class="sd">        :returns: </span>
 
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_location</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
 
         <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span>
@@ -362,7 +626,7 @@
                 <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.</span>
 
         <span class="n">response</span> <span class="o">=</span> <span class="n">InstrumentResponse</span><span class="p">(</span>
-            <span class="n">out</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ebounds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">monte_carlo_energies</span>
+            <span class="n">out</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ebounds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">monte_carlo_energies</span><span class="p">,</span> <span class="n">coverage_interval</span><span class="o">=</span><span class="n">coverage_interval</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">response</span></div>
@@ -450,11 +714,16 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_time</span> <span class="o">=</span> <span class="n">time</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_sc_quaternions_updater</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sc_quaternions_updater</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_compute_spacecraft_coordinates</span><span class="p">()</span></div>
+        
 
     <span class="k">def</span> <span class="nf">_sc_quaternions_updater</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;implemented in subclass&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_quaternions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position_interpolator</span><span class="o">.</span><span class="n">quaternion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_time</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sc_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position_interpolator</span><span class="o">.</span><span class="n">sc_pos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_time</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DRMGen._compute_spacecraft_coordinates"><a class="viewcode-back" href="../../notebooks/api/gbm_drm_gen.html#gbm_drm_gen.drmgen.DRMGen._compute_spacecraft_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">_compute_spacecraft_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
