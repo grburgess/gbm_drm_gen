@@ -57,14 +57,14 @@ class BALROGLike(DispersionSpectrumLike):
 
             balrog_drm = BALROG_DRM(drm_generator, 0.0, 0.0)
 
-            observation._rsp = balrog_drm
+            observation._response = balrog_drm
 
         super(BALROGLike, self).__init__(
             name, observation, background, verbose, **kwargs)
 
         # only on the start up
 
-        self._rsp.set_time(time)
+        self._response.set_time(time)
 
     def set_model(self, likelihoodModel):
         """
@@ -115,7 +115,7 @@ class BALROGLike(DispersionSpectrumLike):
                 ra = self._like_model.point_sources[key].position.ra.value
                 dec = self._like_model.point_sources[key].position.dec.value
 
-        self._rsp.set_location(ra, dec, cache=self._use_cache)
+        self._response.set_location(ra, dec, cache=self._use_cache)
 
     def get_model(self, precalc_fluxes=None):
 
@@ -129,7 +129,7 @@ class BALROGLike(DispersionSpectrumLike):
             # assumes that the is only one point source which is how it should be!
             ra, dec = self._like_model.get_point_source_position(0)
 
-            self._rsp.set_location(ra, dec, cache=self._use_cache)
+            self._response.set_location(ra, dec, cache=self._use_cache)
 
         return super(BALROGLike, self).get_model(precalc_fluxes)
 
