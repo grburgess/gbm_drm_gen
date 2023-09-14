@@ -36,7 +36,6 @@ class DRMGenTrig(DRMGen):
 
         maxen = 140
 
-        
         # Setup the input side energy edges
         if det > 11:
 
@@ -48,7 +47,6 @@ class DRMGenTrig(DRMGen):
             in_edge = trigdat_edges["nai"]
             out_edge = trigdat_out_edge["nai"]
 
-
         try:
             position_interpolator = gbmgeometry.PositionInterpolator.from_trigdat(
                 trigdat_file=trigdat_file
@@ -58,19 +56,17 @@ class DRMGenTrig(DRMGen):
 
             position_interpolator = gbmgeometry.PositionInterpolator.from_trigdat_hdf5(
                 trigdat_file=trigdat_file
-                )
+            )
 
-
-            super(DRMGenTrig, self).__init__(
-                position_interpolator=position_interpolator,
-                det_number=det_number,
-                ebin_edge_in=in_edge,
-                mat_type=matrix_type,
-                ebin_edge_out=out_edge,
-                occult=occult,
-                time = time
+        super(DRMGenTrig, self).__init__(
+            position_interpolator=position_interpolator,
+            det_number=det_number,
+            ebin_edge_in=in_edge,
+            mat_type=matrix_type,
+            ebin_edge_out=out_edge,
+            occult=occult,
+            time=time
         )
-
 
 
 ################
